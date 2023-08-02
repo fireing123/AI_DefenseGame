@@ -1,4 +1,5 @@
 import pygame
+import color
 
 class AiDefenseGame:
     
@@ -7,7 +8,7 @@ class AiDefenseGame:
         self.screen = pygame.display.set_mode(size=size)
         self.is_running = True
     
-    def create_text(self, object_name=None , str="", size=50, color=(0, 0, 0), center=(250, 250)):
+    def create_text(self, object_name=None , str="", size=50, color=color.WHITE, center=(250, 250)):
         font = pygame.font.Font(object_name, size=size)
         text = font.render(text=str, antialias=True, color=color)
         text_rect = text.get_rect()
@@ -25,7 +26,11 @@ class AiDefenseGame:
                     waiting = False
     
     def start(self):
-        pass
+        self.screen.fill((0, 0, 0))
+        self.create_text(str="Ai Defense Game")
+        self.create_text(str="Press a key to play", size=20, center=(250, 150))
+        pygame.display.flip()
+        self.wait_key()
                      
     def main(self):
 
@@ -37,6 +42,11 @@ class AiDefenseGame:
                     is_running = False
 
         pygame.quit() # 종료
+        
+    def game_over(self):
+        if not self.is_running:
+            return
+        
 
 
 
