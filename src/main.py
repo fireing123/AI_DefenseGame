@@ -9,7 +9,7 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height = size
         self.screen = pygame.display.set_mode(size=size)
-        SceneLoad(self.screen)
+        self.scene_manger = SceneLoad(self.screen)
         self.is_running = True
 
 
@@ -30,7 +30,8 @@ class AiDefenseGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
     
-    @SceneLoad.SceneChange
+    
+    
     def start(self):
         self.screen.fill(color.RED)
         self.create_text(str="Ai Defense Game")
@@ -38,12 +39,11 @@ class AiDefenseGame:
         pygame.display.update()
         self.wait_key()
 
-          
     def main(self):
-        SceneLoad.Change_Scene
+        self.scene_manger.scene_change(lambda : self.screen.fill(color.YELLOW))
         while self.is_running:
 
-            self.scene.update()
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
