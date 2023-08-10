@@ -1,6 +1,6 @@
 import pygame
 import color
-from scene import SceneLoad
+from scene import Scene
 
 class AiDefenseGame:
     
@@ -9,41 +9,39 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height = size
         self.screen = pygame.display.set_mode(size=size)
-        self.scene_manger = SceneLoad(self.screen)
+        self.scene_manger = Scene(self.screen)
         self.is_running = True
 
 
-    def create_text(self, object_name=None , str="", size=50, color=color.WHITE, center=(400, 300)):
+    def create_text(self, object_name=None , str="", size=50, color=color.WHITE, center=(490, 350)):
         font = pygame.font.Font(object_name, size=size)
         text = font.render(str, True, color)
         text_rect = text.get_rect()
         text_rect.center = center
         self.screen.blit(text, text_rect)
     
-    def wait_key(self):
+    def wait_key(self, what_key):
         waiting = True
         while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     waiting = False
                     self.is_running = False
-                if event.type == pygame.KEYUP:
+                if event.type == what_key:
                     waiting = False
     
     
     
     def start(self):
-        self.screen.fill(color.RED)
+        self.scene_manger.update()
         self.create_text(str="Ai Defense Game")
-        self.create_text(str="Press a key to play", size=20, center=((400, 400)))
+        self.create_text(str="Press a key to play", size=20, center=(490, 550))
         pygame.display.update()
-        self.wait_key()
+        self.wait_key(pygame.KEYUP)
 
     def main(self):
         self.scene_manger.scene_change(lambda : self.screen.fill(color.YELLOW))
         while self.is_running:
-
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -57,6 +55,6 @@ class AiDefenseGame:
             return
 
 if __name__ == "__main__" :
-    game = AiDefenseGame(size=(800, 600))
+    game = AiDefenseGame(size=(1000, 800))
     game.start()
     game.main()
