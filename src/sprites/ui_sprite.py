@@ -1,4 +1,5 @@
 import pygame
+from ..event import Event
 
 class Button(pygame.sprite.Sprite):
     
@@ -7,20 +8,33 @@ class Button(pygame.sprite.Sprite):
         self.size = size
         self.pos = pos
         self.text = pygame.font.Font().render(string, True, color)
-        self.default_image = pygame.image.load(image)
-        self.click_image = pygame.image.load(click_image)
+        self.text_rect = self.text.get_rect()
+        self.default_image = pygame.transform.scale(pygame.image.load(image), size)
+        self.click_image = pygame.transform.scale(pygame.image.load(click_image), size)
         self.image = self.default_image
         self.rect = self.image.get_rect()
-        self.is_pressed = False
+        self.event = Event()
+        self.is_pressing = False
+        self.is_on = False
+        self.active = True
         
     def is_click(self):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
-            self.is_pressed = pygame.mouse.get_pressed()[0]
+            mouse_press = pygame.mouse.get_pressed()[0]
             
-        
-    def update(self):
+            if mouse_press:
+                self.image = self.click_image
+                self.is_on = not self.is_pressing
+            else:
+                self.image = self.default_image
+    
+            self.is_pressing = mouse_press
+        return self.is_on
+
+            
+    def update(self, active = False):
         if self.is_click():
-            self.image = self.click_image
-        else:
-            self.image = self.default_image
-        self.image.blit(self.text)
+            self.event.invoke()
+        self.active = active
+        if self.active:
+            self.image.blit(self.text, self.text_rect)

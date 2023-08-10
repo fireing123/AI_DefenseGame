@@ -1,6 +1,6 @@
 import pygame
-import color
-from scene import Scene
+from . import color
+from .scene import Scene, UI
 
 class AiDefenseGame:
     
@@ -9,7 +9,7 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height = size
         self.screen = pygame.display.set_mode(size=size)
-        self.scene_manger = Scene(self.screen)
+        self.scene = Scene(self.screen)
         self.is_running = True
 
 
@@ -33,16 +33,16 @@ class AiDefenseGame:
     
     
     def start(self):
-        self.scene_manger.update()
+        self.scene.update([UI])
         self.create_text(str="Ai Defense Game")
         self.create_text(str="Press a key to play", size=20, center=(490, 550))
         pygame.display.update()
         self.wait_key(pygame.KEYUP)
 
     def main(self):
-        self.scene_manger.scene_change(lambda : self.screen.fill(color.YELLOW))
+        self.scene.scene_change()
         while self.is_running:
-
+            self.scene.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False

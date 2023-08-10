@@ -1,19 +1,28 @@
 import pygame
 from pygame.sprite import Group
-from sprites.background import BlcakRectangle
+from .sprites.background import BlcakRectangle
 from typing import List
 from time import sleep
-from sprites.background import BackGround
+from .sprites.background import BackGround
+from .sprites.ui_sprite import Button
+from . import color
 
+UI = 'ui'
+BACKGROUND = 'background'
 
 class Scene:
     
     def __init__(self, screen):
         self.screen : pygame.Surface= screen
         
-        self.background = BackGround(self.screen.get_size(), './src/sprites/image/main_image.png')
+        self.background_layer = Group(
+            BackGround(self.screen.get_size(), './src/sprites/image/main_image.png')
+        )
         
-        self.ui_layer = Group()
+        
+        self.ui_layer = Group(
+            Button((50, 50), (500, 400), "Wave", color.WHITE, "src\sprites\image\default.jpg", "src\sprites\image\click.jpg")
+        )
         
         width, self.rect_height = self.screen.get_size()
         self.rect_width = width // 8
@@ -25,10 +34,18 @@ class Scene:
             self.rect_width += self.nomarl_width
             self.rects.add(rect)
         
-    def update(self):
-        image = self.background.image
-        rect = image.get_rect()
-        self.screen.blit(image, rect)
+    def update(self, layers=[]):
+        
+        if BACKGROUND not in layers: 
+            self.background_layer.update()
+            self.background_layer.draw(self.screen)
+        
+        
+        if UI not in layers:
+            self.ui_layer.update()
+            self.ui_layer.draw(self.screen)
+        
+        
         
     def darkening_scene(self):
         for i in range(0, 39):  
@@ -43,7 +60,7 @@ class Scene:
             pygame.display.flip()
             sleep(0.01)
 
-    def brightening_scene(self, func):
+    def brightening_scene(self):
         self.rect_width = self.nomarl_width
         
         for i in range(0, 39):
@@ -53,12 +70,12 @@ class Scene:
                     break
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
-            func()
+            self.update()
             self.rects.draw(self.screen)
             pygame.display.flip()
             sleep(0.01)
         self.rects.empty()
     
-    def scene_change(self, func):
+    def scene_change(self):
         self.darkening_scene()
-        self.brightening_scene(func)
+        self.brightening_scene()
