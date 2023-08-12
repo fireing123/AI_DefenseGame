@@ -40,6 +40,9 @@ class AiDefenseGame:
         self.wait_key(pygame.KEYUP)
 
     def main(self):
+        
+        
+        
         self.scene.scene_change()
         while self.is_running:
             self.scene.update()

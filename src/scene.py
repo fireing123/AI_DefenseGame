@@ -1,10 +1,11 @@
 import pygame
+import json
 from pygame.sprite import Group
 from .sprites.background import BlcakRectangle
 from typing import List
 from time import sleep
 from .sprites.background import BackGround
-from .sprites.ui_sprite import Button
+from .sprites.ui import Button
 from . import color
 
 UI = 'ui'
@@ -12,16 +13,16 @@ BACKGROUND = 'background'
 
 class Scene:
     
-    def __init__(self, screen):
+    def __init__(self, screen, background_layer, object_layer, ui_layer):
         self.screen : pygame.Surface= screen
         
         self.background_layer = Group(
             BackGround(self.screen.get_size(), './src/sprites/image/main_image.png')
         )
         
-        
+        but =  Button((300, 300), (500, 400), "Wave", color.WHITE, "src\sprites\image\default.jpg", "src\sprites\image\click.jpg")
         self.ui_layer = Group(
-            Button((50, 50), (500, 400), "Wave", color.WHITE, "src\sprites\image\default.jpg", "src\sprites\image\click.jpg")
+           but
         )
         
         width, self.rect_height = self.screen.get_size()
@@ -45,8 +46,14 @@ class Scene:
             self.ui_layer.update()
             self.ui_layer.draw(self.screen)
         
-        
-        
+    @staticmethod
+    def Load(json_path):
+        with open(json_path) as file:
+            json_file = json.loads(file.read())
+            scene = Scene(
+                
+            )
+    
     def darkening_scene(self):
         for i in range(0, 39):  
             Sprites : List[BlcakRectangle] = self.rects.sprites()
