@@ -1,0 +1,25 @@
+{
+    "background" : "./src/sprites/image/main_image.png",
+    "object" : [
+        {
+            
+        }
+    ],
+    "ui" : {
+        "texts": [
+            {
+                "position" : [500, 350],
+                "size" : 50,
+                "string" : "Ai Defense Game",
+                "color" : [255, 255, 255]
+            },
+            {
+                "position" : [500, 550],
+                "size" : 25,
+                "string" : "Press a key to play",
+                "color" : [255, 255, 255]
+            }
+        ]
+    }
+    
+}

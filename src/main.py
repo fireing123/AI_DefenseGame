@@ -9,7 +9,7 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height = size
         self.screen = pygame.display.set_mode(size=size)
-        self.scene = Scene(self.screen)
+        self.scene = Scene.load('./src/level/main.json', self.screen)
         self.is_running = True
 
 
@@ -33,9 +33,8 @@ class AiDefenseGame:
     
     
     def start(self):
-        self.scene.update([UI])
-        self.create_text(str="Ai Defense Game")
-        self.create_text(str="Press a key to play", size=20, center=(490, 550))
+        self.scene.update()
+        self.scene.draw()
         pygame.display.update()
         self.wait_key(pygame.KEYUP)
 

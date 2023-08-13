@@ -7,24 +7,24 @@ from time import sleep
 from .sprites.background import BackGround
 from .sprites.ui import Button
 from . import color
-
+from .layer import ObjectLayer, UILayer
 UI = 'ui'
+OBJECTT = 'object'
 BACKGROUND = 'background'
 
 class Scene:
     
-    def __init__(self, screen, background_layer, object_layer, ui_layer):
-        self.screen : pygame.Surface= screen
+    def __init__(self, screen : pygame.Surface,
+                background : BackGround, 
+                object_layer : ObjectLayer, 
+                ui_layer : UILayer):
         
-        self.background_layer = Group(
-            BackGround(self.screen.get_size(), './src/sprites/image/main_image.png')
-        )
+        self.screen = screen
         
-        but =  Button((300, 300), (500, 400), "Wave", color.WHITE, "src\sprites\image\default.jpg", "src\sprites\image\click.jpg")
-        self.ui_layer = Group(
-           but
-        )
-        
+        self.background = background
+        self.object_layer = object_layer
+        self.ui_layer = ui_layer
+
         width, self.rect_height = self.screen.get_size()
         self.rect_width = width // 8
         self.nomarl_width = self.rect_width
@@ -35,24 +35,32 @@ class Scene:
             self.rect_width += self.nomarl_width
             self.rects.add(rect)
         
-    def update(self, layers=[]):
-        
+    def update(self):
+        self.background.update()
+        self.object_layer.update()
+        self.ui_layer.update()
+    
+    def draw(self, layers = []):
         if BACKGROUND not in layers: 
-            self.background_layer.update()
-            self.background_layer.draw(self.screen)
-        
-        
+            self.screen.blit(self.background.image, self.background.rect)
+        if OBJECTT not in layers:
+            self.object_layer.draw(self.screen)
         if UI not in layers:
-            self.ui_layer.update()
             self.ui_layer.draw(self.screen)
-        
+    
     @staticmethod
-    def Load(json_path):
-        with open(json_path) as file:
-            json_file = json.loads(file.read())
-            scene = Scene(
-                
-            )
+    def load(json_path, screen):
+        file = open(json_path, 'r')
+        json_file = json.loads(file.read())
+        file.close()
+        return Scene(
+                screen,
+                BackGround(screen.get_size(), json_file['background']),
+                ObjectLayer.load(json_file['object']),
+                UILayer.load(json_file['ui'])
+        )
+
+
     
     def darkening_scene(self):
         for i in range(0, 39):  
