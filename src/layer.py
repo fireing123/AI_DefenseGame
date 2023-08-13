@@ -9,6 +9,11 @@ def object_load(json):
         
 
 from .sprites.ui import Button, Text
+class UiLayer(pygame.sprite.Group):
+    
+    def draw(self, surface):
+        for spr in self.spritedict:
+            spr.draw(surface)
 
 def ui_load(json):
     ui = []
@@ -21,4 +26,4 @@ def ui_load(json):
     except KeyError:
         print("not include text?!")
     
-    return pygame.sprite.Group(*ui)
+    return UiLayer(*ui)

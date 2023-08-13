@@ -14,10 +14,10 @@ class Transform:
         self.position = position
         self.rotation = rotation
         self.scale = scale
-        self.local_position : Vector2= position
-        self.local_rotation : Vector2= rotation
-        self.local_scale : Vector2= scale
         self.parent = parent
+        self.local_position : Vector2
+        self.local_rotation : Vector2
+        self.local_scale : Vector2
         self.children = children
         print("not include transform")
      

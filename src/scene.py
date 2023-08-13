@@ -7,26 +7,33 @@ from time import sleep
 from .sprites.background import BackGround
 from .sprites.ui import Button
 from . import color
-from .layer import object_load, ui_load
+from .layer import UiLayer, object_load, ui_load
 UI = 'ui'
 OBJECTT = 'object'
 BACKGROUND = 'background'
 
-screen : pygame.Surface
+
 
 class Scene:
+    screen : pygame.Surface
+    background : BackGround
+    object_layer : Group
+    ui_layer : UiLayer
     
     def __init__(self, creen : pygame.Surface,
-                background : BackGround, 
-                object_layer : Group, 
-                ui_layer : Group):
+                ackground : BackGround, 
+                bject_layer : Group, 
+                i_layer : UiLayer):
         
         global screen
+        global background
+        global object_layer
+        global ui_layer
         screen = creen
+        background = ackground
+        object_layer = bject_layer
+        ui_layer = i_layer
         
-        self.background = background
-        self.object_layer = object_layer
-        self.ui_layer = ui_layer
 
         width, self.rect_height = screen.get_size()
         self.rect_width = width // 8
@@ -39,18 +46,17 @@ class Scene:
             self.rects.add(rect)
         
     def update(self):
-        self.background.update()
-        self.object_layer.update()
-        self.ui_layer.update()
+        background.update()
+        object_layer.update()
+        ui_layer.update()
     
     def draw(self, layers = []):
-        global screen
         if BACKGROUND not in layers: 
-            screen.blit(self.background.image, self.background.rect)
+            screen.blit(background.image, background.rect)
         if OBJECTT not in layers:
-            self.object_layer.draw(screen)
+            object_layer.draw(screen)
         if UI not in layers:
-            self.ui_layer.draw(screen)
+            ui_layer.draw(screen)
     
     @staticmethod
     def load(json_path, screen : pygame.Surface):
@@ -65,11 +71,10 @@ class Scene:
         )
     
     def scene_kill(self):
-        self.object_layer.empty()
-        self.ui_layer.empty()
+        object_layer.empty()
+        ui_layer.empty()
     
     def darkening_scene(self):
-        global screen
 
         for i in range(0, 39):  
             Sprites : List[BlcakRectangle] = self.rects.sprites()
@@ -86,7 +91,6 @@ class Scene:
             sleep(0.01)
 
     def brightening_scene(self):
-        global screen
         self.rect_width = self.nomarl_width
         for j in self.rects.sprites(): j.image.set_alpha(144)
         for i in range(0, 39):
@@ -103,7 +107,6 @@ class Scene:
             sleep(0.01)
     
     def scene_change(self, path):
-        global screen
         self.darkening_scene()
         new_scene = Scene.load(path, screen)
         new_scene.brightening_scene()

@@ -12,6 +12,7 @@ class Button(pygame.sprite.Sprite):
         self.image = self.default_image
         self.rect = self.image.get_rect()
         self.rect.center = pos
+        self.transform = Transform(Vector2())
         x, y = size
         
         self.text = Text((x//2, y//2), 100, text['string'], text['color'])
@@ -49,7 +50,8 @@ class Button(pygame.sprite.Sprite):
             self.event.invoke()
         
     def draw(self, screen : pygame.surface.Surface):
-        screen.blit(self.text.image, self.text.rect)
+        screen.blit(self.image, self.rect)
+        self.text.draw(screen)
 
 class Text(pygame.sprite.Sprite):
     
@@ -69,6 +71,9 @@ class Text(pygame.sprite.Sprite):
             text['string'],
             text['color']
         )
+        
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
         
     def set_text(self, string, color):
         self.image = self.font.render(string, True, color)
