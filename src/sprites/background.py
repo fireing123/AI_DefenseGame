@@ -19,6 +19,8 @@ class BackGround(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (0, 0)
         
+    def update(self):
+        self.rect = self.image.get_rect()
         
     def change_image(self, image_path):
         self.image = pygame.image.load(image_path)

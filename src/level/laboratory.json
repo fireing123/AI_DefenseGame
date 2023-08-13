@@ -1,5 +1,5 @@
 {
-    "background" : "",
+    "background" : "src/sprites/image/lab.png",
     "object" : [
         {
             
@@ -10,8 +10,8 @@
             {
                 "position": [300, 200],
                 "size" : [200, 300],
-                "defaultImage" : "",
-                "clickImage" : "",
+                "defaultImage" : "src/sprites/image/default.jpg",
+                "clickImage" : "src/sprites/image/click.jpg",
                 "text" : {
                     "color" : [255, 255, 255],
                     "string" : "wave"

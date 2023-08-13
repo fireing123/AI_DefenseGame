@@ -7,25 +7,28 @@ from time import sleep
 from .sprites.background import BackGround
 from .sprites.ui import Button
 from . import color
-from .layer import ObjectLayer, UILayer
+from .layer import object_load, ui_load
 UI = 'ui'
 OBJECTT = 'object'
 BACKGROUND = 'background'
 
+screen : pygame.Surface
+
 class Scene:
     
-    def __init__(self, screen : pygame.Surface,
+    def __init__(self, creen : pygame.Surface,
                 background : BackGround, 
-                object_layer : ObjectLayer, 
-                ui_layer : UILayer):
+                object_layer : Group, 
+                ui_layer : Group):
         
-        self.screen = screen
+        global screen
+        screen = creen
         
         self.background = background
         self.object_layer = object_layer
         self.ui_layer = ui_layer
 
-        width, self.rect_height = self.screen.get_size()
+        width, self.rect_height = screen.get_size()
         self.rect_width = width // 8
         self.nomarl_width = self.rect_width
         self.rects = Group()
@@ -41,28 +44,32 @@ class Scene:
         self.ui_layer.update()
     
     def draw(self, layers = []):
+        global screen
         if BACKGROUND not in layers: 
-            self.screen.blit(self.background.image, self.background.rect)
+            screen.blit(self.background.image, self.background.rect)
         if OBJECTT not in layers:
-            self.object_layer.draw(self.screen)
+            self.object_layer.draw(screen)
         if UI not in layers:
-            self.ui_layer.draw(self.screen)
+            self.ui_layer.draw(screen)
     
     @staticmethod
-    def load(json_path, screen):
+    def load(json_path, screen : pygame.Surface):
         file = open(json_path, 'r')
         json_file = json.loads(file.read())
         file.close()
         return Scene(
                 screen,
                 BackGround(screen.get_size(), json_file['background']),
-                ObjectLayer.load(json_file['object']),
-                UILayer.load(json_file['ui'])
+                object_load(json_file['object']),
+                ui_load(json_file['ui'])
         )
-
-
+    
+    def scene_kill(self):
+        self.object_layer.empty()
+        self.ui_layer.empty()
     
     def darkening_scene(self):
+        global screen
         for i in range(0, 39):  
             Sprites : List[BlcakRectangle] = self.rects.sprites()
             for j in Sprites:
@@ -71,11 +78,12 @@ class Scene:
                 alpha = j.image.get_alpha()
                 alpha += 8
                 j.image.set_alpha(alpha)
-            self.rects.draw(self.screen)
+            self.rects.draw(screen)
             pygame.display.flip()
             sleep(0.01)
 
     def brightening_scene(self):
+        global screen
         self.rect_width = self.nomarl_width
         
         for i in range(0, 39):
@@ -86,11 +94,13 @@ class Scene:
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
             self.update()
-            self.rects.draw(self.screen)
+            self.rects.draw(screen)
             pygame.display.flip()
             sleep(0.01)
-        self.rects.empty()
     
-    def scene_change(self):
+    def scene_change(self, path):
+        global screen
         self.darkening_scene()
-        self.brightening_scene()
+        new_scene = Scene.load(path, screen)
+        new_scene.brightening_scene()
+        return new_scene

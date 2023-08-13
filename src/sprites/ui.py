@@ -1,4 +1,3 @@
-from typing import Optional
 import pygame
 from ..event import Event
 
@@ -15,7 +14,7 @@ class Button(pygame.sprite.Sprite):
         self.rect.center = pos
         x, y = size
         
-        self.text = Text(None, (x//2, y//2), 100, text['string'], text['color'])
+        self.text = Text((x//2, y//2), 100, text['string'], text['color'])
         
         self.event = Event()
         self.is_pressing = False
@@ -52,21 +51,21 @@ class Button(pygame.sprite.Sprite):
     def draw(self, screen : pygame.surface.Surface):
         screen.blit(self.image, self.rect)
         
-        screen.blit(self.text.text, self.text.rect)
+        screen.blit(self.text.image, self.text.rect)
 
-class Text(pygame.font.Font):
+class Text(pygame.sprite.Sprite):
     
-    def __init__(self, name, position, size, string, color):
-        super().__init__(name, size)
-        self.text = self.render(string, True, color)
+    def __init__(self, position, size, string, color):
+        super().__init__()
+        self.font = pygame.font.Font(None, size)
+        self.image = self.font.render(string, True, color)
         self.color = color
-        self.rect = self.text.get_rect()
+        self.rect = self.image.get_rect()
         self.rect.center = position
         
     @staticmethod
     def load(text):
         return Text(
-            None,
             text['position'],
             text['size'],
             text['string'],
@@ -74,4 +73,4 @@ class Text(pygame.font.Font):
         )
         
     def set_text(self, string, color):
-        self.text = self.render(string, True, color)
+        self.image = self.font.render(string, True, color)

@@ -9,16 +9,9 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height = size
         self.screen = pygame.display.set_mode(size=size)
-        self.scene = Scene.load('./src/level/main.json', self.screen)
+        self.scene : Scene = Scene.load('src\level\main.json', self.screen)
         self.is_running = True
 
-
-    def create_text(self, object_name=None , str="", size=50, color=color.WHITE, center=(490, 350)):
-        font = pygame.font.Font(object_name, size=size)
-        text = font.render(str, True, color)
-        text_rect = text.get_rect()
-        text_rect.center = center
-        self.screen.blit(text, text_rect)
     
     def wait_key(self, what_key):
         waiting = True
@@ -40,11 +33,10 @@ class AiDefenseGame:
 
     def main(self):
         
-        
-        
-        self.scene.scene_change()
+        self.scene = self.scene.scene_change('src/level/laboratory.json')
         while self.is_running:
             self.scene.update()
+            self.scene.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
