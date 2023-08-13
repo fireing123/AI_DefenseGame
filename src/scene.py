@@ -70,14 +70,17 @@ class Scene:
     
     def darkening_scene(self):
         global screen
+
         for i in range(0, 39):  
             Sprites : List[BlcakRectangle] = self.rects.sprites()
+            
             for j in Sprites:
                 if Sprites.index(j) > i:
                     break
                 alpha = j.image.get_alpha()
                 alpha += 8
                 j.image.set_alpha(alpha)
+            self.draw()
             self.rects.draw(screen)
             pygame.display.flip()
             sleep(0.01)
@@ -85,15 +88,16 @@ class Scene:
     def brightening_scene(self):
         global screen
         self.rect_width = self.nomarl_width
-        
+        for j in self.rects.sprites(): j.image.set_alpha(144)
         for i in range(0, 39):
             Sprites : List[BlcakRectangle] = self.rects.sprites()
+            
             for j in Sprites:
                 if Sprites.index(j) > i:
                     break
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
-            self.update()
+            self.draw()
             self.rects.draw(screen)
             pygame.display.flip()
             sleep(0.01)

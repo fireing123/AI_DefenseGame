@@ -49,8 +49,6 @@ class Button(pygame.sprite.Sprite):
             self.event.invoke()
         
     def draw(self, screen : pygame.surface.Surface):
-        screen.blit(self.image, self.rect)
-        
         screen.blit(self.text.image, self.text.rect)
 
 class Text(pygame.sprite.Sprite):
