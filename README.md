@@ -1,3 +1,3 @@
 # AI_DefenseGame
 
-python -m src.main
+python src/main.py

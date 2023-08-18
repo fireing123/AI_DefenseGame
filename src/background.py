@@ -1,7 +1,6 @@
-from . import color
 import pygame
-from .object import GameObject
-
+from object import GameObject
+import color
 # 교체 해야함.
 
 class BlcakRectangle(pygame.sprite.Sprite):

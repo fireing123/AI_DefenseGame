@@ -1,7 +1,7 @@
 import pygame
-from .event import Event
-from .object import GameObject
 from pygame.sprite import Sprite
+from event import Event
+from object import GameObject
 
 
 

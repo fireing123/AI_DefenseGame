@@ -1,11 +1,10 @@
-import pygame
 import json
+import pygame
 from pygame.sprite import Group
-from .background import BlcakRectangle
 from typing import List
 from time import sleep
-
-from .layer import Layers, object_load, ui_load, background_load
+from background import BlcakRectangle
+from layer import Layers, object_load, ui_load, background_load
 
 
 # 세대교체중...

@@ -1,5 +1,7 @@
 import pygame
-from .background import BackGround
+from background import BackGround
+from ui import Button, Text
+
 # 탈피 막바지
 
 def background_load(json, size):
@@ -36,7 +38,6 @@ class Layers:
 
 
 
-from .ui import Button, Text
 def ui_load(json):
     ui = []
     try:

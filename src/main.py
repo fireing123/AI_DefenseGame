@@ -1,6 +1,6 @@
 import pygame
-from . import color
-from .scene import Scene
+import color
+from scene import Scene
 
 # 패르세우스의 배
 
