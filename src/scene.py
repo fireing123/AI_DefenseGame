@@ -4,13 +4,12 @@ from pygame.sprite import Group
 from typing import List
 from time import sleep
 from background import BlcakRectangle
-from layer import Layers, object_load, ui_load, background_load
-
-
-# 세대교체중...
+from layer import Layers, ui_load, background_load
 
 class Scene:
-    
+    """
+    개임의 맵을 담당함
+    """
     def __init__(self, screen : pygame.Surface,
                 layers : Layers):
         

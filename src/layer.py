@@ -1,27 +1,25 @@
-import pygame
 from background import BackGround
+from object import GameObject
 from ui import Button, Text
 
-# 탈피 막바지
 
 def background_load(json, size):
     return BackGround(size, json)
 
-def object_load(json):
-    return pygame.sprite.Group()
-
-
 class Layers:
-    
+    """
+    전체 오브젝트를 포함하고
+    오브젝트의 공통 함수를 실행합니다.
+    """
     def __init__(self):
-        self.layers : list[list] = [[],[],[],[]]
+        self.layers : list[list[GameObject]] = [[],[],[],[]]
        
-    def add(self,game_object):
+    def add(self,game_object: GameObject):
         layer_int = game_object.layer_int
         layer = self.layers[layer_int]
         layer.append(game_object)
          
-    def absorb(self, list):
+    def absorb(self, list : list[GameObject]):
         for obj in list:
             self.add(obj)
          

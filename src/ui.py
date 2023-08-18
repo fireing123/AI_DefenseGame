@@ -9,9 +9,11 @@ def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
 
 class Button(GameObject):
-    
-    def __init__(self, position, scale,
-                text, default_image, click_image):
+    """
+    버튼이다. 클릭할수 있는듯하다...
+    """
+    def __init__(self, position : tuple[int, int], scale : tuple[int, int],
+                text, default_image : str, click_image : str):
         super().__init__()
         self.default_image = image_load_to_scale(default_image, scale)
         self.click_image = image_load_to_scale(click_image, scale)
@@ -20,12 +22,8 @@ class Button(GameObject):
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.event = Event()
-        self.event.add_lisner(self.eventttt)
         self.is_pressing = False
         self.is_on = False
-
-    def eventttt(self):
-        pass
 
     @staticmethod
     def load(button_json):
@@ -62,7 +60,6 @@ class Button(GameObject):
 
 
 class Text(GameObject):
-    
     def __init__(self, position, scale, string, color):
         super().__init__()
         self.font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
@@ -121,18 +118,20 @@ class Text(GameObject):
         self.rect = self.image.get_rect()
         
         
-HP = u'▀▀▀▀▀▀▀▀▀▀'
-class EnemyHP(Sprite):
-    
-    def __init__(self, position, rot, scale, 
-                image_path, hp,
-                parent, children=[]):
-        new_child = children
-        new_hp = hp
-        pos_x, pos_y = parent.position
-        _ , height = parent.scale
-        new_hp['postion'] = (pos_x, pos_y + height//2 + 25)
-
-        new_child.append(Text.load(new_hp))
-        super().__init__(position, rot, scale, parent, new_child)
-        self.image = image_load_to_scale(image_path)
+# 거의 방치됨
+        
+#HP = u'▀▀▀▀▀▀▀▀▀▀'
+#class EnemyHP(Sprite):
+#    
+#    def __init__(self, position, rot, scale, 
+#                image_path, hp,
+#                parent, children=[]):
+#        new_child = children
+#        new_hp = hp
+#        pos_x, pos_y = parent.position
+#        _ , height = parent.scale
+#        new_hp['postion'] = (pos_x, pos_y + height//2 + 25)
+#
+#        new_child.append(Text.load(new_hp))
+#        super().__init__(position, rot, scale, parent, new_child)
+#        self.image = image_load_to_scale(image_path)

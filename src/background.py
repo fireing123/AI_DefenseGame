@@ -1,10 +1,13 @@
 import pygame
 from object import GameObject
 import color
-# 교체 해야함.
+
 
 class BlcakRectangle(pygame.sprite.Sprite):
-    def __init__(self, size, coordinate):
+    """
+    화면전환시 생기는 검은 박스입니다.
+    """
+    def __init__(self, size : tuple[int, int], coordinate : tuple[int, int]):
         super().__init__()
         self.image = pygame.Surface(size)
         self.image.fill(color.BLACK)
@@ -12,6 +15,9 @@ class BlcakRectangle(pygame.sprite.Sprite):
         self.rect.topright = coordinate
 
 class BackGround(GameObject):
+    """
+    background object
+    """
     def __init__(self, size, path):
         super().__init__(0)
         self.image = pygame.image.load(path)

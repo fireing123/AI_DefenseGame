@@ -2,7 +2,9 @@
 # 최적화 요구..
 
 class Event:
-    
+    """
+    event
+    """
     def __init__(self):
         self.lisners = []
     
