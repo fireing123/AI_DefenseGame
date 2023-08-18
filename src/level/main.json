@@ -1,5 +1,5 @@
 {
-    "background" : "./src/sprites/image/main_image.png",
+    "background" : "./src/image/main_image.png",
     "object" : [
         {
             
@@ -8,12 +8,14 @@
     "ui" : {
         "texts": [
             {
+                "layer" : 3,
                 "position" : [500, 350],
                 "size" : 50,
                 "string" : "Ai Defense Game",
                 "color" : [255, 255, 255]
             },
             {
+                "layer" : 3,
                 "position" : [500, 550],
                 "size" : 25,
                 "string" : "Press a key to play",
@@ -21,5 +23,4 @@
             }
         ]
     }
-    
 }

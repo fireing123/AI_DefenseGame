@@ -1,5 +1,5 @@
 {
-    "background" : "src/sprites/image/lab.jpg",
+    "background" : "src/image/lab.jpg",
     "object" : [
         {
             
@@ -9,13 +9,14 @@
         "buttons": [
             {
                 "position": [300, 200],
-                "size" : [200, 300],
-                "rotation" : 0,
-                "defaultImage" : "src/sprites/image/default.jpg",
-                "clickImage" : "src/sprites/image/click.jpg",
+                "size" : [300, 150],
+                "defaultImage" : "src/image/default.jpg",
+                "clickImage" : "src/image/click.jpg",
                 "text" : {
-                    "color" : [255, 255, 255],
-                    "string" : "wave"
+                    "position" : [300, 200],
+                    "size" : 75,
+                    "string" : "hello",
+                    "color" : [255, 255, 255]
                 }
             }
         ],
@@ -23,7 +24,6 @@
             {
                 "position" : [500, 200],
                 "size" : 50,
-                "rotation" : 0,
                 "string" : "ddd",
                 "color" : [220, 255, 255]
             }

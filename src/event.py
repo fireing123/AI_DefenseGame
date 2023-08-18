@@ -1,4 +1,5 @@
 
+# 최적화 요구..
 
 class Event:
     
@@ -11,7 +12,7 @@ class Event:
     def __len__(self):
         return len(self.lisners)
     
-    def add_Lisner(self, function):
+    def add_lisner(self, function):
         self.lisners.append(function)
     
     def invoke(self):
