@@ -60,11 +60,12 @@ class Button(GameObject):
             self.is_on = False
         
 
+
 class Text(GameObject):
     
     def __init__(self, position, scale, string, color):
         super().__init__()
-        self.font = pygame.font.Font(None, scale)
+        self.font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
         self.set_text(string, color)
         self.rect = self.image.get_rect()
         self.__text = string
