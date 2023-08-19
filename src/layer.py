@@ -12,7 +12,7 @@ class Layers:
     오브젝트의 공통 함수를 실행합니다.
     """
     def __init__(self):
-        self.layers : list[list[GameObject]] = [[],[],[],[]]
+        self.layers : list[list[GameObject]] = [[],[],[],[],[]]
        
     def add(self,game_object: GameObject):
         layer_int = game_object.layer_int

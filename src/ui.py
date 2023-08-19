@@ -71,6 +71,7 @@ class Text(UI):
         self.rect = self.image.get_rect()
         self.__text = string
         self.__color = color
+        self.position = position
         self.rect.center = position
         
     def render(self, surface):
@@ -104,6 +105,7 @@ class Text(UI):
     
     def setter(self):
         self.set_text(self.__text, self.__color)
+        self.rect.center = self.position
         
     @staticmethod
     def load(text):

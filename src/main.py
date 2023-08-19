@@ -6,7 +6,7 @@ class AiDefenseGame:
     def __init__(self, size=(500, 500)):
         pygame.init()
         pygame.display.set_caption("AI Defense Game")
-        self.width,self.height : tuple[int, int] = size
+        self.width,self.height  = size
         self.screen = pygame.display.set_mode(size)
         self.scene : Scene = Scene.load('src\level\main.json', self.screen)
         self.is_running = True
