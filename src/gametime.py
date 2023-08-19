@@ -1,7 +1,9 @@
-import pygame
+from pygame.time import Clock
+
+clock = Clock()
 
 class GameTime:
-    clock = pygame.time.Clock()
-    delta_time = clock.tick(60)
-    def tick(self, int):
-        self.clock.tick(int)
+    
+    @staticmethod
+    def tick(tick):
+        delta_time =  clock.tick(tick)
