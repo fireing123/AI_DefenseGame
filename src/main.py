@@ -1,5 +1,6 @@
 import pygame
 from scene import Scene
+from gametime import GameTime
 
 class AiDefenseGame:
     
@@ -27,7 +28,7 @@ class AiDefenseGame:
                     waiting = False
 
     def main(self):
-        
+        GameTime.tick(60)
         self.scene = self.scene.scene_change('src/level/laboratory.json')
         while self.is_running:
             
