@@ -7,7 +7,12 @@ from object import GameObject
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
 
-class Button(GameObject):
+class UI(GameObject):
+    
+    def __init__(self):
+        super().__init__(4)
+
+class Button(UI):
     """
     버튼이다. 클릭할수 있는듯하다...
     """
@@ -58,7 +63,7 @@ class Button(GameObject):
         
 
 
-class Text(GameObject):
+class Text(UI):
     def __init__(self, position, scale, string, color):
         super().__init__()
         self.font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
