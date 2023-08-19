@@ -7,7 +7,8 @@ class GameObject(Sprite):
     """
     def __init__(self, layer = 3):
         self.layer_int = layer
-        
+        self.image : Surface
+                
     def render(self, surface : Surface):
         pass
     

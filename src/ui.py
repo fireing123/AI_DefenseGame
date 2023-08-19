@@ -1,5 +1,4 @@
 import pygame
-from pygame.sprite import Sprite
 from event import Event
 from object import GameObject
 
