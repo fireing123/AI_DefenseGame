@@ -3,7 +3,6 @@ from event import Event
 from object import GameObject
 
 
-
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
 
@@ -22,7 +21,7 @@ class Button(UI):
         self.default_image = image_load_to_scale(default_image, scale)
         self.click_image = image_load_to_scale(click_image, scale)
         self.image = self.default_image
-        self.text = Text.load(text)
+        self.text = Text.instantiate(text)
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.event = Event()

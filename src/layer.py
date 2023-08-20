@@ -1,4 +1,6 @@
 from object import GameObject
+from background import *
+from ui import *
 
 class Layers:
     """
@@ -32,5 +34,5 @@ def load_game_object(json : dict) -> list[GameObject]:
     for name in json.keys():
         class_object : GameObject = globals()[name]
         for ject in json[name]:
-            obj += class_object.instantiate(ject)
+            obj.append(class_object.instantiate(ject))
     return obj

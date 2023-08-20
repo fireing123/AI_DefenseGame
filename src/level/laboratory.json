@@ -1,6 +1,11 @@
 {
-    "background" : "src/image/lab.jpg",
-    "button": [
+    "BackGround" : [
+        {
+            "image" : "src/image/lab.jpg",
+            "size" : [1000, 800]
+        }
+    ],
+    "Button": [
         {
             "position": [300, 200],
             "size" : [300, 150],
@@ -14,7 +19,7 @@
             }
         }
     ],
-    "text": [
+    "Text": [
         {
             "position" : [500, 200],
             "size" : 50,
