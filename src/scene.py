@@ -31,11 +31,12 @@ class Scene:
     def awake(self):
         self.layers.in_layer_turning('awake')
         
+    def update(self):
+        self.layers.in_layer_turning('update')
+        
     def render(self):
         self.layers.in_layer_turning('render', self.screen)
     
-    def update(self):
-        self.layers.in_layer_turning('update')
     
     @staticmethod
     def load(json_path, screen : pygame.Surface):
