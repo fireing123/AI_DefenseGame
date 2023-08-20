@@ -30,13 +30,13 @@ class Button(UI):
         self.is_on = False
 
     @staticmethod
-    def load(button_json):
+    def instantiate(json):
         return Button(
-            tuple(button_json['position']),
-            tuple(button_json['size']),
-            button_json['text'],
-            button_json['defaultImage'],
-            button_json['clickImage']
+            tuple(json['position']),
+            tuple(json['size']),
+            json['text'],
+            json['defaultImage'],
+            json['clickImage']
         )
         
     def is_click(self):
@@ -61,6 +61,10 @@ class Button(UI):
             self.event.invoke()
             self.is_on = False
         
+
+class AnimaText(UI):
+    def __init__(self):
+        super().__init__()
 
 
 class Text(UI):
@@ -108,7 +112,7 @@ class Text(UI):
         self.rect.center = self.position
         
     @staticmethod
-    def load(text):
+    def instantiate(text):
         return Text(
             tuple(text['position']), 
             text['size'],

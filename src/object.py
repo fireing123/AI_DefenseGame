@@ -12,3 +12,7 @@ class GameObject(Sprite):
     def render(self, surface : Surface):
         pass
     
+    
+    @staticmethod
+    def instantiate(json):
+        pass

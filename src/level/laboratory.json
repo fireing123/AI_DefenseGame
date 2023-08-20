@@ -1,33 +1,25 @@
 {
     "background" : "src/image/lab.jpg",
-    "object" : [
+    "button": [
         {
-            
+            "position": [300, 200],
+            "size" : [300, 150],
+            "defaultImage" : "src/image/default.jpg",
+            "clickImage" : "src/image/click.jpg",
+            "text" : {
+                "position" : [300, 200],
+                "size" : 75,
+                "string" : "hello",
+                "color" : [255, 255, 255]
+            }
         }
     ],
-    "ui" : {
-        "buttons": [
-            {
-                "position": [300, 200],
-                "size" : [300, 150],
-                "defaultImage" : "src/image/default.jpg",
-                "clickImage" : "src/image/click.jpg",
-                "text" : {
-                    "position" : [300, 200],
-                    "size" : 75,
-                    "string" : "hello",
-                    "color" : [255, 255, 255]
-                }
-            }
-        ],
-        "texts": [
-            {
-                "position" : [500, 200],
-                "size" : 50,
-                "string" : "ddd",
-                "color" : [220, 255, 255]
-            }
-        ]
-    }
-    
+    "text": [
+        {
+            "position" : [500, 200],
+            "size" : 50,
+            "string" : "ddd",
+            "color" : [220, 255, 255]
+        }
+    ]
 }

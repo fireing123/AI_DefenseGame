@@ -35,3 +35,7 @@ class BackGround(GameObject):
     
     def render(self, surface):
         surface.blit(self.image, self.rect)
+       
+    @staticmethod 
+    def instantiate(json):
+        return BackGround(json['size'], json['image'])

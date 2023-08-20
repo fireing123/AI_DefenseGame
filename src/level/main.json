@@ -1,26 +1,24 @@
 {
-    "background" : "./src/image/main_image.png",
-    "object" : [
+    "BackGround" : [
         {
-            
+            "image" : "./src/image/main_image.png",
+            "size" : [1000, 800]
         }
     ],
-    "ui" : {
-        "texts": [
-            {
-                "layer" : 3,
-                "position" : [500, 350],
-                "size" : 50,
-                "string" : "Ai Defense Game",
-                "color" : [255, 255, 255]
-            },
-            {
-                "layer" : 3,
-                "position" : [500, 550],
-                "size" : 25,
-                "string" : "Press a key to play",
-                "color" : [255, 255, 255]
-            }
-        ]
-    }
+    "Text": [
+        {
+            "layer" : 3,
+            "position" : [500, 350],
+            "size" : 50,
+            "string" : "Ai Defense Game",
+            "color" : [255, 255, 255]
+        },
+        {
+            "layer" : 3,
+            "position" : [500, 550],
+            "size" : 25,
+            "string" : "Press a key to play",
+            "color" : [255, 255, 255]
+        }
+    ]
 }

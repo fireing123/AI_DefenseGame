@@ -4,7 +4,7 @@ from pygame.sprite import Group
 from typing import List
 from time import sleep
 from background import BlcakRectangle
-from layer import Layers, ui_load, background_load
+from layer import Layers, load_game_object
 
 class Scene:
     """
@@ -40,15 +40,11 @@ class Scene:
     @staticmethod
     def load(json_path, screen : pygame.Surface):
         file = open(json_path, 'r')
-        json_file = json.loads(file.read())
+        json_file :dict = json.loads(file.read())
         file.close()
-        layers = Layers()
-        layers.add(background_load(json_file['background'], screen.get_size()))
-        layers.absorb(ui_load(json_file['ui']))
-        return Scene(
-                screen,
-                layers
-        )
+        objects = load_game_object(json_file)
+        layers = Layers(*objects)
+        return Scene(screen, layers)
     
     
     def darkening_scene(self):
