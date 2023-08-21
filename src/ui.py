@@ -184,8 +184,8 @@ class HPbar(UI):
             color = (255,0,0)
 
 
-        pygame.draw.rect(Surface,(30,30,30),[self.rect.centerx-(self.rect[2]*1.1)/2,self.rect.top+35,self.rect[2]*1.1,10])
-        pygame.draw.rect(Surface,color,[self.rect.centerx-(self.rect[2]*1.1)/2,self.rect.top+35,((self.rect[2]*1.1)/maxhp)*hp,10])
+        pygame.draw.rect(Surface,(30,30,30),[self.rect.centerx-(self.rect[2]*1.1)/2,self.rect.top-25,self.rect[2]*1.1,10])
+        pygame.draw.rect(Surface,color,[self.rect.centerx-(self.rect[2]*1.1)/2,self.rect.top-25,((self.rect[2]*1.1)/maxhp)*hp,10])
 
 #HPbar코드 입맛대로 뜯어고치고 재탕해둘것
 
