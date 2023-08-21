@@ -4,10 +4,12 @@ import xml.etree.ElementTree as xml
 
 class SpriteSheet:
     def __init__(self, xml_path):
+        
         docs = xml.parse(xml_path)
         root = docs.getroot()
         self.full_image = pygame.image.load(root.attrib['imagePath'])
         self.images : Dict[str, pygame.sprite.Sprite] = {}
+        
         for child in root:
             att = child.attrib
             left_top = int(att['x']), int(att['y'])

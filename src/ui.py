@@ -34,7 +34,7 @@ class Button(UI):
         return Button(
             json['name'],
             tuple(json['position']),
-            tuple(json['size']),
+            tuple(json['scale']),
             json['text'],
             json['defaultImage'],
             json['clickImage']
@@ -77,11 +77,11 @@ class ChatBox(UI):
         
 
 class AnimaText(UI):
-    def __init__(self, name, pos, sc, col):
+    def __init__(self, name, position : tuple, scale : int, color : tuple):
         super().__init__(name)
-        self.pos = pos
-        self.scale = sc
-        self.color = col
+        self.position = position
+        self.scale = scale
+        self.color = color
         self.image = pygame.Surface((50, 50))
     
     def start_animation(self, string, tick):
@@ -162,7 +162,7 @@ class Text(UI):
         return Text(
             text['name'],
             tuple(text['position']), 
-            text['size'],
+            text['scale'],
             text['string'],
             text['color']
         )

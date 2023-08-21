@@ -2,6 +2,8 @@ import pygame
 from scene import Scene
 from gametime import GameTime
 from ui import Button, AnimaText
+
+
 class AiDefenseGame:
     
     def __init__(self, size=(500, 500)):

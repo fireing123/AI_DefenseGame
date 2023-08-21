@@ -1,3 +1,4 @@
+from typing import List, Callable
 
 # 최적화 요구..
 
@@ -6,7 +7,7 @@ class Event:
     event
     """
     def __init__(self):
-        self.lisners = []
+        self.lisners : List[Callable]= []
     
     def __call__(self):
         self.invoke()
@@ -14,7 +15,7 @@ class Event:
     def __len__(self):
         return len(self.lisners)
     
-    def add_lisner(self, function):
+    def add_lisner(self, function : Callable):
         self.lisners.append(function)
     
     def invoke(self):

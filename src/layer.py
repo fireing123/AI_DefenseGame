@@ -1,3 +1,4 @@
+from typing import List
 from object import GameObject
 from background import *
 from ui import *
@@ -7,16 +8,16 @@ class Layers:
     전체 오브젝트를 포함하고
     오브젝트의 공통 함수를 실행합니다.
     """
-    def __init__(self, *objs):
+    def __init__(self, *objects):
         self.layers : list[list[GameObject]] = [[],[],[],[],[]]
-        self.absorb(objs)
+        self.absorb(objects)
        
-    def add(self,game_object: GameObject):
+    def add(self, game_object: GameObject):
         layer_int = game_object.layer_int
         layer = self.layers[layer_int]
         layer.append(game_object)
-         
-    def absorb(self, list):
+    
+    def absorb(self, list : List):
         for obj in list:
             self.add(obj)
          

@@ -2,21 +2,21 @@
     "BackGround" : [
         {
             "image" : "./src/image/main_image.png",
-            "size" : [1000, 800]
+            "scale" : [1000, 800]
         }
     ],
     "Text": [
         {
             "name" : "a",
             "position" : [500, 350],
-            "size" : 50,
+            "scale" : 50,
             "string" : "Ai Defense Game",
             "color" : [255, 255, 255]
         },
         {
             "name" : "b",
             "position" : [500, 550],
-            "size" : 25,
+            "scale" : 25,
             "string" : "Press a key to play",
             "color" : [255, 255, 255]
         }
