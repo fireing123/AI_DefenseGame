@@ -16,9 +16,9 @@ class Button(UI):
     """
     버튼이다. 클릭할수 있는듯하다...
     """
-    def __init__(self, position : tuple[int, int], scale : tuple[int, int],
+    def __init__(self, name, position : tuple[int, int], scale : tuple[int, int],
                 text, default_image : str, click_image : str):
-        super().__init__()
+        super().__init__(name)
         self.default_image = image_load_to_scale(default_image, scale)
         self.click_image = image_load_to_scale(click_image, scale)
         self.image = self.default_image
@@ -32,8 +32,9 @@ class Button(UI):
     @staticmethod
     def instantiate(json):
         return Button(
+            json['name'],
             tuple(json['position']),
-            tuple(json['size']),
+            tuple(json['scale']),
             json['text'],
             json['defaultImage'],
             json['clickImage']
@@ -76,12 +77,12 @@ class ChatBox(UI):
         
 
 class AnimaText(UI):
-    def __init__(self, name, pos, sc, col):
-        super().__init__()
-        self.pos = pos
-        self.scale = sc
-        self.color = col
-
+    def __init__(self, name, position : tuple, scale : int, color : tuple):
+        super().__init__(name)
+        self.position = position
+        self.scale = scale
+        self.color = color
+        self.image = pygame.Surface((50, 50))
     
     def start_animation(self, string, tick):
         font = pygame.font.Font('src/font/Galmuri11.ttf', self.scale)
@@ -94,7 +95,10 @@ class AnimaText(UI):
         self.animation = Animation(animat)
   
     def update(self):
-        self.image = self.animation.update()
+        try:
+            self.image = self.animation.update()
+        except:
+            pass
         self.rect = self.image.get_rect()
         
     def render(self, surface):
@@ -103,14 +107,15 @@ class AnimaText(UI):
     @staticmethod 
     def instantiate(json):
         return AnimaText(
+            json['name'],
             json['position'],
             json['scale'],
             json['color']
         )
  
 class Text(UI):
-    def __init__(self, position, scale, string, color):
-        super().__init__()
+    def __init__(self, name, position, scale, string, color):
+        super().__init__(name)
         self.font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
         self.set_text(string, color)
         self.rect = self.image.get_rect()
@@ -155,8 +160,9 @@ class Text(UI):
     @staticmethod
     def instantiate(text):
         return Text(
+            text['name'],
             tuple(text['position']), 
-            text['size'],
+            text['scale'],
             text['string'],
             text['color']
         )

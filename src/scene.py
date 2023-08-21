@@ -27,10 +27,7 @@ class Scene:
             self.rects.add(rect)
         
 
-                
-    def awake(self):
-        self.layers.in_layer_turning('awake')
-        
+
     def update(self):
         self.layers.in_layer_turning('update')
         
@@ -39,8 +36,8 @@ class Scene:
     
     
     @staticmethod
-    def load(json_path, screen : pygame.Surface):
-        file = open(json_path, 'r')
+    def load(path, screen : pygame.Surface):
+        file = open(path, 'r')
         json_file :dict = json.loads(file.read())
         file.close()
         objects = load_game_object(json_file)
@@ -67,14 +64,18 @@ class Scene:
     def brightening_scene(self):
         self.rect_width = self.nomarl_width
         for j in self.rects.sprites(): j.image.set_alpha(144)
+        
         for i in range(0, 39):
             Sprites : List[BlcakRectangle] = self.rects.sprites()
             
             for j in Sprites:
                 if Sprites.index(j) > i:
                     break
+                
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
+            
+            self.update()
             self.render()
             self.rects.draw(self.screen)
             pygame.display.flip()

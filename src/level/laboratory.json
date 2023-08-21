@@ -2,19 +2,20 @@
     "BackGround" : [
         {
             "image" : "src/image/lab.jpg",
-            "size" : [1000, 800]
+            "scale" : [1000, 800]
         }
     ],
     "Button": [
         {
             "name" : "enter",
             "position": [300, 200],
-            "size" : [300, 150],
+            "scale" : [300, 150],
             "defaultImage" : "src/image/default.jpg",
             "clickImage" : "src/image/click.jpg",
             "text" : {
+                "name" : "butext",
                 "position" : [300, 200],
-                "size" : 75,
+                "scale" : 75,
                 "string" : "hello",
                 "color" : [255, 255, 255]
             }
@@ -24,9 +25,17 @@
         {
             "name" : "text",
             "position" : [500, 200],
-            "size" : 50,
+            "scale" : 50,
             "string" : "ddd",
             "color" : [220, 255, 255]
+        }
+    ],
+    "AnimaText": [
+        {
+            "name" : "ani",
+            "position" : [500, 500],
+            "scale" : 50,
+            "color" : [255, 255, 255]
         }
     ]
 }

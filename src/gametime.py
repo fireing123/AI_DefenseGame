@@ -5,5 +5,5 @@ clock = Clock()
 class GameTime:
     
     @staticmethod
-    def tick(tick):
+    def tick(tick : int):
         delta_time =  clock.tick(tick)

@@ -1,15 +1,15 @@
 import pygame
-from object import GameObject
 import color
+from object import GameObject
 
 
 class BlcakRectangle(pygame.sprite.Sprite):
     """
     화면전환시 생기는 검은 박스입니다.
     """
-    def __init__(self, size : tuple[int, int], coordinate : tuple[int, int]):
+    def __init__(self, scale : tuple[int, int], coordinate : tuple[int, int]):
         super().__init__()
-        self.image = pygame.Surface(size)
+        self.image = pygame.Surface(scale)
         self.image.fill(color.BLACK)
         self.rect = self.image.get_rect()
         self.rect.topright = coordinate
@@ -18,11 +18,11 @@ class BackGround(GameObject):
     """
     background object
     """
-    def __init__(self, size, path):
+    def __init__(self, scale, path):
         super().__init__(0)
         self.image = pygame.image.load(path)
-        self.size = size
-        self.image = pygame.transform.scale(self.image, size)
+        self.scale = scale
+        self.image = pygame.transform.scale(self.image, scale)
         self.rect = self.image.get_rect()
         self.rect.topleft = (0, 0)
         
@@ -38,4 +38,4 @@ class BackGround(GameObject):
        
     @staticmethod 
     def instantiate(json):
-        return BackGround(json['size'], json['image'])
+        return BackGround(json['scale'], json['image'])
