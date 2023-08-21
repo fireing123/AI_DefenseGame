@@ -7,6 +7,7 @@
     ],
     "Button": [
         {
+            "name" : "enter",
             "position": [300, 200],
             "size" : [300, 150],
             "defaultImage" : "src/image/default.jpg",
@@ -21,6 +22,7 @@
     ],
     "Text": [
         {
+            "name" : "text",
             "position" : [500, 200],
             "size" : 50,
             "string" : "ddd",

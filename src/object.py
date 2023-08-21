@@ -5,9 +5,10 @@ class GameObject(Sprite):
     """
     기본 오브젝트
     """
-    def __init__(self, layer = 3):
+    def __init__(self, name, layer = 3):
         self.layer_int = layer
         self.image : Surface
+        self.name : str = name
                 
     def render(self, surface : Surface):
         pass

@@ -1,15 +1,16 @@
 import pygame
 from event import Event
 from object import GameObject
-
+from sheet import SpriteSheet
+from animation import Animation
 
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
 
 class UI(GameObject):
     
-    def __init__(self):
-        super().__init__(4)
+    def __init__(self, name):
+        super().__init__(name, 4)
 
 class Button(UI):
     """
@@ -59,13 +60,54 @@ class Button(UI):
         if self.is_click():
             self.event.invoke()
             self.is_on = False
+    
+
+class ChatBox(UI):
+    def __init__(self):
+        super().__init__()
+        chat_box = SpriteSheet('src/image/chatBox/config.xml')
+        self.open_image = chat_box['open']
+        self.box_image = chat_box['box']
+        self.arrow_image = chat_box['arrow']
+        self.close_image = chat_box['close']
+        
+    def say(self, text):
+        pass
         
 
 class AnimaText(UI):
-    def __init__(self):
+    def __init__(self, name, pos, sc, col):
         super().__init__()
+        self.pos = pos
+        self.scale = sc
+        self.color = col
 
-
+    
+    def start_animation(self, string, tick):
+        font = pygame.font.Font('src/font/Galmuri11.ttf', self.scale)
+        result = ""
+        animat = []
+        for char in string:
+            result += char
+            text = font.render(result, True, self.color)
+            animat.append(text)
+        self.animation = Animation(animat)
+  
+    def update(self):
+        self.image = self.animation.update()
+        self.rect = self.image.get_rect()
+        
+    def render(self, surface):
+        surface.blit(self.image, self.rect)
+       
+    @staticmethod 
+    def instantiate(json):
+        return AnimaText(
+            json['position'],
+            json['scale'],
+            json['color']
+        )
+ 
 class Text(UI):
     def __init__(self, position, scale, string, color):
         super().__init__()
