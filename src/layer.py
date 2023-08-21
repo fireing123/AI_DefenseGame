@@ -29,6 +29,13 @@ class Layers:
                 except AttributeError:
                     print(f"Function '{func}' not found in class '{game_object}'.")
 
+    def get_game_object_by_name(self, name) -> GameObject:
+        for y in self.layers:
+            for x in y:
+                if x.name == name:
+                    return x
+        return None
+
 def load_game_object(json : dict) -> list[GameObject]:
     obj = []
     for name in json.keys():

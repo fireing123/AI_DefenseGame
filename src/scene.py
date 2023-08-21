@@ -27,10 +27,7 @@ class Scene:
             self.rects.add(rect)
         
 
-                
-    def awake(self):
-        self.layers.in_layer_turning('awake')
-        
+
     def update(self):
         self.layers.in_layer_turning('update')
         
@@ -75,6 +72,7 @@ class Scene:
                     break
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
+            self.update()
             self.render()
             self.rects.draw(self.screen)
             pygame.display.flip()
