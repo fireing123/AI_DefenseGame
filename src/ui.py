@@ -1,8 +1,10 @@
 import pygame
+from typing import List, Tuple
 from event import Event
 from object import GameObject
 from sheet import SpriteSheet
 from animation import Animation
+from time import sleep
 from pygame import time
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
@@ -83,52 +85,58 @@ class AnimaText(UI):
     def __init__(self, name, position : tuple, color : tuple, tick):
         super().__init__(name)
         self.index = 0
-        self.len = 0
+        self.len = 1
         self.last_update : int = 0
         self.tick = tick
         self.position = position
         self.local_position = position
         self.color = color
-        self.animation = [([pygame.Surface((50, 50))], 500)]
-    
-    def start_animation(self, string_anima):
+        self.animation = [([(pygame.Surface((50, 50)), pygame.Rect(0, 0, 0, 0))], 500)]
+        self.images , _= self.animation[0]
         
-        result = []
-        animat = []
+    def start_animation(self, string, ticks, scales):
+        
+        result : List[Tuple] = []
+        animat : List[Tuple] = []
+        self.index = 0
         self.animation.clear()
-        for char, scale, tick in StringAnimation:
+        for char, scale, tick in zip(string, scales, ticks):
             font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
-            text = font.render(result, True, self.color)
+            text = font.render(char, True, self.color)
             rect = text.get_rect()
-            _, y = font.size(char)
+            rect.bottomleft = self.local_position
+            x, _ = font.size(char)
             lx, ly = self.local_position
-            self.local_position = lx, ly+y
-            rect.topleft = self.local_position
+            self.local_position = lx + x, ly
             result.append((text, rect))
-            animat.append(result)
+            new_result =  result.copy()
+            animat.append((new_result, tick))
         self.animation = animat
+        self.len = len(self.animation)
+        self.local_position = self.position
 
     def update(self):
         if time.get_ticks() - self.last_update > self.tick:
-            if self.len <= self.index:
-                ims, t = self.animation[self.index]
-
+            
             self.last_update = time.get_ticks()
-            images, tick = self.animation[self.index]
-            self.index += 1
-            self.tick = tick
-        return 
+            self.images, self.tick = self.animation[self.index]
+            
+            
+            
+            if self.len != self.index + 1:
+                self.index += 1
     
     def render(self, surface):
-        surface.blits()
-       
+        for image, rect in self.images:
+            surface.blit(image, rect)
+
     @staticmethod 
     def instantiate(json):
         return AnimaText(
             json['name'],
             json['position'],
-            json['scale'],
-            json['color']
+            json['color'],
+            500
         )
  
 class Text(UI):

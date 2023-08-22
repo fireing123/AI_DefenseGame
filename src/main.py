@@ -35,7 +35,7 @@ class AiDefenseGame:
         layers = self.scene.layers
         button : Button = layers.get_game_object_by_name("enter")
         ani : AnimaText = layers.get_game_object_by_name("ani")
-        button.event.add_lisner(lambda : ani.start_animation("안녕 하십니까 한국에 사는느느는느는는", 500))
+        button.event.add_lisner(lambda : ani.start_animation("안녕하새요..!!!", [500,500,500,500,500,500,500,250,250,250], [50,50,50,50,50,50,50,100, 100, 100])) # 10
         while self.is_running:
             
             for event in pygame.event.get():
