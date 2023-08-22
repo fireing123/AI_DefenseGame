@@ -3,16 +3,19 @@ from typing import List, Tuple
 from event import Event
 from object import GameObject
 from sheet import SpriteSheet
-from animation import Animation
+from animation import AnimationText
 from time import sleep
 from pygame import time
+
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
+
 
 class UI(GameObject):
     
     def __init__(self, name):
         super().__init__(name, 4)
+
 
 class Button(UI):
     """
@@ -66,20 +69,33 @@ class Button(UI):
     
 
 class ChatBox(UI):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name, position, text, game_object):
+        super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
+        self.game_object = game_object
         self.open_image = chat_box['open']
-        self.box_image = chat_box['box']
+        self.box_image  = chat_box['box']
         self.arrow_image = chat_box['arrow']
         self.close_image = chat_box['close']
+        self.text = AnimaText.instantiate(text)
+        self.position = position
+        self.open_rect = self.open_image.get_rect()
+        self.arrow_rect = self.arrow_image.get_rect()
+        self.close_rect = self.close_image.get_rect()
         
-    def say(self, text):
-        pass
-
-class StringAnimation:
-    pass
-
+    def say(self, chat):
+        x, y, lox, _ = self.text.start_animation(
+            AnimationText.load(chat)
+        )
+        self.open_rect.bottomright = x, y + 5
+        _ , boxy= self.box_image.get_size()
+        self.new_box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
+        self.box_rect = self.new_box_image.get_rect()
+        self.box_rect.bottomleft = self.open_rect.bottomright
+        self.close_rect.bottomleft = self.box_rect.bottomright
+        gx, _ = self.game_object.position
+        self.arrow_rect.midtop = gx, y - 2
+ 
 class AnimaText(UI):
     
     def __init__(self, name, position : tuple, color : tuple, tick):
@@ -94,13 +110,14 @@ class AnimaText(UI):
         self.animation = [([(pygame.Surface((50, 50)), pygame.Rect(0, 0, 0, 0))], 500)]
         self.images , _= self.animation[0]
         
-    def start_animation(self, string, ticks, scales):
+    def start_animation(self, ani_text : AnimationText):
         
         result : List[Tuple] = []
         animat : List[Tuple] = []
         self.index = 0
         self.animation.clear()
-        for char, scale, tick in zip(string, scales, ticks):
+        self.local_position = self.position
+        for char, scale, tick in ani_text:
             font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
             text = font.render(char, True, self.color)
             rect = text.get_rect()
@@ -113,7 +130,7 @@ class AnimaText(UI):
             animat.append((new_result, tick))
         self.animation = animat
         self.len = len(self.animation)
-        self.local_position = self.position
+        return self.position, self.local_position
 
     def update(self):
         if time.get_ticks() - self.last_update > self.tick:
