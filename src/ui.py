@@ -3,7 +3,7 @@ from event import Event
 from object import GameObject
 from sheet import SpriteSheet
 from animation import Animation
-
+from pygame import time
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
 
@@ -74,35 +74,53 @@ class ChatBox(UI):
         
     def say(self, text):
         pass
-        
+
+class StringAnimation:
+    pass
 
 class AnimaText(UI):
-    def __init__(self, name, position : tuple, scale : int, color : tuple):
-        super().__init__(name)
-        self.position = position
-        self.scale = scale
-        self.color = color
-        self.image = pygame.Surface((50, 50))
     
-    def start_animation(self, string, tick):
-        font = pygame.font.Font('src/font/Galmuri11.ttf', self.scale)
-        result = ""
-        animat = []
-        for char in string:
-            result += char
-            text = font.render(result, True, self.color)
-            animat.append(text)
-        self.animation = Animation(animat)
-  
-    def update(self):
-        try:
-            self.image = self.animation.update()
-        except:
-            pass
-        self.rect = self.image.get_rect()
+    def __init__(self, name, position : tuple, color : tuple, tick):
+        super().__init__(name)
+        self.index = 0
+        self.len = 0
+        self.last_update : int = 0
+        self.tick = tick
+        self.position = position
+        self.local_position = position
+        self.color = color
+        self.animation = [([pygame.Surface((50, 50))], 500)]
+    
+    def start_animation(self, string_anima):
         
+        result = []
+        animat = []
+        self.animation.clear()
+        for char, scale, tick in StringAnimation:
+            font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
+            text = font.render(result, True, self.color)
+            rect = text.get_rect()
+            _, y = font.size(char)
+            lx, ly = self.local_position
+            self.local_position = lx, ly+y
+            rect.topleft = self.local_position
+            result.append((text, rect))
+            animat.append(result)
+        self.animation = animat
+
+    def update(self):
+        if time.get_ticks() - self.last_update > self.tick:
+            if self.len <= self.index:
+                ims, t = self.animation[self.index]
+
+            self.last_update = time.get_ticks()
+            images, tick = self.animation[self.index]
+            self.index += 1
+            self.tick = tick
+        return 
+    
     def render(self, surface):
-        surface.blit(self.image, self.rect)
+        surface.blits()
        
     @staticmethod 
     def instantiate(json):
