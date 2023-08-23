@@ -43,8 +43,10 @@ class AnimationText:
     
     @staticmethod
     def load(path):
-        file = open(path, 'r')
-        json_file = json.load(file.read())
+        file = open(path, 'r', encoding='UTF-8')
+        json_file = json.loads(file.read())
+        
+        file.close()
         return __class__(
             json_file['string'],
             json_file['scale'],

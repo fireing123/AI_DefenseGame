@@ -1,5 +1,5 @@
 import pygame
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 from event import Event
 from object import GameObject
 from sheet import SpriteSheet
@@ -72,7 +72,7 @@ class ChatBox(UI):
     def __init__(self, name, position, text, game_object):
         super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
-        self.game_object = game_object
+        #self.game_object = game_object
         self.open_image = chat_box['open']
         self.box_image  = chat_box['box']
         self.arrow_image = chat_box['arrow']
@@ -82,19 +82,46 @@ class ChatBox(UI):
         self.open_rect = self.open_image.get_rect()
         self.arrow_rect = self.arrow_image.get_rect()
         self.close_rect = self.close_image.get_rect()
+        self.box_rect = self.box_image.get_rect()
+        self.arrow_rect.center = (400, 200)
+        self.open_rect.center = (500, 200)
+        self.close_rect.center = (550,200)
+        self.box_rect.center = (600, 200)
         
     def say(self, chat):
-        x, y, lox, _ = self.text.start_animation(
+        xy, loxy = self.text.start_animation(
             AnimationText.load(chat)
         )
-        self.open_rect.bottomright = x, y + 5
-        _ , boxy= self.box_image.get_size()
-        self.new_box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
-        self.box_rect = self.new_box_image.get_rect()
-        self.box_rect.bottomleft = self.open_rect.bottomright
-        self.close_rect.bottomleft = self.box_rect.bottomright
-        gx, _ = self.game_object.position
-        self.arrow_rect.midtop = gx, y - 2
+        #x, y = xy
+        #lox ,_ = loxy
+        #self.open_rect.bottomright = x, y + 5
+        #_ , boxy= self.box_image.get_size()
+        #self.box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
+        #self.box_rect = self.box_image.get_rect()
+        #self.box_rect.bottomleft = self.open_rect.bottomright
+        #self.close_rect.bottomleft = self.box_rect.bottomright
+        ##gx, _ = self.game_object.position
+        #gx = 500
+        #self.arrow_rect.midtop = gx, y - 2
+    
+    def update(self):
+        self.text.update()
+    
+    def render(self, surface : pygame.Surface):
+        surface.blit(self.open_image, self.open_rect)
+        surface.blit(self.box_image, self.box_rect)
+        surface.blit(self.close_image, self.close_rect)
+        surface.blit(self.arrow_image, self.arrow_rect)
+        self.text.render(surface)
+    
+    @staticmethod
+    def instantiate(json: Dict):
+        return ChatBox(
+            json['name'],
+            json['position'],
+            json['AnimaText'],
+            None
+        )
  
 class AnimaText(UI):
     
@@ -137,9 +164,6 @@ class AnimaText(UI):
             
             self.last_update = time.get_ticks()
             self.images, self.tick = self.animation[self.index]
-            
-            
-            
             if self.len != self.index + 1:
                 self.index += 1
     
