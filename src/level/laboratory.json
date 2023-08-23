@@ -33,9 +33,21 @@
     "AnimaText": [
         {
             "name" : "ani",
-            "position" : [500, 500],
+            "position" : [600, 200],
             "scale" : 50,
-            "color" : [255, 255, 255]
+            "color" : [0,0,0]
+        }
+    ],
+    "ChatBox" : [
+        {
+            "name": "chatbox",
+            "position" : [700, 100],
+            "AnimaText": {
+                    "name" : "ani",
+                    "position" : [700, 100],
+                    "scale" : 50,
+                    "color" : [0,0,0]
+                }
         }
     ]
 }

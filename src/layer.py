@@ -28,7 +28,7 @@ class Layers:
                     func = getattr(game_object, method)
                     func(*args)
                 except AttributeError:
-                    print(f"Function '{func}' not found in class '{game_object}'.")
+                    print(f"Function '{method}' not found in class '{game_object}'.")
 
     def get_game_object_by_name(self, name) -> GameObject:
         for y in self.layers:

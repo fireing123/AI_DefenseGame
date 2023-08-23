@@ -8,7 +8,7 @@ class SpriteSheet:
         docs = xml.parse(xml_path)
         root = docs.getroot()
         self.full_image = pygame.image.load(root.attrib['imagePath'])
-        self.images : Dict[str, pygame.sprite.Sprite] = {}
+        self.images : Dict[str, pygame.Surface] = {}
         
         for child in root:
             att = child.attrib

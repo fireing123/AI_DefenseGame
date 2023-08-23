@@ -1,3 +1,4 @@
+import json
 from pygame import Surface
 from pygame import time
 from typing import Dict, List
@@ -21,6 +22,36 @@ class Animation:
             image = self.image_list[self.index]
             self.index += 1
         return image
+
+
+class AnimationText:
+    def __init__(self, string, scales, ticks):
+        self.string = string
+        self.scales = scales
+        self.ticks = ticks
+        self.index = 0
+        
+    def __iter__(self):
+        self.index = 0
+        return self
+    
+    def __next__(self):
+        if len(self.string) <= self.index:
+            raise StopIteration
+        self.index += 1
+        return self.string[self.index -1], self.scales[self.index -1], self.ticks[self.index -1]
+    
+    @staticmethod
+    def load(path):
+        file = open(path, 'r', encoding='UTF-8')
+        json_file = json.loads(file.read())
+        
+        file.close()
+        return __class__(
+            json_file['string'],
+            json_file['scale'],
+            json_file['tick']
+        )
 
 class AnimationController:
     

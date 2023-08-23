@@ -1,16 +1,21 @@
 import pygame
+from typing import Dict, List, Tuple
 from event import Event
 from object import GameObject
 from sheet import SpriteSheet
-from animation import Animation
+from animation import AnimationText
+from time import sleep
 from pygame import time
+
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
+
 
 class UI(GameObject):
     
     def __init__(self, name):
         super().__init__(name, 4)
+
 
 class Button(UI):
     """
@@ -64,71 +69,115 @@ class Button(UI):
     
 
 class ChatBox(UI):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name, position, text, game_object):
+        super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
+        #self.game_object = game_object
         self.open_image = chat_box['open']
-        self.box_image = chat_box['box']
+        self.box_image  = chat_box['box']
         self.arrow_image = chat_box['arrow']
         self.close_image = chat_box['close']
+        self.text = AnimaText.instantiate(text)
+        self.position = position
+        self.open_rect = self.open_image.get_rect()
+        self.arrow_rect = self.arrow_image.get_rect()
+        self.close_rect = self.close_image.get_rect()
+        self.box_rect = self.box_image.get_rect()
+        self.arrow_rect.center = (400, 200)
+        self.open_rect.center = (500, 200)
+        self.close_rect.center = (550,200)
+        self.box_rect.center = (600, 200)
         
-    def say(self, text):
-        pass
-
-class StringAnimation:
-    pass
-
+    def say(self, chat):
+        xy, loxy = self.text.start_animation(
+            AnimationText.load(chat)
+        )
+        #x, y = xy
+        #lox ,_ = loxy
+        #self.open_rect.bottomright = x, y + 5
+        #_ , boxy= self.box_image.get_size()
+        #self.box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
+        #self.box_rect = self.box_image.get_rect()
+        #self.box_rect.bottomleft = self.open_rect.bottomright
+        #self.close_rect.bottomleft = self.box_rect.bottomright
+        ##gx, _ = self.game_object.position
+        #gx = 500
+        #self.arrow_rect.midtop = gx, y - 2
+    
+    def update(self):
+        self.text.update()
+    
+    def render(self, surface : pygame.Surface):
+        surface.blit(self.open_image, self.open_rect)
+        surface.blit(self.box_image, self.box_rect)
+        surface.blit(self.close_image, self.close_rect)
+        surface.blit(self.arrow_image, self.arrow_rect)
+        self.text.render(surface)
+    
+    @staticmethod
+    def instantiate(json: Dict):
+        return ChatBox(
+            json['name'],
+            json['position'],
+            json['AnimaText'],
+            None
+        )
+ 
 class AnimaText(UI):
     
     def __init__(self, name, position : tuple, color : tuple, tick):
         super().__init__(name)
         self.index = 0
-        self.len = 0
+        self.len = 1
         self.last_update : int = 0
         self.tick = tick
         self.position = position
         self.local_position = position
         self.color = color
-        self.animation = [([pygame.Surface((50, 50))], 500)]
-    
-    def start_animation(self, string_anima):
+        self.animation = [([(pygame.Surface((50, 50)), pygame.Rect(0, 0, 0, 0))], 500)]
+        self.images , _= self.animation[0]
         
-        result = []
-        animat = []
+    def start_animation(self, ani_text : AnimationText):
+        
+        result : List[Tuple] = []
+        animat : List[Tuple] = []
+        self.index = 0
         self.animation.clear()
-        for char, scale, tick in StringAnimation:
+        self.local_position = self.position
+        for char, scale, tick in ani_text:
             font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
-            text = font.render(result, True, self.color)
+            text = font.render(char, True, self.color)
             rect = text.get_rect()
-            _, y = font.size(char)
+            rect.bottomleft = self.local_position
+            x, _ = font.size(char)
             lx, ly = self.local_position
-            self.local_position = lx, ly+y
-            rect.topleft = self.local_position
+            self.local_position = lx + x, ly
             result.append((text, rect))
-            animat.append(result)
+            new_result =  result.copy()
+            animat.append((new_result, tick))
         self.animation = animat
+        self.len = len(self.animation)
+        return self.position, self.local_position
 
     def update(self):
         if time.get_ticks() - self.last_update > self.tick:
-            if self.len <= self.index:
-                ims, t = self.animation[self.index]
-
+            
             self.last_update = time.get_ticks()
-            images, tick = self.animation[self.index]
-            self.index += 1
-            self.tick = tick
-        return 
+            self.images, self.tick = self.animation[self.index]
+            if self.len != self.index + 1:
+                self.index += 1
     
     def render(self, surface):
-        surface.blits()
-       
+        for image, rect in self.images:
+            surface.blit(image, rect)
+
     @staticmethod 
     def instantiate(json):
         return AnimaText(
             json['name'],
             json['position'],
-            json['scale'],
-            json['color']
+            json['color'],
+            500
         )
  
 class Text(UI):

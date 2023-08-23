@@ -1,7 +1,7 @@
 import pygame
 from scene import Scene
 from gametime import GameTime
-from ui import Button, AnimaText
+from ui import Button, ChatBox
 
 
 class AiDefenseGame:
@@ -34,8 +34,9 @@ class AiDefenseGame:
         self.scene = self.scene.scene_change('src/level/laboratory.json')
         layers = self.scene.layers
         button : Button = layers.get_game_object_by_name("enter")
-        ani : AnimaText = layers.get_game_object_by_name("ani")
-        button.event.add_lisner(lambda : ani.start_animation("안녕 하십니까 한국에 사는느느는느는는", 500))
+        ani : ChatBox = layers.get_game_object_by_name("chatbox")
+        button.event.add_lisner(lambda : ani.say('src/chat/test.json'))
+        
         while self.is_running:
             
             for event in pygame.event.get():
