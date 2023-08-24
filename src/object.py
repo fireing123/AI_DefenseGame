@@ -28,6 +28,7 @@ class GameObject(Sprite, Component):
     기본 오브젝트
     """
     def __init__(self, name : str, layer = 3):
+        Sprite.__init__(self)
         self.layer_int = layer
         self.image : Surface
         self.name = name

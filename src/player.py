@@ -1,53 +1,93 @@
+from typing import Dict
 import pygame
+import time
 from object import GameObject
 from animation import Animation
 from animation import AnimationController
-from ground import group
+from ground import group, Ground
 
 class Player(GameObject):
     
     def __init__(self, name: str):
         super().__init__(name)
         self.health = 100
-        self.animation_controller = AnimationController()
-        self.image : pygame.Surface
+        #self.animation_controller = AnimationController()
+        self.image : pygame.Surface = pygame.Surface((100, 100))
         self.rect = self.image.get_rect()
-
+        self.rect.center = (200, 200)
         self.direction = pygame.Vector2(0, 0)
-        self.speed = 8
-        self.gravity = 0.8
-        self.jump_speed = -16
-        self.collision_rect = pygame.Rect(self.rect.topleft,(50,self.rect.height))
+        self.speed = 1
+        self.gravity = 0.02
+        self.jump_speed = -3
+       
         
+        self.mass = False
         self.facing_right = True
-        self.on_ground = False
-        self.on_ceiling = False
-        self.on_left = False
-        self.on_right = False
+        self.on_ground = True
         
-    def update(self):
-        if pygame.sprite.spritecollideany(self, group):
-            pass
-        else:
-            keys = pygame.key.get_pressed()
-
-            if keys[pygame.K_RIGHT]:
-                self.direction.x = 1
+    def player_event(self, event : pygame.event.Event):
+        if event.type == pygame.KEYDOWN:
+            self.mass = False
+            if event.key == pygame.K_RIGHT:
+                self.direction.x = self.speed
                 self.facing_right = True
-            elif keys[pygame.K_LEFT]:
-                self.direction.x = -1
+            elif event.key == pygame.K_LEFT:
+                self.direction.x = -self.speed
                 self.facing_right = False
-            else:
-                self.direction.x = 0
-            if keys[pygame.K_SPACE] and self.on_ground:
+            if event.key == pygame.K_SPACE and self.on_ground:
                 self.jump()
+        if event.type == pygame.KEYUP and event.key in [pygame.K_RIGHT, pygame.K_LEFT]:
+            self.mass = True
+    
+    def update(self):   
+        collide = pygame.sprite.spritecollideany(self, group)
+        if collide != None:
+            self.on_collision_enter(collide)
+
+            self.friction = 0.4
+        else:
+            self.direction.y += self.gravity
+            self.friction = 1
+    
+        self.rect.y += self.direction.y
+        self.rect.x += self.direction.x
         
-        #gravity
-        self.direction.y += self.gravity
-        self.collision_rect.y += self.direction.y
-        
-        #animation
-        self.animation_controller.update()
+        if self.mass:
+            self.direction.x *= self.friction
+            if abs(self.direction.x) < 0.1:
+                self.direction.x = 0
+
+        #animation 
+       # self.animation_controller.update()
+    
+    def on_collision_enter(self, collision : Ground):
+        cox, coy = collision.rect.size
+        cox, coy = cox/2, coy/2
+        if self.rect.bottom < collision.rect.top + coy:
+            self.rect.bottom = collision.rect.top
+            self.direction.y = 0
+        else:
+            self.direction.y += self.gravity
+            if self.rect.top > collision.rect.bottom - coy:
+                #bottom
+                self.rect.top = collision.rect.bottom
+                self.direction.y = 0
+            elif self.rect.left < collision.rect.right + cox:
+                #right
+                self.rect.left = collision.rect.right
+                self.direction.x = 0
+            elif self.rect.right > collision.rect.left - cox:
+                #left
+                self.rect.right = collision.rect.left
+                self.direction.x = 0
     
     def jump(self):
         self.direction.y = self.jump_speed
+        #self.on_ground = False
+        
+    def render(self, surface):
+        surface.blit(self.image, self.rect)
+        
+    @staticmethod
+    def instantiate(json: Dict):
+        return Player("super")

@@ -5,6 +5,17 @@
             "scale" : [1000, 800]
         }
     ],
+    "Ground": [
+        {
+            "position" : [500, 600],
+            "scale" : [1000, 100]
+        }
+    ],
+    "Player" : [
+        {
+            "name" : "super"
+        }
+    ],
     "Button": [
         {
             "name" : "enter",

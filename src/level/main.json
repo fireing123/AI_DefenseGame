@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "./src/image/main_image.png",
+            "image" : "src/image/graycity.png",
             "scale" : [1000, 800]
         }
     ],

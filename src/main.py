@@ -34,12 +34,14 @@ class AiDefenseGame:
         self.scene = self.scene.scene_change('src/level/laboratory.json')
         layers = self.scene.layers
         button : Button = layers.get_game_object_by_name("enter")
+        player = layers.get_game_object_by_name('super')
         ani : ChatBox = layers.get_game_object_by_name("chatbox")
         button.event.add_lisner(lambda : ani.say('src/chat/test.json'))
         
         while self.is_running:
             
             for event in pygame.event.get():
+                player.player_event(event)
                 if event.type == pygame.QUIT:
                     self.is_running = False
                     
