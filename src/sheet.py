@@ -29,3 +29,9 @@ class SpriteSheet:
     
     def __setitem__(self, index, value):
         self.images[index] = value
+        
+    def keys(self):
+        return self.images.keys()
+    
+    def items(self):
+        return self.images.items()
