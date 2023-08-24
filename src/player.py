@@ -83,7 +83,7 @@ class Player(GameObject):
     
     def jump(self):
         self.direction.y = self.jump_speed
-        #self.on_ground = False
+        self.on_ground = False
         
     def render(self, surface):
         surface.blit(self.image, self.rect)

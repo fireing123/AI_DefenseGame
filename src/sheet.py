@@ -1,6 +1,6 @@
 import pygame
-
 from typing import Dict
+import color
 import xml.etree.ElementTree as xml
 
 class SpriteSheet:
@@ -18,6 +18,8 @@ class SpriteSheet:
     
     def get_image(self, x, y, width, height) -> pygame.Surface:
         image = pygame.Surface((width, height))
+        image.fill(color.RED)
+        image.set_colorkey(color.RED)
         image.blit(self.full_image, (0, 0), (x, y, width, height))
         return image
     

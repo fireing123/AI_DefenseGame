@@ -1,6 +1,7 @@
 import pygame
 from typing import Dict, List, Tuple
 from event import Event
+import threading
 from object import GameObject
 from sheet import SpriteSheet
 from animation import AnimationText
@@ -69,10 +70,10 @@ class Button(UI):
     
 
 class ChatBox(UI):
-    def __init__(self, name, position, text, game_object):
+    def __init__(self, name, position, text):
         super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
-        #self.game_object = game_object
+        self.visible = False
         self.open_image = chat_box['open']
         self.box_image  = chat_box['box']
         self.arrow_image = chat_box['arrow']
@@ -83,31 +84,49 @@ class ChatBox(UI):
         self.arrow_rect = self.arrow_image.get_rect()
         self.close_rect = self.close_image.get_rect()
         self.box_rect = self.box_image.get_rect()
-        self.arrow_rect.center = (400, 200)
-        self.open_rect.center = (500, 200)
-        self.close_rect.center = (550,200)
-        self.box_rect.center = (600, 200)
+    
         
-    def say(self, chat):
-        xy, loxy = self.text.start_animation(
+    def say(self, chat, time):
+        self.time = time
+        self.visible = True
+        gox, goy = self.game_object.rect.topleft
+        gsx, gsy = self.game_object.image.get_size()
+        self.position = (gox + gsx/2, goy - gsy/1.8)
+        self.text.position = self.position
+        loxy = self.text.start_animation(
             AnimationText.load(chat)
         )
-        #x, y = xy
-        #lox ,_ = loxy
-        #self.open_rect.bottomright = x, y + 5
-        #_ , boxy= self.box_image.get_size()
-        #self.box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
-        #self.box_rect = self.box_image.get_rect()
-        #self.box_rect.bottomleft = self.open_rect.bottomright
-        #self.close_rect.bottomleft = self.box_rect.bottomright
-        ##gx, _ = self.game_object.position
-        #gx = 500
-        #self.arrow_rect.midtop = gx, y - 2
+        x, _ = self.position
+        lox ,_ = loxy
+        _ , boxy= self.box_image.get_size()
+        self.box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
+        thread = threading.Thread(target=self.sleep)
+        thread.start()
+        
+    def sleep(self):
+        sleep(self.time)
+        self.visible = False
+    
+    def set_player(self, game_object):
+        self.game_object : GameObject = game_object
     
     def update(self):
+
+        gox, goy = self.game_object.rect.topleft
+        gsx, gsy = self.game_object.image.get_size()
+        self.position = (gox + gsx/2, goy - gsy/1.8)
+        self.text.position = self.position
+        x, y = self.position
+        self.open_rect.bottomright = x, y + 5
+        self.box_rect = self.box_image.get_rect()
+        self.box_rect.bottomleft = self.open_rect.bottomright
+        self.close_rect.bottomleft = self.box_rect.bottomright
+        gx, gy = self.position
+        self.arrow_rect.midtop = gx + 20, gy
         self.text.update()
     
     def render(self, surface : pygame.Surface):
+        if not self.visible: return
         surface.blit(self.open_image, self.open_rect)
         surface.blit(self.box_image, self.box_rect)
         surface.blit(self.close_image, self.close_rect)
@@ -119,8 +138,7 @@ class ChatBox(UI):
         return ChatBox(
             json['name'],
             json['position'],
-            json['AnimaText'],
-            None
+            json['AnimaText']
         )
  
 class AnimaText(UI):
@@ -131,10 +149,10 @@ class AnimaText(UI):
         self.len = 1
         self.last_update : int = 0
         self.tick = tick
-        self.position = position
+        self.__position = position
         self.local_position = position
         self.color = color
-        self.animation = [([(pygame.Surface((50, 50)), pygame.Rect(0, 0, 0, 0))], 500)]
+        self.animation = [([(pygame.Surface((0, 0)), pygame.Rect(0, 0, 0, 0))], 500)]
         self.images , _= self.animation[0]
         
     def start_animation(self, ani_text : AnimationText):
@@ -148,16 +166,19 @@ class AnimaText(UI):
             font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
             text = font.render(char, True, self.color)
             rect = text.get_rect()
+            
+            x, _ = text.get_size()
             rect.bottomleft = self.local_position
-            x, _ = font.size(char)
             lx, ly = self.local_position
             self.local_position = lx + x, ly
+            
             result.append((text, rect))
             new_result =  result.copy()
             animat.append((new_result, tick))
+            
         self.animation = animat
         self.len = len(self.animation)
-        return self.position, self.local_position
+        return self.local_position
 
     def update(self):
         if time.get_ticks() - self.last_update > self.tick:
@@ -166,6 +187,7 @@ class AnimaText(UI):
             self.images, self.tick = self.animation[self.index]
             if self.len != self.index + 1:
                 self.index += 1
+
     
     def render(self, surface):
         for image, rect in self.images:
@@ -179,6 +201,20 @@ class AnimaText(UI):
             json['color'],
             500
         )
+    
+    @property
+    def position(self):
+        return self.__position
+    
+    @position.setter
+    def position(self, value):
+        self.__position = tuple(value)
+        self.local_position = self.position
+        for text, rect in self.images:
+            x, _ = text.get_size()
+            rect.bottomleft = self.local_position
+            lx, ly = self.local_position
+            self.local_position = lx + x, ly
  
 class Text(UI):
     def __init__(self, name, position, scale, string, color):
