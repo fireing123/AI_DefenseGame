@@ -1,4 +1,5 @@
 import pygame
+
 from typing import Dict
 import xml.etree.ElementTree as xml
 
@@ -12,11 +13,14 @@ class SpriteSheet:
         
         for child in root:
             att = child.attrib
-            left_top = int(att['x']), int(att['y'])
-            width_height =  int(att['width']), int(att['height'])
-            rect = pygame.Rect(left_top, width_height)
-            self.images[att['name']] = pygame.transform.chop(self.full_image, rect)
-        
+            xywh = int(att['x']), int(att['y']), int(att['width']), int(att['height'])
+            self.images[att['name']] = self.get_image(*xywh)
+    
+    def get_image(self, x, y, width, height) -> pygame.Surface:
+        image = pygame.Surface((width, height))
+        image.blit(self.full_image, (0, 0), (x, y, width, height))
+        return image
+    
     def __len__(self):
         return self.images.__len__()
 
@@ -25,4 +29,3 @@ class SpriteSheet:
     
     def __setitem__(self, index, value):
         self.images[index] = value
-    
