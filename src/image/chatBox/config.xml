@@ -4,5 +4,5 @@
     <Rect name="open" x="0" y="0" width="4" height="18"/>
     <Rect name="box" x="4" y="0" width="12" height="18"/>
     <Rect name="arrow" x="17" y="14" width="7" height="13" />
-    <Rect name="close" x="24" y="0" width="6" height="18" />
+    <Rect name="close" x="26" y="0" width="4" height="18" />
 </Animation>
