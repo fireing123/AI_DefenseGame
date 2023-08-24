@@ -1,6 +1,8 @@
 from typing import List
 from object import GameObject
 from background import *
+from player import *
+from ground import *
 from ui import *
 
 class Layers:

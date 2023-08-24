@@ -66,6 +66,7 @@ class AnimationController:
     def update(self) -> None:
         animation = self.animation[self.str]
         self.game_object.image = animation.update()
+        self.game_object.rect = self.game_object.get_rect()
     
     def animation_translate(self, next_animation : str) -> None:
         self.str = next_animation
