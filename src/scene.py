@@ -80,10 +80,3 @@ class Scene:
             self.rects.draw(self.screen)
             pygame.display.flip()
             sleep(0.01)
-    
-    def scene_change(self, path):
-        self.darkening_scene()
-        new_scene = Scene.load(path, self.screen)
-        del self
-        new_scene.brightening_scene()
-        return new_scene

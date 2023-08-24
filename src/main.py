@@ -2,7 +2,8 @@ import pygame
 from scene import Scene
 from gametime import GameTime
 from ui import Button, ChatBox
-
+from player import Player
+from layer import Layers
 
 class AiDefenseGame:
     
@@ -30,16 +31,23 @@ class AiDefenseGame:
                     waiting = False
 
     def main(self):
-        GameTime.tick(60)
-        self.scene = self.scene.scene_change('src/level/laboratory.json')
+        
+        self.scene.darkening_scene()
+        new_scene = Scene.load('src/level/laboratory.json', self.screen)
+        del self.scene
+        self.scene = new_scene
+        # awake
         layers = self.scene.layers
         button : Button = layers.get_game_object_by_name("enter")
         player = layers.get_game_object_by_name('super')
         ani : ChatBox = layers.get_game_object_by_name("chatbox")
-        button.event.add_lisner(lambda : ani.say('src/chat/test.json'))
-        
+        button.event.add_lisner(lambda : ani.say('src/chat/test.json', 5))
+        ani.set_player(player)
+        #end
+        new_scene.brightening_scene()
+
         while self.is_running:
-            
+            GameTime.tick(60)
             for event in pygame.event.get():
                 player.player_event(event)
                 if event.type == pygame.QUIT:
