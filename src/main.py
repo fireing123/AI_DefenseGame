@@ -4,6 +4,7 @@ from gametime import GameTime
 from ui import Button, ChatBox
 from player import Player
 from layer import Layers
+from camera import Camera
 
 class AiDefenseGame:
     
@@ -52,7 +53,13 @@ class AiDefenseGame:
                 player.player_event(event)
                 if event.type == pygame.QUIT:
                     self.is_running = False
-                    
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        cvx, cvy = Camera.vector
+                        Camera.vector = cvx - 5, cvy
+                    if event.key == pygame.K_d:
+                        cvx, cvy = Camera.vector
+                        Camera.vector = cvx + 5, cvy
             self.scene.update()
             self.scene.render()
             pygame.display.update()

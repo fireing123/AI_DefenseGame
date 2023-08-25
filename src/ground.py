@@ -11,11 +11,16 @@ class Ground(GameObject):
         group.add(self)
         self.image = pygame.Surface(scale)
         self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.position = position
         
-    def render(self, surface):
-        surface.blit(self.image, self.rect)
-        
+    def render(self, surface, camera):
+        cx, cy = camera
+        rx, ry = self.rect.topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(self.image, self.rect_position)
+    
+    
+    
     @staticmethod
     def instantiate(json: Dict):
         return Ground(

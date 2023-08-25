@@ -1,6 +1,6 @@
 import pygame
 import color
-from object import GameObject
+from object import GameObject, Position
 
 
 class BlcakRectangle(pygame.sprite.Sprite):
@@ -18,24 +18,22 @@ class BackGround(GameObject):
     """
     background object
     """
-    def __init__(self, scale, path):
+    def __init__(self, center, path):
         super().__init__(0)
         self.image = pygame.image.load(path)
-        self.scale = scale
-        self.image = pygame.transform.scale(self.image, scale)
         self.rect = self.image.get_rect()
-        self.rect.topleft = (0, 0)
-        
-    def update(self):
-        self.rect = self.image.get_rect()
-        
+        self.position = center
+ 
     def change_image(self, image_path):
         self.image = pygame.image.load(image_path)
         self.rect = self.image.get_rect()
     
-    def render(self, surface):
-        surface.blit(self.image, self.rect)
+    def render(self, surface, camera):
+        cx, cy = camera
+        rx, ry = self.rect.topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(self.image, self.rect_position)
        
     @staticmethod 
     def instantiate(json):
-        return BackGround(json['scale'], json['image'])
+        return BackGround(json['position'], json['image'])

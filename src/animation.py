@@ -55,8 +55,8 @@ class AnimationText:
 
 class AnimationController:
     
-    def __init__(self, idle_animation):
-        self.game_object : GameObject
+    def __init__(self, idle_animation, game_object):
+        self.game_object : GameObject = game_object
         self.str : str
         self.animation : Dict[str, Animation] = idle_animation
     

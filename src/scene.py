@@ -5,6 +5,7 @@ from typing import List
 from time import sleep
 from background import BlcakRectangle
 from layer import Layers, load_game_object
+from camera import Camera
 
 class Scene:
     """
@@ -32,7 +33,7 @@ class Scene:
         self.layers.in_layer_turning('update')
         
     def render(self):
-        self.layers.in_layer_turning('render', self.screen)
+        self.layers.in_layer_turning('render', self.screen, Camera.vector)
     
     
     @staticmethod

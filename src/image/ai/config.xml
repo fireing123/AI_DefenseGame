@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<Animation imagePath="src\image\ai\ai_1.png">
-    <Rect name="ai_1" x="0" y="0" width="300" height="200"/>
+<Animation imagePath="src\image\ai\ai_.png">
+    <Rect name="ai_1" x="0" y="0" width="200" height="310"/>
+    <Rect name="ai_2" x="0" y="310" width="200" height="300" />
 </Animation>

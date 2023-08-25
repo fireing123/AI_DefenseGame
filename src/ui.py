@@ -2,7 +2,7 @@ import pygame
 from typing import Dict, List, Tuple
 from event import Event
 import threading
-from object import GameObject
+from object import GameObject, Position
 from sheet import SpriteSheet
 from animation import AnimationText
 from time import sleep
@@ -30,10 +30,13 @@ class Button(UI):
         self.image = self.default_image
         self.text = Text.instantiate(text)
         self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.position = Position(*position)
         self.event = Event()
         self.is_pressing = False
         self.is_on = False
+
+    def child_position(self):
+        self.text.position = self.position
 
     @staticmethod
     def instantiate(json):
@@ -59,9 +62,9 @@ class Button(UI):
             self.is_pressing = mouse_press
         return self.is_on
 
-    def render(self, surface):
+    def render(self, surface, camera):
         surface.blit(self.image, self.rect)
-        self.text.render(surface)
+        self.text.render(surface, camera)
             
     def update(self):
         if self.is_click():
@@ -89,7 +92,7 @@ class ChatBox(UI):
     def say(self, chat, time):
         self.time = time
         self.visible = True
-        gox, goy = self.game_object.rect.topleft
+        gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
         self.position = (gox + gsx/2, goy - gsy/1.8)
         self.text.position = self.position
@@ -125,13 +128,13 @@ class ChatBox(UI):
         self.arrow_rect.midtop = gx + 20, gy
         self.text.update()
     
-    def render(self, surface : pygame.Surface):
+    def render(self, surface : pygame.Surface, camera):
         if not self.visible: return
         surface.blit(self.open_image, self.open_rect)
         surface.blit(self.box_image, self.box_rect)
         surface.blit(self.close_image, self.close_rect)
         surface.blit(self.arrow_image, self.arrow_rect)
-        self.text.render(surface)
+        self.text.render(surface, camera)
     
     @staticmethod
     def instantiate(json: Dict):
@@ -149,11 +152,11 @@ class AnimaText(UI):
         self.len = 1
         self.last_update : int = 0
         self.tick = tick
-        self.__position = position
-        self.local_position = position
         self.color = color
         self.animation = [([(pygame.Surface((0, 0)), pygame.Rect(0, 0, 0, 0))], 500)]
         self.images , _= self.animation[0]
+        self.position = position
+        self.local_position = position
         
     def start_animation(self, ani_text : AnimationText):
         
@@ -189,9 +192,17 @@ class AnimaText(UI):
                 self.index += 1
 
     
-    def render(self, surface):
+    def render(self, surface, camera):
         for image, rect in self.images:
             surface.blit(image, rect)
+
+    def child_position(self):
+        self.local_position = self.position
+        for text, rect in self.images:
+            x, _ = text.get_size()
+            rect.bottomleft = self.local_position
+            lx, ly = self.local_position
+            self.local_position = lx + x, ly
 
     @staticmethod 
     def instantiate(json):
@@ -201,20 +212,6 @@ class AnimaText(UI):
             json['color'],
             500
         )
-    
-    @property
-    def position(self):
-        return self.__position
-    
-    @position.setter
-    def position(self, value):
-        self.__position = tuple(value)
-        self.local_position = self.position
-        for text, rect in self.images:
-            x, _ = text.get_size()
-            rect.bottomleft = self.local_position
-            lx, ly = self.local_position
-            self.local_position = lx + x, ly
  
 class Text(UI):
     def __init__(self, name, position, scale, string, color):
@@ -225,9 +222,8 @@ class Text(UI):
         self.__text = string
         self.__color = color
         self.position = position
-        self.rect.center = position
         
-    def render(self, surface):
+    def render(self, surface, camera):
         surface.blit(self.image, self.rect)    
     
     @property
@@ -258,8 +254,7 @@ class Text(UI):
     
     def setter(self):
         self.set_text(self.__text, self.__color)
-        self.rect.center = self.position
-        
+
     @staticmethod
     def instantiate(text):
         return Text(
@@ -275,7 +270,7 @@ class Text(UI):
 
     def set_text(self, string, color):
         self.image = self.font.render(string, True, color)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=self.position)
         
 class HPbar(UI):
     def __init__(self, name, position : tuple[int, int],image : str,hp,maxhp):
@@ -286,7 +281,7 @@ class HPbar(UI):
         self.hp = hp
         self.maxhp = maxhp
 
-    def render(self,screen):
+    def render(self,screen, camera):
         self.x , self.y = self.position[0], self.position[1] # x,y좌표 설정
 
         pygame.draw.rect(screen,(30,30,30),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,self.rect[2]*0.9,10])

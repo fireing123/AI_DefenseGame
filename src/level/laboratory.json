@@ -2,18 +2,23 @@
     "BackGround" : [
         {
             "image" : "src/image/lab.jpg",
-            "scale" : [1000, 800]
+            "position" : [500, 400]
         }
     ],
     "Ground": [
         {
             "position" : [500, 600],
             "scale" : [1000, 100]
+        },
+        {
+            "position" : [800, 400],
+            "scale" : [500, 100]
         }
     ],
     "Player" : [
         {
-            "name" : "super"
+            "name" : "super",
+            "position" : [500, 200]
         }
     ],
     "Button": [
