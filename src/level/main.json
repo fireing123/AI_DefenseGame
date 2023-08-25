@@ -2,7 +2,7 @@
     "BackGround" : [
         {
             "image" : "src/image/graycity.png",
-            "scale" : [1000, 800]
+            "position" : [500, 400]
         }
     ],
     "Text": [
@@ -17,7 +17,7 @@
             "name" : "b",
             "position" : [500, 550],
             "scale" : 25,
-            "string" : "Press a key to play",
+            "string" : "Press any key to play",
             "color" : [255, 255, 255]
         }
     ]

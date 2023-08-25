@@ -4,23 +4,25 @@ import time
 from object import GameObject
 from animation import Animation
 from animation import AnimationController
+from sheet import SpriteSheet
 from ground import group, Ground
 
 class Player(GameObject):
     
-    def __init__(self, name: str):
+    def __init__(self, name: str, position):
         super().__init__(name)
         self.health = 100
-        #self.animation_controller = AnimationController()
-        self.image : pygame.Surface = pygame.Surface((100, 100))
-        self.rect = self.image.get_rect()
-        self.rect.center = (200, 200)
         self.direction = pygame.Vector2(0, 0)
         self.speed = 1
         self.gravity = 0.02
         self.jump_speed = -3
-       
-        
+        idle_animation = SpriteSheet('src/image/ai/config.xml')
+        self.animation_controller = AnimationController(
+            idle_animation.items(),
+            self
+        )
+        self.image : pygame.Surface = idle_animation['ai_1']
+        self.rect = self.image.get_rect()
         self.mass = False
         self.facing_right = True
         self.on_ground = True
@@ -66,6 +68,7 @@ class Player(GameObject):
         if self.rect.bottom < collision.rect.top + coy:
             self.rect.bottom = collision.rect.top
             self.direction.y = 0
+            self.on_ground = True
         else:
             self.direction.y += self.gravity
             if self.rect.top > collision.rect.bottom - coy:
@@ -85,9 +88,12 @@ class Player(GameObject):
         self.direction.y = self.jump_speed
         self.on_ground = False
         
-    def render(self, surface):
-        surface.blit(self.image, self.rect)
+    def render(self, surface, camera):
+        cx, cy = camera
+        rx, ry = self.rect.topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(self.image, self.rect_position)
         
     @staticmethod
     def instantiate(json: Dict):
-        return Player("super")
+        return Player("super", json['position'])
