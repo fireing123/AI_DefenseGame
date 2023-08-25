@@ -1,6 +1,7 @@
 import pygame
 import color
-from object import GameObject, Position
+#not import my module
+from object import GameObject
 
 
 class BlcakRectangle(pygame.sprite.Sprite):

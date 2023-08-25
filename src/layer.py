@@ -1,9 +1,12 @@
 from typing import List
+#not import my module
 from object import GameObject
-from background import *
-from player import *
-from ground import *
-from ui import *
+#import module first
+from background import * #object
+from ground import * # object
+#import module second
+from ui import * # event, object, sheet(color), animation(object)
+from player import * # object, animation(object), sheet(color), ground(object)
 
 class Layers:
     """

@@ -1,16 +1,25 @@
-from typing import Dict
 import pygame
-import time
+from typing import Dict
+#not import my module
+import manger
 from object import GameObject
-from animation import Animation
-from animation import AnimationController
-from sheet import SpriteSheet
-from ground import group, Ground
+from camera import Camera
+#import module first
+from animation import AnimationController # object
+from sheet import SpriteSheet # color
+from ground import group, Ground # object
+
+
 
 class Player(GameObject):
     
+    
+    
     def __init__(self, name: str, position):
         super().__init__(name)
+
+        get_width, get_height = manger.screen.get_size()
+        self.width, self.height = get_width/2, get_height/2
         self.health = 100
         self.direction = pygame.Vector2(0, 0)
         self.speed = 1
@@ -33,9 +42,13 @@ class Player(GameObject):
             if event.key == pygame.K_RIGHT:
                 self.direction.x = self.speed
                 self.facing_right = True
+                if round(self.rect.right) > self.width * 0.75:
+                    Camera.x += 10
             elif event.key == pygame.K_LEFT:
                 self.direction.x = -self.speed
                 self.facing_right = False
+                if round(self.rect.left) > self.width * 0.75:
+                    Camera.x -= 10
             if event.key == pygame.K_SPACE and self.on_ground:
                 self.jump()
         if event.type == pygame.KEYUP and event.key in [pygame.K_RIGHT, pygame.K_LEFT]:

@@ -1,10 +1,20 @@
 import pygame
-from scene import Scene
+# not import my module
+import manger
 from gametime import GameTime
-from ui import Button, ChatBox
-from player import Player
-from layer import Layers
 from camera import Camera
+#import module first
+#None
+#import module second
+from ui import Button, ChatBox # event, object, sheet(color), animation(object)
+#import module fourth
+from scene import Scene
+#camera, background(object)
+#layer (
+# object, background(object), ground(object)
+# ui(event, object, sheet(color), animation(object))
+# player(object, animation(object), sheet(color), ground(object))
+#)
 
 class AiDefenseGame:
     
@@ -13,6 +23,7 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         self.width,self.height  = size
         self.screen = pygame.display.set_mode(size)
+        manger.screen = self.screen
         self.scene : Scene = Scene.load('src\level\main.json', self.screen)
         self.is_running = True
 

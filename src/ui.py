@@ -1,12 +1,15 @@
-import pygame
-from typing import Dict, List, Tuple
-from event import Event
 import threading
-from object import GameObject, Position
-from sheet import SpriteSheet
-from animation import AnimationText
-from time import sleep
+import pygame
 from pygame import time
+from time import sleep
+from typing import Dict, List, Tuple
+#not import my module
+from event import Event
+from object import GameObject, Position
+#import module first
+from sheet import SpriteSheet # color import
+from animation import AnimationText # object
+
 
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
