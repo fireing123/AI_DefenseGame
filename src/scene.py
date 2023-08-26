@@ -4,7 +4,7 @@ from pygame.sprite import Group
 from typing import List
 from time import sleep
 #not import my module
-from camera import Camera
+from camera import camera
 #import module first
 from background import BlcakRectangle # object
 #import module third
@@ -43,7 +43,7 @@ class Scene:
         self.layers.in_layer_turning('update')
         
     def render(self):
-        self.layers.in_layer_turning('render', self.screen, (Camera.x, Camera.y))
+        self.layers.in_layer_turning('render', self.screen, camera.vector)
     
     
     @staticmethod

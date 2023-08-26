@@ -2,7 +2,7 @@ import pygame
 # not import my module
 import manger
 from gametime import GameTime
-from camera import Camera
+from camera import camera
 #import module first
 #None
 #import module second
@@ -66,11 +66,11 @@ class AiDefenseGame:
                     self.is_running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        cvx, cvy = Camera.vector
-                        Camera.vector = cvx - 5, cvy
+                        cvx, cvy = camera.vector
+                        camera.vector = cvx - 5, cvy
                     if event.key == pygame.K_d:
-                        cvx, cvy = Camera.vector
-                        Camera.vector = cvx + 5, cvy
+                        cvx, cvy = camera.vector
+                        camera.vector = cvx + 5, cvy
             self.scene.update()
             self.scene.render()
             pygame.display.update()
