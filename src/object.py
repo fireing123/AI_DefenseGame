@@ -77,6 +77,7 @@ class GameObject(Sprite, Component):
             
     def __init__(self, name : str, layer = 3):
         Sprite.__init__(self)
+        self.rect_position = (0, 0)
         self.layer_int = layer
         self.image : Surface
         self.rect = Rect(0,0,0,0)
@@ -154,8 +155,8 @@ class MoveObject(GameObject):
                 self.on_collision_enter(collide)
         else:
             self.friction = self.air_friction
-            self.position = self.rect.center
-            self.position += self.direction
+        self.position = self.rect.center
+        self.position += self.direction
         
     def cut_plus(self, num):
         if num < 0:

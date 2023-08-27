@@ -40,10 +40,9 @@ class Player(LivingObject):
         if event.type == pygame.KEYDOWN:
             self.mass = False
             if event.key == pygame.K_RIGHT:
-                self.direction.x = self.speed
+                self.add_force(self.speed)
             elif event.key == pygame.K_LEFT:
-                self.direction.x = -self.speed
-
+                self.add_force(-self.speed)
             if event.key == pygame.K_SPACE and self.on_ground:
                 self.jump()
         if event.type == pygame.KEYUP and event.key in [pygame.K_RIGHT, pygame.K_LEFT]:
@@ -65,7 +64,7 @@ class Player(LivingObject):
         pass
         
     def jump(self):
-        self.direction.y = self.jump_speed
+        self.add_force(0, self.jump_speed)
         self.on_ground = False
     
     def render(self, surface, camera):
