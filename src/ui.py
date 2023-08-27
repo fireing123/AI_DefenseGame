@@ -290,6 +290,8 @@ class HPbar(UI):
         pygame.draw.rect(screen,(30,30,30),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,self.rect[2]*0.9,10])
         pygame.draw.rect(screen,(255,0,0),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,((self.rect[2]*0.9)/self.maxhp)*self.hp,10])
 
+# game_object 에 health max_health 속성 추가, 그러니 생성할때 game_object 를 인수로
+
 #HPbar코드 입맛대로 뜯어고치고 재탕해둘것
 
 # 거의 방치됨

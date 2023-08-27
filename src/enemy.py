@@ -18,7 +18,8 @@ class Soldier(Enemy):
     
     def __init__(self, name, position):
         super().__init__(name, position)
-        self.health = 100
+        self.hp = 100
+        self.max_hp = 100
         self.speed = 2
         idle_animation = SpriteSheet('src/image/soldier/config.xml')
         self.animation_controller = AnimationController(

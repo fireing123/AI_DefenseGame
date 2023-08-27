@@ -173,12 +173,16 @@ class MoveObject(GameObject):
     def add_force(self, x=0, y=0):
         self.direction += pygame.Vector2((x, y))
 
+from ui import HPbar
+
 class LivingObject(MoveObject):
     
     def __init__(self, name, position):
         super().__init__(name)
         self.__health = 100
         self.position = position
+        self.hp_bar = HPbar(name+"hpBar", self)
+        
     def destroy(self):
         pass
      
