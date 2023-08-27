@@ -9,7 +9,7 @@ class Component:
     def start(self):
         pass
     
-    def on_collision_enter(self):
+    def on_collision_enter(self, collision):
         pass
     
     def on_mouse_pressed(self):
@@ -175,10 +175,10 @@ class MoveObject(GameObject):
 
 class LivingObject(MoveObject):
     
-    def __init__(self, name):
+    def __init__(self, name, position):
         super().__init__(name)
         self.__health = 100
-       
+        self.position = position
     def destroy(self):
         pass
      

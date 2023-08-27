@@ -7,6 +7,8 @@ from ground import * # object
 #import module second
 from ui import * # event, object, sheet(color), animation(object)
 from player import * # object, animation(object), sheet(color), ground(object)
+from enemy import *
+
 
 class Layers:
     """

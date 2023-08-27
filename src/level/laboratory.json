@@ -25,6 +25,12 @@
             "position" : [500, 200]
         }
     ],
+    "Soldier" : [
+        {
+            "name" : "enemy",
+            "position" : [500, 200]
+        }
+    ],
     "Button": [
         {
             "name" : "enter",

@@ -16,7 +16,7 @@ class Player(LivingObject):
     
     
     def __init__(self, name: str, position):
-        super().__init__(name)
+        super().__init__(name, position)
 
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
@@ -31,7 +31,7 @@ class Player(LivingObject):
             self
         )
         self.image : pygame.Surface = idle_animation['ai_1']
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=self.rect.center)
         self.mass = False
 
         self.on_ground = True
