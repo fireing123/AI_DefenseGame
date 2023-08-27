@@ -2,6 +2,7 @@ import json
 from pygame import Surface
 from pygame import time
 from typing import Dict, List
+#not import my module
 from object import GameObject
 
 

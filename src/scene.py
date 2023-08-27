@@ -3,9 +3,17 @@ import pygame
 from pygame.sprite import Group
 from typing import List
 from time import sleep
-from background import BlcakRectangle
+#not import my module
+from camera import camera
+#import module first
+from background import BlcakRectangle # object
+#import module third
 from layer import Layers, load_game_object
-from camera import Camera
+# object, background(object), ground(object)
+# ui(event, object, sheet(color), animation(object))
+# player(object, animation(object), sheet(color), ground(object))
+
+
 
 class Scene:
     """
@@ -15,6 +23,8 @@ class Scene:
                 layers : Layers):
         
         self.screen = screen
+        global seen
+        seen = screen
         self.layers = layers
 
         width, self.rect_height = screen.get_size()
@@ -33,7 +43,7 @@ class Scene:
         self.layers.in_layer_turning('update')
         
     def render(self):
-        self.layers.in_layer_turning('render', self.screen, Camera.vector)
+        self.layers.in_layer_turning('render', self.screen, camera.vector)
     
     
     @staticmethod
