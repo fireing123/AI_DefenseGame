@@ -36,4 +36,4 @@ class SpriteSheet:
         return self.images.keys()
     
     def items(self):
-        return self.images.items()
+        return list(self.images.values())

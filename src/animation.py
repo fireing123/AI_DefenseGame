@@ -18,11 +18,10 @@ class Animation:
     def update(self) -> Surface:
         if time.get_ticks() - self.last_update > self.tick:
             if self.len <= self.index:
-                return self.image_list[self.index]
+                return self.image_list[self.index-1]
             self.last_update = time.get_ticks()
-            image = self.image_list[self.index]
             self.index += 1
-        return image
+        return self.image_list[self.index-1]
 
 
 class AnimationText:
@@ -58,16 +57,16 @@ class AnimationController:
     
     def __init__(self, idle_animation, game_object):
         self.game_object : GameObject = game_object
-        self.str : str
-        self.animation : Dict[str, Animation] = idle_animation
+        self.str : str = 'default'
+        self.animation : Dict[Surface] = {}
+        self.animation[self.str] = idle_animation
     
     def add(self, str, value) -> None:
         self.animation[str] = value
     
-    def update(self) -> None:
+    def update(self):
         animation = self.animation[self.str]
-        self.game_object.image = animation.update()
-        self.game_object.rect = self.game_object.get_rect()
+        return animation.update()
     
     def animation_translate(self, next_animation : str) -> None:
         self.str = next_animation

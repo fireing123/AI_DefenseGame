@@ -1,14 +1,14 @@
 import pygame
-from typing import Dict
+from typing import Dict, List
 #not import my module
 import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from animation import AnimationController # object
+from animation import AnimationController, Animation # object
 from sheet import SpriteSheet # color
-from ground import group, Ground # object
-
+from ground import Ground # object
+from enemy import group as enemy_group, Enemy
 
 
 class Player(LivingObject):
@@ -17,7 +17,7 @@ class Player(LivingObject):
     
     def __init__(self, name: str, position):
         super().__init__(name, position)
-
+        self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
         self.health = 100
@@ -27,30 +27,45 @@ class Player(LivingObject):
         self.jump_speed = -6
         idle_animation = SpriteSheet('src/image/ai/config.xml')
         self.animation_controller = AnimationController(
-            idle_animation.items(),
+            Animation(idle_animation.items()),
             self
         )
         self.image : pygame.Surface = idle_animation['ai_1']
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.mass = False
+        self.mass = True
 
         self.on_ground = True
         
     def player_event(self, event : pygame.event.Event):
+        
         if event.type == pygame.KEYDOWN:
-            self.mass = False
-            if event.key == pygame.K_RIGHT:
-                self.add_force(self.speed)
-            elif event.key == pygame.K_LEFT:
-                self.add_force(-self.speed)
-            if event.key == pygame.K_SPACE and self.on_ground:
+            self.keys[event.key] = True
+            if event.key == pygame.K_UP and self.on_ground:
                 self.jump()
-        if event.type == pygame.KEYUP and event.key in [pygame.K_RIGHT, pygame.K_LEFT]:
-            self.mass = True
+        elif event.type == pygame.KEYUP:
+            self.keys[event.key] = False
     
-    def update(self):   
+    def update(self):  
+        
+        try:
+            if self.keys[pygame.K_RIGHT]:
+                self.direction.x = self.speed
+            if self.keys[pygame.K_LEFT]:
+                self.direction.x = -self.speed
+            if self.keys[pygame.K_0]: 
+                self.remove()
+        except KeyError:
+            pass
+         
         super().update()
 
+        collision : List[Enemy] = pygame.sprite.spritecollide(self, enemy_group, False)
+
+        for collide in collision:
+            if collide.attack_possible(self):
+                collide.attack(self)
+            else:
+                collide.advance(self)
         if self.rect_position[0] > self.width * 0.85:
             camera.x += 1
 
@@ -58,9 +73,15 @@ class Player(LivingObject):
             camera.x -= 1
 
         #animation 
-       # self.animation_controller.update()
+        self.image = self.animation_controller.update()
+    
+        if self.direction.x < 0:
+            self.image = pygame.transform.flip(self.image, True, False)
     
     def on_collision_enter(self, collision : Ground):
+        pass
+    
+    def on_trigger_enter(self):
         pass
         
     def jump(self):
@@ -68,10 +89,7 @@ class Player(LivingObject):
         self.on_ground = False
     
     def render(self, surface, camera):
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(self.image, self.rect_position)
+        super().render(surface, camera)
         
     @staticmethod
     def instantiate(json: Dict):

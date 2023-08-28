@@ -6,13 +6,8 @@ from time import sleep
 #not import my module
 from camera import camera
 #import module first
-from background import BlcakRectangle # object
+from background import BlcakRectangle
 #import module third
-from layer import Layers, load_game_object
-# object, background(object), ground(object)
-# ui(event, object, sheet(color), animation(object))
-# player(object, animation(object), sheet(color), ground(object))
-
 
 
 class Scene:
@@ -20,12 +15,14 @@ class Scene:
     개임의 맵을 담당함
     """
     def __init__(self, screen : pygame.Surface,
-                layers : Layers):
+                layers):
         
         self.screen = screen
-        global seen
-        seen = screen
         self.layers = layers
+        global seen
+        global layer
+        layer = layers
+        seen = screen
 
         width, self.rect_height = screen.get_size()
         self.rect_width = width // 8
@@ -52,6 +49,7 @@ class Scene:
         json_file :dict = json.loads(file.read())
         file.close()
         objects = load_game_object(json_file)
+        from layer import Layers
         layers = Layers(*objects)
         return Scene(screen, layers)
     
@@ -90,4 +88,19 @@ class Scene:
             self.render()
             self.rects.draw(self.screen)
             pygame.display.flip()
-            sleep(0.01)
+            sleep(0.01)        
+
+from background import * #object
+from ground import * # object
+#import module second
+from ui import * # event, object, sheet(color), animation(object)
+from player import * # object, animation(object), sheet(color), ground(object)
+from enemy import *
+
+def load_game_object(json : dict) -> list[GameObject]:
+    obj = []
+    for name in json.keys():
+        class_object : GameObject = globals()[name]
+        for ject in json[name]:
+            obj.append(class_object.instantiate(ject))
+    return obj

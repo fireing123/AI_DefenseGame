@@ -1,15 +1,27 @@
 
 from typing import Dict
+from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
 from sheet import SpriteSheet
 from animation import AnimationController
+
+group = Group()
 
 class Enemy(LivingObject):
     """
     """
     def __init__(self, name, position):
         super().__init__(name, position)
+        
+    def attack(self, player):
+        pass
+
+    def attack_possible(self, player):
+        pass
+    
+    def advance(self, player):
+        pass
 
 class Soldier(Enemy):
     """
@@ -28,6 +40,10 @@ class Soldier(Enemy):
         )
         self.image : Surface = idle_animation['default']
         self.rect = self.image.get_rect(center=self.rect.center)
+    
+    def advance(self, player):
+        # player 쪽으로 가기
+        pass
         
     def update(self):
         super().update()

@@ -1,7 +1,6 @@
 import pygame
 import color
 #not import my module
-from object import GameObject
 
 
 class BlcakRectangle(pygame.sprite.Sprite):
@@ -14,6 +13,8 @@ class BlcakRectangle(pygame.sprite.Sprite):
         self.image.fill(color.BLACK)
         self.rect = self.image.get_rect()
         self.rect.topright = coordinate
+
+from object import GameObject
 
 class BackGround(GameObject):
     """

@@ -2,12 +2,6 @@ from typing import List
 #not import my module
 from object import GameObject
 #import module first
-from background import * #object
-from ground import * # object
-#import module second
-from ui import * # event, object, sheet(color), animation(object)
-from player import * # object, animation(object), sheet(color), ground(object)
-from enemy import *
 
 
 class Layers:
@@ -18,6 +12,10 @@ class Layers:
     def __init__(self, *objects):
         self.layers : list[list[GameObject]] = [[],[],[],[],[]]
         self.absorb(objects)
+       
+    def remove(self, obj):
+        layer = self.layers[obj.layer_int]
+        layer.remove(obj)
        
     def add(self, game_object: GameObject):
         layer_int = game_object.layer_int
@@ -43,11 +41,3 @@ class Layers:
                 if x.name == name:
                     return x
         return None
-
-def load_game_object(json : dict) -> list[GameObject]:
-    obj = []
-    for name in json.keys():
-        class_object : GameObject = globals()[name]
-        for ject in json[name]:
-            obj.append(class_object.instantiate(ject))
-    return obj

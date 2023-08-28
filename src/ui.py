@@ -118,9 +118,9 @@ class ChatBox(UI):
     
     def update(self):
 
-        gox, goy = self.game_object.rect.topleft
+        gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
-        self.position = (gox + gsx/2, goy - gsy/1.8)
+        self.position = (gox + gsx/3, goy - gsy/3)
         self.text.position = self.position
         x, y = self.position
         self.open_rect.bottomright = x, y + 5
