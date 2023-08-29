@@ -14,6 +14,7 @@ class Shot(MoveObject):
         self.rect = self.image.get_rect()
         self.position = position
         self.direction = pygame.Vector2(*direction)
+        self.gravity = 0.03
         shot_group.add(self)
  
     def update(self):

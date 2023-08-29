@@ -1,4 +1,5 @@
 import pygame
+import math
 from typing import Dict, List
 #not import my module
 import manger
@@ -26,6 +27,7 @@ class Player(LivingObject):
         self.tick = 200
         self.last_update = 0
         
+        
     def player_event(self, event : pygame.event.Event):
         
         if event.type == pygame.KEYDOWN:
@@ -36,29 +38,31 @@ class Player(LivingObject):
             self.keys[event.key] = False
     
     def update(self):  
-        
-        try:
-            if self.keys.get(pygame.K_RIGHT):
-                self.direction.x = self.speed
-            if self.keys.get(pygame.K_LEFT):
-                self.direction.x = -self.speed
-            if self.keys.get(pygame.K_0): 
-                if pygame.time.get_ticks() - self.last_update > self.tick:
-                    self.last_update = pygame.time.get_ticks()
-                    sx, sy = self.position
-                    Shot("shot", (sx, sy-50), pygame.Vector2(100, 5))
-        except KeyError:
-            pass
-         
+
+        if self.keys.get(pygame.K_RIGHT):
+            self.direction.x = self.speed
+        if self.keys.get(pygame.K_LEFT):
+            self.direction.x = -self.speed
+        if self.keys.get(pygame.K_0): 
+            if pygame.time.get_ticks() - self.last_update > self.tick:
+                self.last_update = pygame.time.get_ticks()
+                sx, sy = self.position
+                sped = math.copysign(1, self.direction.x)
+                Shot("shot", (sx, sy-50), pygame.Vector2(50 * sped , 5))
+
         super().update()
-        collision : List[Enemy] = self.recognition_range.collideobjectsall(enemy_shot_group)
 
-
+        for enemy in enemy_group.sprites():
+            if self.recognition_range.colliderect(enemy.rect):
+                enemy.attack(self)
+                
+        collision = pygame.sprite.spritecollide(self, enemy_shot_group, False)
+        
         for collide in collision:
-            if collide.attack_possible(self):
-                collide.attack(self)
-            else:
-                collide.advance(self)
+            self.hp -= collide.power
+            collide.remove()
+            
+            
         if self.rect_position[0] > self.width * 0.85:
             camera.x += 1
 

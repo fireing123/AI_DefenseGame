@@ -10,7 +10,9 @@ enemy_group = Group()
 class Enemy(LivingObject):
     """
     """
-    
+    def __init__(self, name, position, xml_path):
+        super().__init__(name, position, xml_path)
+        enemy_group.add(self)
     
     def update(self):
         super().update()
@@ -22,11 +24,6 @@ class Enemy(LivingObject):
     def attack(self, player):
         pass
 
-    def attack_possible(self, player):
-        pass
-    
-    def advance(self, player):
-        pass
 
 class Soldier(Enemy):
     """
@@ -38,14 +35,16 @@ class Soldier(Enemy):
         self.hp = 100
         self.max_hp = 100
         self.speed = 2
-        
-
-    def advance(self, player):
-        # player 쪽으로 가기
-        pass
+        self.tick = 200
+        self.last_update = 0
         
     def update(self):
         super().update()
+    
+    def attack(self, player):
+        if pygame.time.get_ticks() - self.last_update > self.tick:
+            self.last_update = pygame.time.get_ticks()
+                
     
     def render(self, surface: Surface, camera: tuple):
         cx, cy = camera
