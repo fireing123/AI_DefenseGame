@@ -1,7 +1,10 @@
 import pygame
+import manger
 from pygame.sprite import Sprite
 from pygame import Surface, Rect
 from typing import Dict
+from animation import AnimationController, Animation
+from sheet import SpriteSheet # color
 
 class Component:
     
@@ -82,10 +85,11 @@ class GameObject(Sprite, Component):
         self.rect = Rect(0,0,0,0)
         self.name = name
         self.__position = Position(0, 0)
+        self.visible = True
+        manger.layers.add(self)
 
     def remove(self):
-        from scene import layer
-        layer.remove(self)
+        manger.layers.remove(self)
         del self
 
     def child_position(self):
@@ -106,6 +110,7 @@ class GameObject(Sprite, Component):
         self.child_position()
 
     def render(self, surface: Surface, camera: tuple):
+        if not self.visible: return
         cx, cy = camera
         rx, ry = self.rect.topleft
         self.rect_position = rx - cx, ry - cy
@@ -114,8 +119,7 @@ class GameObject(Sprite, Component):
     @staticmethod
     def instantiate(json : Dict):
         pass
-
-from ground import group as ground_group
+        
 
 class MoveObject(GameObject):
     
@@ -134,7 +138,7 @@ class MoveObject(GameObject):
         
         self.direction.y += self.gravity
         
-        self.collision = pygame.sprite.spritecollide(self, ground_group, False)
+        self.collision = pygame.sprite.spritecollide(self, manger.ground_group, False)
         if self.mass:
             self.direction.x *= self.friction
             if abs(self.direction.x) < 0.1:
@@ -182,18 +186,26 @@ class MoveObject(GameObject):
     def add_force(self, x=0, y=0):
         self.direction += pygame.Vector2((x, y))
 
-#from ui import HPbar
-
 class LivingObject(MoveObject):
     
-    def __init__(self, name, position):
+    def __init__(self, name, position, xml_path):
         super().__init__(name)
         self.__hp : int = 100
         self.max_hp : int = 100
         self.recognition_range = pygame.Rect((0, 0), (200, 100))
-        self.position = position
-        #self.hp_bar = HPbar(name+"hpBar", self)
         
+        idle_animation = SpriteSheet(xml_path)
+        self.animation_controller = AnimationController(
+            Animation(idle_animation.items()),
+            self
+        )
+        self.image : pygame.Surface = idle_animation['default']
+        self.rect = self.image.get_rect(center=self.rect.center)
+        
+        self.position = position
+        
+        self.hp_bar = manger.HPbar(name+"hpBar", self)
+
         
     def update(self):
         super().update()

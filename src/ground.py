@@ -3,24 +3,19 @@ import pygame
 #not import my module
 from object import GameObject
 
-group = pygame.sprite.Group()
+ground_group = pygame.sprite.Group()
 
 class Ground(GameObject):
     
     def __init__(self, position, scale):
         super().__init__("ground")
-        group.add(self)
+        ground_group.add(self)
         self.image = pygame.Surface(scale)
         self.rect = self.image.get_rect()
         self.position = position
         
     def render(self, surface, camera):
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(self.image, self.rect_position)
-    
-    
+        super().render(surface, camera)
     
     @staticmethod
     def instantiate(json: Dict):

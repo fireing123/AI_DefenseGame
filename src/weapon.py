@@ -10,8 +10,11 @@ class Weapon(GameObject):
     
     
 class Shot(MoveObject):
-    def __init__(self, name, direction):
+    def __init__(self, name, position, direction):
         super().__init__(name)
+        self.image = pygame.image.load('src/image/shot.png')
+        self.rect = self.image.get_rect()
+        self.position = position
         self.direction = pygame.Vector2(*direction)
  
     def update(self):
@@ -20,12 +23,9 @@ class Shot(MoveObject):
         angle_rad = math.atan2(*self.direction)
         self.angle = math.degrees(angle_rad)
         if self.collision:
-            pass
+            self.remove()
         
     def render(self, surface: pygame.Surface, camera: tuple):
         rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = rotated_image.get_rect(center=self.rect.center)
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(self.image, self.rect_position)
+        super().render(surface, camera)

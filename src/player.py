@@ -5,8 +5,7 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from animation import AnimationController, Animation # object
-from sheet import SpriteSheet # color
+
 from ground import Ground # object
 from enemy import group as enemy_group, Enemy
 
@@ -16,24 +15,14 @@ class Player(LivingObject):
     
     
     def __init__(self, name: str, position):
-        super().__init__(name, position)
+        super().__init__(name, position, 'src/image/ai/config.xml')
         self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
         self.health = 100
-
         self.speed = 2
-
         self.jump_speed = -6
-        idle_animation = SpriteSheet('src/image/ai/config.xml')
-        self.animation_controller = AnimationController(
-            Animation(idle_animation.items()),
-            self
-        )
-        self.image : pygame.Surface = idle_animation['ai_1']
-        self.rect = self.image.get_rect(center=self.rect.center)
         self.mass = True
-
         self.on_ground = True
         
     def player_event(self, event : pygame.event.Event):
@@ -53,7 +42,8 @@ class Player(LivingObject):
             if self.keys[pygame.K_LEFT]:
                 self.direction.x = -self.speed
             if self.keys[pygame.K_0]: 
-                self.remove()
+                from weapon import Shot
+                Shot("shot", self.position, pygame.Vector2(5, 0))
         except KeyError:
             pass
          
@@ -77,12 +67,6 @@ class Player(LivingObject):
     
         if self.direction.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
-    
-    def on_collision_enter(self, collision : Ground):
-        pass
-    
-    def on_trigger_enter(self):
-        pass
         
     def jump(self):
         self.add_force(0, self.jump_speed)

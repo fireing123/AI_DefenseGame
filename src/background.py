@@ -31,11 +31,8 @@ class BackGround(GameObject):
         self.rect = self.image.get_rect()
     
     def render(self, surface, camera):
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(self.image, self.rect_position)
-       
+        super().render(surface, camera)
+        
     @staticmethod 
     def instantiate(json):
         return BackGround(json['position'], json['image'])

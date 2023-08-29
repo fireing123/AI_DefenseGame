@@ -11,8 +11,6 @@ group = Group()
 class Enemy(LivingObject):
     """
     """
-    def __init__(self, name, position):
-        super().__init__(name, position)
         
     def attack(self, player):
         pass
@@ -29,18 +27,12 @@ class Soldier(Enemy):
     """
     
     def __init__(self, name, position):
-        super().__init__(name, position)
+        super().__init__(name, position, 'src/image/soldier/config.xml')
         self.hp = 100
         self.max_hp = 100
         self.speed = 2
-        idle_animation = SpriteSheet('src/image/soldier/config.xml')
-        self.animation_controller = AnimationController(
-            idle_animation.items(),
-            self
-        )
-        self.image : Surface = idle_animation['default']
-        self.rect = self.image.get_rect(center=self.rect.center)
-    
+        
+
     def advance(self, player):
         # player 쪽으로 가기
         pass

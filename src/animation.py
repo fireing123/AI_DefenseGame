@@ -2,9 +2,6 @@ import json
 from pygame import Surface
 from pygame import time
 from typing import Dict, List
-#not import my module
-from object import GameObject
-
 
 class Animation:
     
@@ -56,7 +53,7 @@ class AnimationText:
 class AnimationController:
     
     def __init__(self, idle_animation, game_object):
-        self.game_object : GameObject = game_object
+        self.game_object = game_object
         self.str : str = 'default'
         self.animation : Dict[Surface] = {}
         self.animation[self.str] = idle_animation
