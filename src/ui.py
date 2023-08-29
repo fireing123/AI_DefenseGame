@@ -67,7 +67,6 @@ class Button(UI):
 
     def render(self, surface, camera):
         surface.blit(self.image, self.rect)
-        self.text.render(surface, camera)
             
     def update(self):
         if self.is_click():
@@ -95,7 +94,7 @@ class ChatBox(UI):
     def say(self, chat, time):
         self.time = time
         self.visible = True
-        gox, goy = self.game_object.rect_position
+        gox, goy = self.game_object.position
         gsx, gsy = self.game_object.image.get_size()
         self.position = (gox + gsx/2, goy - gsy/1.8)
         self.text.position = self.position
@@ -197,9 +196,19 @@ class AnimaText(UI):
     
     def render(self, surface, camera):
         for image, rect in self.images:
-            surface.blit(image, rect)
+            cx, cy = camera
+            rx, ry = rect.topleft
+            rect_position = rx - cx, ry - cy
+            surface.blit(image, rect_position)
 
-    def child_position(self):
+    @property
+    def position(self):
+        return tuple(self.__position)
+
+    @position.setter
+    def position(self, value):
+        self.__position = Position(*value)
+        self.rect.center = self.position
         self.local_position = self.position
         for text, rect in self.images:
             x, _ = text.get_size()

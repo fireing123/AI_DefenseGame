@@ -1,21 +1,18 @@
 import pygame
 import math
-from object import GameObject
 from object import MoveObject
-
-class Weapon(GameObject):
-    def __init__(self, name: str):
-        super().__init__(name)
     
-    
+shot_group = pygame.sprite.Group()
     
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
         super().__init__(name)
         self.image = pygame.image.load('src/image/shot.png')
+        self.power = 10
         self.rect = self.image.get_rect()
         self.position = position
         self.direction = pygame.Vector2(*direction)
+        shot_group.add(self)
  
     def update(self):
         super().update()

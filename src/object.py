@@ -92,9 +92,7 @@ class GameObject(Sprite, Component):
         manger.layers.remove(self)
         del self
 
-    def child_position(self):
-        pass
-        
+
     @property
     def position(self):
         return tuple(self.__position)
@@ -107,7 +105,6 @@ class GameObject(Sprite, Component):
     def position(self, value):
         self.__position = Position(*value)
         self.rect.center = self.position
-        self.child_position()
 
     def render(self, surface: Surface, camera: tuple):
         if not self.visible: return
@@ -204,7 +201,7 @@ class LivingObject(MoveObject):
         
         self.position = position
         
-        self.hp_bar = manger.HPbar(name+"hpBar", self)
+        #self.hp_bar = manger.HPbar(name+"hpBar", self)
 
         
     def update(self):
@@ -226,6 +223,7 @@ class LivingObject(MoveObject):
         self.__hp = value
         if self.__hp < 0:
             self.destroy()
+            self.remove()
         elif self.max_hp < self.hp:
             self.__hp = self.max_hp
             
@@ -242,4 +240,3 @@ class LivingObject(MoveObject):
         self.__position = Position(*value)
         self.rect.center = self.position
         self.recognition_range.center = self.position
-        self.child_position()

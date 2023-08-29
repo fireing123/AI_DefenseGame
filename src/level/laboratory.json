@@ -22,7 +22,7 @@
     "Player" : [
         {
             "name" : "super",
-            "position" : [500, 200]
+            "position" : [400, 200]
         }
     ],
     "Soldier" : [

@@ -1,16 +1,23 @@
-
+import pygame
 from typing import Dict
 from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
-from sheet import SpriteSheet
-from animation import AnimationController
+from weapon import shot_group
 
-group = Group()
+enemy_group = Group()
 
 class Enemy(LivingObject):
     """
     """
+    
+    
+    def update(self):
+        super().update()
+        collision = pygame.sprite.spritecollide(self, shot_group, True)
+        for collide in collision:
+            self.hp -= collide.power
+            collide.remove()
         
     def attack(self, player):
         pass

@@ -5,9 +5,8 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-
-from ground import Ground # object
-from enemy import group as enemy_group, Enemy
+from weapon import Shot
+from enemy import enemy_group, Enemy
 
 
 class Player(LivingObject):
@@ -24,6 +23,8 @@ class Player(LivingObject):
         self.jump_speed = -6
         self.mass = True
         self.on_ground = True
+        self.tick = 200
+        self.last_update = 0
         
     def player_event(self, event : pygame.event.Event):
         
@@ -37,18 +38,19 @@ class Player(LivingObject):
     def update(self):  
         
         try:
-            if self.keys[pygame.K_RIGHT]:
+            if self.keys.get(pygame.K_RIGHT):
                 self.direction.x = self.speed
-            if self.keys[pygame.K_LEFT]:
+            if self.keys.get(pygame.K_LEFT):
                 self.direction.x = -self.speed
-            if self.keys[pygame.K_0]: 
-                from weapon import Shot
-                Shot("shot", self.position, pygame.Vector2(5, 0))
+            if self.keys.get(pygame.K_0): 
+                if pygame.time.get_ticks() - self.last_update > self.tick:
+                    self.last_update = pygame.time.get_ticks()
+                    sx, sy = self.position
+                    Shot("shot", (sx, sy-50), pygame.Vector2(100, 5))
         except KeyError:
             pass
          
         super().update()
-
         collision : List[Enemy] = pygame.sprite.spritecollide(self, enemy_group, False)
 
         for collide in collision:
@@ -72,9 +74,6 @@ class Player(LivingObject):
         self.add_force(0, self.jump_speed)
         self.on_ground = False
     
-    def render(self, surface, camera):
-        super().render(surface, camera)
-        
     @staticmethod
     def instantiate(json: Dict):
         return Player("super", json['position'])
