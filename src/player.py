@@ -5,7 +5,7 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from weapon import Shot
+from weapon import Shot, enemy_shot_group
 from enemy import enemy_group, Enemy
 
 
@@ -51,7 +51,8 @@ class Player(LivingObject):
             pass
          
         super().update()
-        collision : List[Enemy] = pygame.sprite.spritecollide(self, enemy_group, False)
+        collision : List[Enemy] = self.recognition_range.collideobjectsall(enemy_shot_group)
+
 
         for collide in collision:
             if collide.attack_possible(self):

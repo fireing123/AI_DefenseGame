@@ -4,6 +4,8 @@ from object import MoveObject
     
 shot_group = pygame.sprite.Group()
     
+enemy_shot_group = pygame.sprite.Group()
+    
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
         super().__init__(name)
