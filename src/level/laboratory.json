@@ -22,46 +22,35 @@
     "Player" : [
         {
             "name" : "super",
-            "position" : [500, 200]
+            "position" : [400, 200]
         }
     ],
     "Soldier" : [
         {
             "name" : "enemy",
-            "position" : [500, 200]
+            "position" : [800, 200]
+        }
+    ],
+    "Core" : [
+        {
+            "name" : "core",
+            "position" : [1200, 400]
         }
     ],
     "Button": [
         {
             "name" : "enter",
-            "position": [300, 200],
-            "scale" : [300, 150],
+            "position": [100, 50],
+            "scale" : [100, 50],
             "defaultImage" : "src/image/default.jpg",
             "clickImage" : "src/image/click.jpg",
             "text" : {
                 "name" : "butext",
-                "position" : [300, 200],
-                "scale" : 75,
+                "position" : [100, 50],
+                "scale" : 25,
                 "string" : "hello",
                 "color" : [255, 255, 255]
             }
-        }
-    ],
-    "Text": [
-        {
-            "name" : "text",
-            "position" : [500, 200],
-            "scale" : 50,
-            "string" : "ddd",
-            "color" : [220, 255, 255]
-        }
-    ],
-    "AnimaText": [
-        {
-            "name" : "ani",
-            "position" : [600, 200],
-            "scale" : 50,
-            "color" : [0,0,0]
         }
     ],
     "ChatBox" : [

@@ -1,7 +1,11 @@
 import pygame
+import math
+import manger
 from pygame.sprite import Sprite
 from pygame import Surface, Rect
 from typing import Dict
+from animation import AnimationController, Animation
+from sheet import SpriteSheet # color
 
 class Component:
     
@@ -68,13 +72,12 @@ class Position:
         
     def __idiv__(self, other):
         return self.__div__(other)
-    
+ 
 class GameObject(Sprite, Component):
     """
     기본 오브젝트
     """
-    
-            
+          
     def __init__(self, name : str, layer = 3):
         Sprite.__init__(self)
         self.rect_position = (0, 0)
@@ -83,10 +86,14 @@ class GameObject(Sprite, Component):
         self.rect = Rect(0,0,0,0)
         self.name = name
         self.__position = Position(0, 0)
+        self.visible = True
+        manger.layers.add(self)
 
-    def child_position(self):
-        pass
-        
+    def remove(self):
+        manger.layers.remove(self)
+        self = None
+
+
     @property
     def position(self):
         return tuple(self.__position)
@@ -99,24 +106,29 @@ class GameObject(Sprite, Component):
     def position(self, value):
         self.__position = Position(*value)
         self.rect.center = self.position
-        self.child_position()
+
+    def render(self, surface: Surface, camera: tuple):
+        if not self.visible: return
+        cx, cy = camera
+        rx, ry = self.rect.topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(self.image, self.rect_position)
 
     @staticmethod
     def instantiate(json : Dict):
         pass
-
-from ground import group as ground_group
+        
 
 class MoveObject(GameObject):
     
     
     def __init__(self, name):
         super().__init__(name)
-        self.gravity = 0.08
+        self.gravity = 0.15
         self.direction = pygame.Vector2(0, 0)
         self.on_ground = False
         self.friction = 0.5
-        self.air_friction = 0.6
+        self.air_friction = 0.9
         self.mass = True
         self.rect : pygame.Rect
         
@@ -124,13 +136,12 @@ class MoveObject(GameObject):
         
         self.direction.y += self.gravity
         
-        self.collision = pygame.sprite.spritecollide(self, ground_group, False)
+        self.collision = pygame.sprite.spritecollide(self, manger.ground_group, False)
         if self.mass:
             self.direction.x *= self.friction
             if abs(self.direction.x) < 0.1:
-                self.direction.x = 0
-                
-        if self.collision != None:
+                self.direction.x = 0    
+        if self.collision:
             for collide in self.collision:
                 cox, coy = collide.rect.size
                 cox, coy = cox/2, coy/2
@@ -175,19 +186,68 @@ class MoveObject(GameObject):
 
 class LivingObject(MoveObject):
     
-    def __init__(self, name, position):
+    def __init__(self, name, position, xml_path):
         super().__init__(name)
-        self.__health = 100
+        self.__hp : int = 100
+        self.max_hp : int = 100
+        self.recognition_range = pygame.Rect((0, 0), (400, 400))
+        
+        idle_animation = SpriteSheet(xml_path)
+        self.animation_controller = AnimationController(
+            Animation(idle_animation.items()),
+            self
+        )
+        self.image : pygame.Surface = idle_animation['default']
+        self.rect = self.image.get_rect(center=self.rect.center)
+        self.motion = 'idle'
         self.position = position
+        
+        self.hp_bar = manger.HPbar(name+"hpBar", self)
+        
+    def update(self):
+        super().update()
+        if self.motion == 'forward':
+            pass
+        if self.motion == 'backward':
+            self.image = pygame.transform.flip(self.image, True, False)
+        if self.motion == 'backpedal':
+            pass 
+        
     def destroy(self):
-        pass
+        self.hp_bar.remove()
+        del self.hp_bar
+     
+    def look_angle(self, vector):
+        a_vector = pygame.Vector2(*self.position)
+        b_vector = pygame.Vector2(*vector)
+        distance = a_vector.distance_to(b_vector)
+        vec = b_vector - a_vector
+        vec /= distance
+        return vec
      
     @property
-    def health(self):
-        return self.__health
+    def hp(self):
+        return self.__hp
     
-    @health.setter
-    def health(self, value):
-        self.__health = value
-        if self.__health < 0:
+    @hp.setter
+    def hp(self, value):
+        self.__hp = value
+        if self.__hp < 0:
             self.destroy()
+            self.remove()
+        elif self.max_hp < self.hp:
+            self.__hp = self.max_hp
+            
+    @property
+    def position(self):
+        return tuple(self.__position)
+
+    @position.getter
+    def position(self):
+        return tuple(self.__position)
+    
+    @position.setter
+    def position(self, value):
+        self.__position = Position(*value)
+        self.rect.center = self.position
+        self.recognition_range.center = self.position

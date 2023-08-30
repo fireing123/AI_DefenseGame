@@ -1,56 +1,73 @@
 import pygame
-from typing import Dict
+import math
+from typing import Dict, List
 #not import my module
 import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from animation import AnimationController # object
-from sheet import SpriteSheet # color
-from ground import group, Ground # object
-
-
+from weapon import AllyShot, enemy_shot_group, EnemyShot
+from enemy import enemy_group
+from ui import HPbar
 
 class Player(LivingObject):
     
     
     
     def __init__(self, name: str, position):
-        super().__init__(name, position)
-
+        super().__init__(name, position, 'src/image/ai/config.xml')
+        self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
-        self.health = 100
-
+        self.hp = 100
+        self.max_hp = 100
         self.speed = 2
-
         self.jump_speed = -6
-        idle_animation = SpriteSheet('src/image/ai/config.xml')
-        self.animation_controller = AnimationController(
-            idle_animation.items(),
-            self
-        )
-        self.image : pygame.Surface = idle_animation['ai_1']
-        self.rect = self.image.get_rect(center=self.rect.center)
-        self.mass = False
-
+        self.mass = True
         self.on_ground = True
+        self.tick = 200
+        self.last_update = 0
+        
         
     def player_event(self, event : pygame.event.Event):
+        
         if event.type == pygame.KEYDOWN:
-            self.mass = False
-            if event.key == pygame.K_RIGHT:
-                self.add_force(self.speed)
-            elif event.key == pygame.K_LEFT:
-                self.add_force(-self.speed)
-            if event.key == pygame.K_SPACE and self.on_ground:
+            self.keys[event.key] = True
+            if event.key == pygame.K_UP and self.on_ground:
                 self.jump()
-        if event.type == pygame.KEYUP and event.key in [pygame.K_RIGHT, pygame.K_LEFT]:
-            self.mass = True
+        elif event.type == pygame.KEYUP:
+            self.keys[event.key] = False
     
-    def update(self):   
+    def update(self):  
+        
+        if self.keys.get(pygame.K_RIGHT):
+            self.direction.x = self.speed
+            self.motion = 'forward'
+        if self.keys.get(pygame.K_LEFT):
+            self.direction.x = -self.speed
+            self.motion = 'backward'
+        if self.keys.get(pygame.K_0): 
+            if pygame.time.get_ticks() - self.last_update > self.tick:
+                self.last_update = pygame.time.get_ticks()
+                self.motion = 'jump'
+                sx, sy = self.position
+                sped = math.copysign(1, self.direction.x)
+                AllyShot("shot", (sx, sy-50), pygame.Vector2(5 * sped , 0))
+        
+        
         super().update()
-
+        
+        for enemy in enemy_group.sprites():
+            if self.recognition_range.colliderect(enemy.recognition_range):
+                enemy.attack(self)
+                
+        collision = pygame.sprite.spritecollide(self, enemy_shot_group, True)
+        
+        for collide in collision:
+            self.hp -= collide.power
+            collide.remove()
+            
+            
         if self.rect_position[0] > self.width * 0.85:
             camera.x += 1
 
@@ -58,21 +75,16 @@ class Player(LivingObject):
             camera.x -= 1
 
         #animation 
-       # self.animation_controller.update()
+        self.image = self.animation_controller.update()
     
-    def on_collision_enter(self, collision : Ground):
-        pass
+        if self.direction.x < 0:
+            self.image = pygame.transform.flip(self.image, True, False)
+
         
     def jump(self):
         self.add_force(0, self.jump_speed)
         self.on_ground = False
     
-    def render(self, surface, camera):
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(self.image, self.rect_position)
-        
     @staticmethod
     def instantiate(json: Dict):
         return Player("super", json['position'])

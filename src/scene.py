@@ -1,33 +1,18 @@
-import json
 import pygame
 from pygame.sprite import Group
 from typing import List
 from time import sleep
-#not import my module
-from camera import camera
+import manger
 #import module first
-from background import BlcakRectangle # object
+from background import BlcakRectangle
 #import module third
-from layer import Layers, load_game_object
-# object, background(object), ground(object)
-# ui(event, object, sheet(color), animation(object))
-# player(object, animation(object), sheet(color), ground(object))
-
-
 
 class Scene:
     """
     개임의 맵을 담당함
     """
-    def __init__(self, screen : pygame.Surface,
-                layers : Layers):
-        
-        self.screen = screen
-        global seen
-        seen = screen
-        self.layers = layers
-
-        width, self.rect_height = screen.get_size()
+    def __init__(self):
+        width, self.rect_height = manger.screen.get_size()
         self.rect_width = width // 8
         self.nomarl_width = self.rect_width
         self.rects = Group()
@@ -36,25 +21,6 @@ class Scene:
             rect.image.set_alpha(0)
             self.rect_width += self.nomarl_width
             self.rects.add(rect)
-        
-
-
-    def update(self):
-        self.layers.in_layer_turning('update')
-        
-    def render(self):
-        self.layers.in_layer_turning('render', self.screen, camera.vector)
-    
-    
-    @staticmethod
-    def load(path, screen : pygame.Surface):
-        file = open(path, 'r')
-        json_file :dict = json.loads(file.read())
-        file.close()
-        objects = load_game_object(json_file)
-        layers = Layers(*objects)
-        return Scene(screen, layers)
-    
     
     def darkening_scene(self):
 
@@ -67,8 +33,8 @@ class Scene:
                 alpha = j.image.get_alpha()
                 alpha += 8
                 j.image.set_alpha(alpha)
-            self.render()
-            self.rects.draw(self.screen)
+            manger.layers.render()
+            self.rects.draw(manger.screen)
             pygame.display.flip()
             sleep(0.01)
 
@@ -86,8 +52,8 @@ class Scene:
                 alpha = j.image.get_alpha()
                 j.image.set_alpha(alpha - 8)
             
-            self.update()
-            self.render()
-            self.rects.draw(self.screen)
+            manger.layers.update()
+            manger.layers.render()
+            self.rects.draw(manger.screen)
             pygame.display.flip()
             sleep(0.01)

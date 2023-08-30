@@ -1,15 +1,33 @@
-
+import pygame
 from typing import Dict
+from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
-from sheet import SpriteSheet
-from animation import AnimationController
+from weapon import shot_group, EnemyShot
+
+enemy_group = Group()
 
 class Enemy(LivingObject):
     """
     """
-    def __init__(self, name, position):
-        super().__init__(name, position)
+    def __init__(self, name, position, xml_path):
+        super().__init__(name, position, xml_path)
+        enemy_group.add(self)
+    
+    def update(self):
+        super().update()
+        collision = pygame.sprite.spritecollide(self, shot_group, True)
+        for collide in collision:
+            self.hp -= collide.power
+            collide.remove()
+        
+    def attack(self, player):
+        pass
+    
+    def remove(self):
+        enemy_group.remove(self)
+        super().remove()
+
 
 class Soldier(Enemy):
     """
@@ -17,19 +35,27 @@ class Soldier(Enemy):
     """
     
     def __init__(self, name, position):
-        super().__init__(name, position)
-        self.health = 100
+        super().__init__(name, position, 'src/image/soldier/config.xml')
+        self.hp = 100
+        self.max_hp = 100
         self.speed = 2
-        idle_animation = SpriteSheet('src/image/soldier/config.xml')
-        self.animation_controller = AnimationController(
-            idle_animation.items(),
-            self
-        )
-        self.image : Surface = idle_animation['default']
-        self.rect = self.image.get_rect(center=self.rect.center)
+        self.tick = 200
+        self.last_update = 0
         
     def update(self):
         super().update()
+        
+        collision = pygame.sprite.spritecollide(self, shot_group, False)
+        
+        for collide in collision:
+            self.hp -= collide.power
+            collide.remove()
+    
+    def attack(self, player):
+        if pygame.time.get_ticks() - self.last_update > self.tick:
+            self.last_update = pygame.time.get_ticks()
+            angle = self.look_angle(player.position)
+            EnemyShot("ew", self.rect_position, angle * 5)
     
     def render(self, surface: Surface, camera: tuple):
         cx, cy = camera

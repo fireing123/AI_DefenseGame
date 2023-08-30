@@ -67,7 +67,6 @@ class Button(UI):
 
     def render(self, surface, camera):
         surface.blit(self.image, self.rect)
-        self.text.render(surface, camera)
             
     def update(self):
         if self.is_click():
@@ -95,7 +94,7 @@ class ChatBox(UI):
     def say(self, chat, time):
         self.time = time
         self.visible = True
-        gox, goy = self.game_object.rect_position
+        gox, goy = self.game_object.position
         gsx, gsy = self.game_object.image.get_size()
         self.position = (gox + gsx/2, goy - gsy/1.8)
         self.text.position = self.position
@@ -118,9 +117,9 @@ class ChatBox(UI):
     
     def update(self):
 
-        gox, goy = self.game_object.rect.topleft
+        gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
-        self.position = (gox + gsx/2, goy - gsy/1.8)
+        self.position = (gox + gsx/3, goy - gsy/3)
         self.text.position = self.position
         x, y = self.position
         self.open_rect.bottomright = x, y + 5
@@ -197,9 +196,19 @@ class AnimaText(UI):
     
     def render(self, surface, camera):
         for image, rect in self.images:
-            surface.blit(image, rect)
+            cx, cy = camera
+            rx, ry = rect.topleft
+            rect_position = rx - cx, ry - cy
+            surface.blit(image, rect_position)
 
-    def child_position(self):
+    @property
+    def position(self):
+        return tuple(self.__position)
+
+    @position.setter
+    def position(self, value):
+        self.__position = Position(*value)
+        self.rect.center = self.position
         self.local_position = self.position
         for text, rect in self.images:
             x, _ = text.get_size()
@@ -276,36 +285,15 @@ class Text(UI):
         self.rect = self.image.get_rect(center=self.position)
         
 class HPbar(UI):
-    def __init__(self, name, position : tuple[int, int],image : str,hp,maxhp):
-        super(UI).__init__(name)
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.position = position
-        self.hp = hp
-        self.maxhp = maxhp
+    def __init__(self, name, game_object):
+        super().__init__(name)
+        self.game_object = game_object
+        self.rect = pygame.Rect(0, 0, 100, 20)
+        self.position = game_object.position
 
     def render(self,screen, camera):
-        self.x , self.y = self.position[0], self.position[1] # x,y좌표 설정
-
-        pygame.draw.rect(screen,(30,30,30),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,self.rect[2]*0.9,10])
-        pygame.draw.rect(screen,(255,0,0),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,((self.rect[2]*0.9)/self.maxhp)*self.hp,10])
-
-#HPbar코드 입맛대로 뜯어고치고 재탕해둘것
-
-# 거의 방치됨
-        
-#HP = u'▀▀▀▀▀▀▀▀▀▀'
-#class EnemyHP(Sprite):
-#    
-#    def __init__(self, position, rot, scale, 
-#                image_path, hp,
-#                parent, children=[]):
-#        new_child = children
-#        new_hp = hp
-#        pos_x, pos_y = parent.position
-#        _ , height = parent.scale
-#        new_hp['postion'] = (pos_x, pos_y + height//2 + 25)
-#
-#        new_child.append(Text.load(new_hp))
-#        super().__init__(position, rot, scale, parent, new_child)
-#        self.image = image_load_to_scale(image_path)
+        x , y = self.game_object.rect.center # x,y좌표 설정
+        cx, cy = camera
+        px, py = x- cx, y - cy - 5
+        pygame.draw.rect(screen,(30,30,30),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])
+        pygame.draw.rect(screen,(255,0,0),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,((self.rect[2]*0.9)/self.game_object.max_hp)*self.game_object.hp,10])
