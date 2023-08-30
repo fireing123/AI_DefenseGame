@@ -5,20 +5,26 @@ from typing import Dict, List
 
 class Animation:
     
-    def __init__(self, surface_list : List[Surface], tick=500):
+    def __init__(self, surface_list : List[Surface], loop=True, tick=500):
         self.index = 0
         self.tick = tick
         self.image_list : List[Surface] = surface_list
         self.len = len(self.image_list)
         self.last_update : int = 0
+        self.is_loop = loop
     
     def update(self) -> Surface:
         if time.get_ticks() - self.last_update > self.tick:
             if self.len <= self.index:
-                return self.image_list[self.index-1]
+                if self.is_loop:
+                    self.index = 1
+                else:
+                    return self.image_list[self.index-1], True
+                self.last_update = time.get_ticks()
+                return self.image_list[self.index-1], False
             self.last_update = time.get_ticks()
             self.index += 1
-        return self.image_list[self.index-1]
+        return self.image_list[self.index-1], False
 
 
 class AnimationText:
@@ -54,16 +60,20 @@ class AnimationController:
     
     def __init__(self, idle_animation, game_object):
         self.game_object = game_object
-        self.str : str = 'default'
+        self.motion : str = 'default'
         self.animation : Dict[Surface] = {}
-        self.animation[self.str] = idle_animation
+        self.animation[self.motion] = idle_animation
     
     def add(self, str, value) -> None:
         self.animation[str] = value
     
     def update(self):
-        animation = self.animation[self.str]
-        return animation.update()
+        animation = self.animation[self.motion]
+        image, is_end = animation.update()
+        if is_end:
+            self.motion = 'idle'
+            self.game_object.motion = 'idle'
+        return image
     
     def animation_translate(self, next_animation : str) -> None:
         self.str = next_animation

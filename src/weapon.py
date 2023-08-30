@@ -45,10 +45,15 @@ class AllyShot(Shot):
         super().__init__(name, position, direction)
         shot_group.add(self)
         
+    def remove(self):
+        shot_group.remove(self)
+        return super().remove()
+        
 class EnemyShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
-        
-    def render(self, surface, camera: tuple):
-        super().render(surface, camera)
         enemy_shot_group.add(self)
+
+    def remove(self):
+        enemy_shot_group.remove(self)
+        return super().remove()

@@ -1,7 +1,7 @@
 import pygame
 # not import my module
 import manger
-
+import sys
 
 from gametime import GameTime
 from camera import camera
@@ -18,6 +18,7 @@ class AiDefenseGame:
         self.width,self.height  = size
         self.scene = Scene()
         self.is_running = True
+        self.game_over = False
 
     def start(self):
         
@@ -34,7 +35,10 @@ class AiDefenseGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
 
-    def main(self):
+    def prologue(self):
+        pass
+
+    def laboratory(self):
         
         self.scene.darkening_scene()
         manger.Layers.load('src/level/laboratory.json')
@@ -44,6 +48,8 @@ class AiDefenseGame:
         ani = manger.layers.get_game_object_by_name("chatbox")
         button.event.add_lisner(lambda : ani.say('src/chat/test.json', 5))
         ani.set_player(player)
+        core = manger.layers.get_game_object_by_name("core")
+        core.set_world(self)
         #end
         self.scene.brightening_scene()
 
@@ -59,9 +65,61 @@ class AiDefenseGame:
             manger.layers.render()
             pygame.display.update()
             
-        pygame.quit() # 종료
+        if self.game_over:
+            pygame.quit()
+            sys.exit()
+            
+    def mountain(self):
+        self.scene.darkening_scene()
+        manger.Layers.load('src/level/laboratory.json')
+        # awake
         
+        #end
+        self.scene.brightening_scene()
+        
+        while self.is_running:
+            GameTime.tick(60)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.is_running = False
+
+            manger.layers.update()
+            manger.layers.render()
+            pygame.display.update()
+            
+        if self.game_over:
+            pygame.quit()
+            sys.exit()
+        
+    def last_laboratory(self):
+        self.scene.darkening_scene()
+        manger.Layers.load('src/level/laboratory.json')
+        # awake
+        
+        #end
+        self.scene.brightening_scene()
+        
+        while self.is_running:
+            GameTime.tick(60)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.is_running = False
+
+            manger.layers.update()
+            manger.layers.render()
+            pygame.display.update()
+            
+        if self.game_over:
+            pygame.quit()
+            sys.exit()
+                
 if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
     game.start()
-    game.main()
+    game.prologue()
+    game.laboratory()
+    game.mountain()
+    game.last_laboratory()
+    pygame.quit() # 종료

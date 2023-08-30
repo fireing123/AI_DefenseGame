@@ -39,19 +39,22 @@ class Player(LivingObject):
             self.keys[event.key] = False
     
     def update(self):  
-
+        
         if self.keys.get(pygame.K_RIGHT):
             self.direction.x = self.speed
+            self.motion = 'forward'
         if self.keys.get(pygame.K_LEFT):
             self.direction.x = -self.speed
+            self.motion = 'backward'
         if self.keys.get(pygame.K_0): 
             if pygame.time.get_ticks() - self.last_update > self.tick:
                 self.last_update = pygame.time.get_ticks()
+                self.motion = 'jump'
                 sx, sy = self.position
                 sped = math.copysign(1, self.direction.x)
                 AllyShot("shot", (sx, sy-50), pygame.Vector2(5 * sped , 0))
-                EnemyShot("e", (sx-200, sy+100), pygame.Vector2(5, 0 ))
-
+        
+        
         super().update()
         
         for enemy in enemy_group.sprites():

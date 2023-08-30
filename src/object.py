@@ -124,11 +124,11 @@ class MoveObject(GameObject):
     
     def __init__(self, name):
         super().__init__(name)
-        self.gravity = 0.08
+        self.gravity = 0.15
         self.direction = pygame.Vector2(0, 0)
         self.on_ground = False
-        self.friction = 0.6
-        self.air_friction = 0.99
+        self.friction = 0.5
+        self.air_friction = 0.9
         self.mass = True
         self.rect : pygame.Rect
         
@@ -199,15 +199,19 @@ class LivingObject(MoveObject):
         )
         self.image : pygame.Surface = idle_animation['default']
         self.rect = self.image.get_rect(center=self.rect.center)
-        
+        self.motion = 'idle'
         self.position = position
         
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
     def update(self):
         super().update()
-        if self.direction.x > 0:
+        if self.motion == 'forward':
+            pass
+        if self.motion == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
+        if self.motion == 'backpedal':
+            pass 
         
     def destroy(self):
         self.hp_bar.remove()

@@ -10,6 +10,7 @@ from ground import * # object
 from ui import * # event, object, sheet(color), animation(object)
 from player import * # object, animation(object), sheet(color), ground(object)
 from enemy import *    
+from core import *
 
 def load_game_object(json):
     for name in json.keys():

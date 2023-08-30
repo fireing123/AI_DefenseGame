@@ -31,6 +31,12 @@
             "position" : [800, 200]
         }
     ],
+    "Core" : [
+        {
+            "name" : "core",
+            "position" : [1200, 400]
+        }
+    ],
     "Button": [
         {
             "name" : "enter",

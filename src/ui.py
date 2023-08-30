@@ -292,30 +292,8 @@ class HPbar(UI):
         self.position = game_object.position
 
     def render(self,screen, camera):
-        x , y = self.game_object.rect.topleft # x,y좌표 설정
+        x , y = self.game_object.rect.center # x,y좌표 설정
         cx, cy = camera
         px, py = x- cx, y - cy - 5
         pygame.draw.rect(screen,(30,30,30),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])
         pygame.draw.rect(screen,(255,0,0),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,((self.rect[2]*0.9)/self.game_object.max_hp)*self.game_object.hp,10])
-
-# game_object 에 health max_health 속성 추가, 그러니 생성할때 game_object 를 인수로
-
-#HPbar코드 입맛대로 뜯어고치고 재탕해둘것
-
-# 거의 방치됨
-        
-#HP = u'▀▀▀▀▀▀▀▀▀▀'
-#class EnemyHP(Sprite):
-#    
-#    def __init__(self, position, rot, scale, 
-#                image_path, hp,
-#                parent, children=[]):
-#        new_child = children
-#        new_hp = hp
-#        pos_x, pos_y = parent.position
-#        _ , height = parent.scale
-#        new_hp['postion'] = (pos_x, pos_y + height//2 + 25)
-#
-#        new_child.append(Text.load(new_hp))
-#        super().__init__(position, rot, scale, parent, new_child)
-#        self.image = image_load_to_scale(image_path)
