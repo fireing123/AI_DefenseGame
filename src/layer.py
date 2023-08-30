@@ -14,7 +14,10 @@ class Layers:
        
     def remove(self, obj):
         layer = self.layers[obj.layer_int]
-        layer.remove(obj)
+        try:
+            layer.remove(obj)
+        except ValueError:
+            print("not in list")
        
     def add(self, game_object):
         layer_int = game_object.layer_int

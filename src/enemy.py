@@ -3,7 +3,7 @@ from typing import Dict
 from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
-from weapon import shot_group
+from weapon import shot_group, EnemyShot
 
 enemy_group = Group()
 
@@ -23,6 +23,10 @@ class Enemy(LivingObject):
         
     def attack(self, player):
         pass
+    
+    def remove(self):
+        enemy_group.remove(self)
+        super().remove()
 
 
 class Soldier(Enemy):
@@ -40,11 +44,18 @@ class Soldier(Enemy):
         
     def update(self):
         super().update()
+        
+        collision = pygame.sprite.spritecollide(self, shot_group, False)
+        
+        for collide in collision:
+            self.hp -= collide.power
+            collide.remove()
     
     def attack(self, player):
         if pygame.time.get_ticks() - self.last_update > self.tick:
             self.last_update = pygame.time.get_ticks()
-                
+            angle = self.look_angle(player.position)
+            EnemyShot("ew", self.rect_position, angle * 5)
     
     def render(self, surface: Surface, camera: tuple):
         cx, cy = camera

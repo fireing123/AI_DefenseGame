@@ -1,4 +1,5 @@
 import pygame
+import math
 import manger
 from pygame.sprite import Sprite
 from pygame import Surface, Rect
@@ -90,7 +91,7 @@ class GameObject(Sprite, Component):
 
     def remove(self):
         manger.layers.remove(self)
-        del self
+        self = None
 
 
     @property
@@ -189,7 +190,7 @@ class LivingObject(MoveObject):
         super().__init__(name)
         self.__hp : int = 100
         self.max_hp : int = 100
-        self.recognition_range = pygame.Rect((0, 0), (200, 100))
+        self.recognition_range = pygame.Rect((0, 0), (400, 400))
         
         idle_animation = SpriteSheet(xml_path)
         self.animation_controller = AnimationController(
@@ -201,18 +202,24 @@ class LivingObject(MoveObject):
         
         self.position = position
         
-        #self.hp_bar = manger.HPbar(name+"hpBar", self)
-
+        self.hp_bar = manger.HPbar(name+"hpBar", self)
         
     def update(self):
         super().update()
-        
         if self.direction.x > 0:
             self.image = pygame.transform.flip(self.image, True, False)
-            
         
     def destroy(self):
-        pass
+        self.hp_bar.remove()
+        del self.hp_bar
+     
+    def look_angle(self, vector):
+        a_vector = pygame.Vector2(*self.position)
+        b_vector = pygame.Vector2(*vector)
+        distance = a_vector.distance_to(b_vector)
+        vec = b_vector - a_vector
+        vec /= distance
+        return vec
      
     @property
     def hp(self):

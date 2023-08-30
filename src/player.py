@@ -6,9 +6,9 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from weapon import Shot, enemy_shot_group
-from enemy import enemy_group, Enemy
-
+from weapon import AllyShot, enemy_shot_group, EnemyShot
+from enemy import enemy_group
+from ui import HPbar
 
 class Player(LivingObject):
     
@@ -19,7 +19,8 @@ class Player(LivingObject):
         self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
-        self.health = 100
+        self.hp = 100
+        self.max_hp = 100
         self.speed = 2
         self.jump_speed = -6
         self.mass = True
@@ -48,15 +49,16 @@ class Player(LivingObject):
                 self.last_update = pygame.time.get_ticks()
                 sx, sy = self.position
                 sped = math.copysign(1, self.direction.x)
-                Shot("shot", (sx, sy-50), pygame.Vector2(50 * sped , 5))
+                AllyShot("shot", (sx, sy-50), pygame.Vector2(5 * sped , 0))
+                EnemyShot("e", (sx-200, sy+100), pygame.Vector2(5, 0 ))
 
         super().update()
-
+        
         for enemy in enemy_group.sprites():
-            if self.recognition_range.colliderect(enemy.rect):
+            if self.recognition_range.colliderect(enemy.recognition_range):
                 enemy.attack(self)
                 
-        collision = pygame.sprite.spritecollide(self, enemy_shot_group, False)
+        collision = pygame.sprite.spritecollide(self, enemy_shot_group, True)
         
         for collide in collision:
             self.hp -= collide.power
@@ -74,6 +76,7 @@ class Player(LivingObject):
     
         if self.direction.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
+
         
     def jump(self):
         self.add_force(0, self.jump_speed)

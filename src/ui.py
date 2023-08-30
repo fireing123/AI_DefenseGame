@@ -285,19 +285,18 @@ class Text(UI):
         self.rect = self.image.get_rect(center=self.position)
         
 class HPbar(UI):
-    def __init__(self, name, position : tuple[int, int],image : str,hp,maxhp):
-        super(UI).__init__(name)
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.position = position
-        self.hp = hp
-        self.maxhp = maxhp
+    def __init__(self, name, game_object):
+        super().__init__(name)
+        self.game_object = game_object
+        self.rect = pygame.Rect(0, 0, 100, 20)
+        self.position = game_object.position
 
     def render(self,screen, camera):
-        self.x , self.y = self.position[0], self.position[1] # x,y좌표 설정
-
-        pygame.draw.rect(screen,(30,30,30),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,self.rect[2]*0.9,10])
-        pygame.draw.rect(screen,(255,0,0),[self.position[0]-(self.rect[2]*0.9)/2,self.position[1]-self.rect[3]/2-20,((self.rect[2]*0.9)/self.maxhp)*self.hp,10])
+        x , y = self.game_object.rect.topleft # x,y좌표 설정
+        cx, cy = camera
+        px, py = x- cx, y - cy - 5
+        pygame.draw.rect(screen,(30,30,30),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])
+        pygame.draw.rect(screen,(255,0,0),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,((self.rect[2]*0.9)/self.game_object.max_hp)*self.game_object.hp,10])
 
 # game_object 에 health max_health 속성 추가, 그러니 생성할때 game_object 를 인수로
 
