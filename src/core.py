@@ -15,8 +15,8 @@ class Core(GameObject):
         
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         
         collision = pygame.sprite.spritecollide(self, shot_group, True)
         

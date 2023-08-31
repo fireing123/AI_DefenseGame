@@ -21,7 +21,7 @@ class Player(LivingObject):
         self.width, self.height = get_width/2, get_height/2
         self.hp = 100
         self.max_hp = 100
-        self.speed = 2
+        self.speed = 2.6
         self.jump_speed = -6
         self.mass = True
         self.on_ground = True
@@ -38,24 +38,25 @@ class Player(LivingObject):
         elif event.type == pygame.KEYUP:
             self.keys[event.key] = False
     
-    def update(self):  
+    def update(self, mod):  
         
-        if self.keys.get(pygame.K_RIGHT):
-            self.direction.x = self.speed
-            self.motion = 'forward'
-        if self.keys.get(pygame.K_LEFT):
-            self.direction.x = -self.speed
-            self.motion = 'backward'
-        if self.keys.get(pygame.K_0): 
-            if pygame.time.get_ticks() - self.last_update > self.tick:
-                self.last_update = pygame.time.get_ticks()
-                self.motion = 'jump'
-                sx, sy = self.position
-                sped = math.copysign(1, self.direction.x)
-                AllyShot("shot", (sx, sy-50), pygame.Vector2(5 * sped , 0))
-        
-        
-        super().update()
+        if mod == 'play':
+            if self.keys.get(pygame.K_RIGHT):
+                self.direction.x = self.speed
+                self.motion = 'forward'
+            if self.keys.get(pygame.K_LEFT):
+                self.direction.x = -self.speed
+                self.motion = 'backward'
+            if self.keys.get(pygame.K_0): 
+                if pygame.time.get_ticks() - self.last_update > self.tick:
+                    self.last_update = pygame.time.get_ticks()
+                    self.motion = 'jump'
+                    sx, sy = self.position
+                    AllyShot("shot", (sx, sy-50), self.look_mouse() * 5)
+        elif mod == 'story':
+            pass
+
+        super().update(mod)
         
         for enemy in enemy_group.sprites():
             if self.recognition_range.colliderect(enemy.recognition_range):
@@ -79,6 +80,12 @@ class Player(LivingObject):
     
         if self.direction.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
+
+    def look_mouse(self):
+        cx, cy = manger.camera.vector
+        mx, my = pygame.mouse.get_pos()
+        mouse_look = self.look_angle((mx + cx, my + cy))
+        return mouse_look
 
     def destroy(self):
         super().destroy()

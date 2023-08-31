@@ -14,8 +14,8 @@ class Enemy(LivingObject):
         super().__init__(name, position, xml_path)
         enemy_group.add(self)
     
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         collision = pygame.sprite.spritecollide(self, shot_group, True)
         for collide in collision:
             self.hp -= collide.power
@@ -42,8 +42,8 @@ class Soldier(Enemy):
         self.tick = 200
         self.last_update = 0
         
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         
         collision = pygame.sprite.spritecollide(self, shot_group, False)
         

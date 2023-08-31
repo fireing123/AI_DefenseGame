@@ -16,15 +16,15 @@ class Shot(MoveObject):
         self.power = 10
         self.rect = self.image.get_rect()
         self.position = position
-        self.direction = pygame.Vector2(*direction)
+        self.direction = direction
         self.gravity = 0.01
         self.air_friction = 1
  
     def destroy(self):
         pass
  
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         
         angle_rad = math.atan2(*self.direction)
         self.angle = math.degrees(angle_rad)

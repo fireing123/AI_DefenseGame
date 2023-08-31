@@ -19,7 +19,7 @@ class Component:
     def on_mouse_pressed(self):
         pass
     
-    def update(self):
+    def update(self, mod):
         pass
     
     def render(self, surface : Surface, camera : tuple):
@@ -132,7 +132,7 @@ class MoveObject(GameObject):
         self.mass = True
         self.rect : pygame.Rect
         
-    def update(self):
+    def update(self, mod):
         
         self.direction.y += self.gravity
         
@@ -204,8 +204,8 @@ class LivingObject(MoveObject):
         
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         if self.motion == 'forward':
             pass
         if self.motion == 'backward':
@@ -224,7 +224,7 @@ class LivingObject(MoveObject):
         vec = b_vector - a_vector
         vec /= distance
         return vec
-     
+
     @property
     def hp(self):
         return self.__hp
