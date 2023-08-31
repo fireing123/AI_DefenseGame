@@ -11,6 +11,8 @@ from scene import Scene
 class AiDefenseGame:
     
     def __init__(self, size=(500, 500)):
+        manger.game = self
+        self.game_over = False
         pygame.init()
         pygame.display.set_caption("AI Defense Game")
         manger.screen = pygame.display.set_mode(size)
@@ -18,7 +20,6 @@ class AiDefenseGame:
         self.width,self.height  = size
         self.scene = Scene()
         self.is_running = True
-        self.game_over = False
 
     def start(self):
         
@@ -66,6 +67,7 @@ class AiDefenseGame:
             pygame.display.update()
             
         if self.game_over:
+            print("game_over")
             pygame.quit()
             sys.exit()
             

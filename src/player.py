@@ -80,6 +80,10 @@ class Player(LivingObject):
         if self.direction.x < 0:
             self.image = pygame.transform.flip(self.image, True, False)
 
+    def destroy(self):
+        super().destroy()
+        manger.game.game_over = True
+        manger.game.is_running = False
         
     def jump(self):
         self.add_force(0, self.jump_speed)
