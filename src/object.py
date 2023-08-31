@@ -131,6 +131,7 @@ class MoveObject(GameObject):
         self.air_friction = 0.9
         self.mass = True
         self.rect : pygame.Rect
+        self.move = ""
         
     def update(self, mod):
         
@@ -157,12 +158,12 @@ class MoveObject(GameObject):
                         self.direction.y = self.cut_plus(self.direction.y)
                     elif self.rect.left > collide.rect.right - 5:
                         #right
-                        self.rect.left = collide.rect.right
-                        self.direction.x = 0
+                        self.rect.left = collide.rect.right - 1
+                        self.direction.x = self.cut_plus(self.direction.x)
                     elif self.rect.right < collide.rect.left + 5:
                         #left
-                        self.rect.right = collide.rect.left
-                        self.direction.x = 0
+                        self.rect.right = collide.rect.left + 1
+                        self.direction.x = self.cut_minus(self.direction.x)
                 self.on_collision_enter(collide)
         else:
             self.friction = self.air_friction
@@ -199,19 +200,31 @@ class LivingObject(MoveObject):
         )
         self.image : pygame.Surface = idle_animation['default']
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.motion = 'idle'
+        self.status = 'idle'
         self.position = position
-        
+
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
     def update(self, mod):
+        
         super().update(mod)
-        if self.motion == 'forward':
-            pass
-        if self.motion == 'backward':
+        
+        if self.direction.y < 0:
+            self.status = 'jump'
+        elif self.direction.y > 1:
+            self.status = 'fall'
+        else:
+            if self.direction.x != 0:
+                self.status = 'run'
+                if self.direction.x > 0:
+                    self.move = 'forward'
+                elif self.direction.x < 0 :
+                    self.move = 'backward'
+            else:
+                self.status = 'idle'
+
+        if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
-        if self.motion == 'backpedal':
-            pass 
         
     def destroy(self):
         self.hp_bar.remove()

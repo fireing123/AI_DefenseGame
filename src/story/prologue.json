@@ -1,0 +1,9 @@
+{
+    "story" : [
+        {
+            "object" : "player",
+            "motion" : "m 3",
+            "wait" : 100
+        }
+    ]
+}

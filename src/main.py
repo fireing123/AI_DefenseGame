@@ -37,7 +37,12 @@ class AiDefenseGame:
                     waiting = False
 
     def prologue(self):
-        pass
+        self.scene.darkening_scene()
+        manger.Layers.load('src/level/prologue.json')
+        manger.layers.mod = 'story'
+        
+        #end
+        self.scene.brightening_scene()
 
     def laboratory(self):
         
@@ -120,7 +125,7 @@ class AiDefenseGame:
 if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
     game.start()
-    game.prologue()
+    #game.prologue()
     game.laboratory()
     game.mountain()
     game.last_laboratory()

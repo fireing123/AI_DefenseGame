@@ -75,7 +75,7 @@ class Button(UI):
     
 
 class ChatBox(UI):
-    def __init__(self, name, position, text):
+    def __init__(self, name, text):
         super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
         self.visible = False
@@ -84,7 +84,6 @@ class ChatBox(UI):
         self.arrow_image = chat_box['arrow']
         self.close_image = chat_box['close']
         self.text = AnimaText.instantiate(text)
-        self.position = position
         self.open_rect = self.open_image.get_rect()
         self.arrow_rect = self.arrow_image.get_rect()
         self.close_rect = self.close_image.get_rect()
@@ -142,7 +141,6 @@ class ChatBox(UI):
     def instantiate(json: Dict):
         return ChatBox(
             json['name'],
-            json['position'],
             json['AnimaText']
         )
  

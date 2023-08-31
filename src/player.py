@@ -25,7 +25,7 @@ class Player(LivingObject):
         self.jump_speed = -6
         self.mass = True
         self.on_ground = True
-        self.tick = 200
+        self.tick = 1000
         self.last_update = 0
         
         
@@ -56,6 +56,8 @@ class Player(LivingObject):
         elif mod == 'story':
             pass
 
+        self.image = self.animation_controller.update()
+        
         super().update(mod)
         
         for enemy in enemy_group.sprites():
@@ -76,10 +78,6 @@ class Player(LivingObject):
             camera.x -= 1
 
         #animation 
-        self.image = self.animation_controller.update()
-    
-        if self.direction.x < 0:
-            self.image = pygame.transform.flip(self.image, True, False)
 
     def look_mouse(self):
         cx, cy = manger.camera.vector
