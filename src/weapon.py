@@ -19,7 +19,8 @@ class Shot(MoveObject):
         self.direction = direction
         self.gravity = 0.01
         self.air_friction = 1
- 
+        self.angle = 0
+    
     def destroy(self):
         pass
  
@@ -48,7 +49,14 @@ class AllyShot(Shot):
     def remove(self):
         shot_group.remove(self)
         return super().remove()
-        
+ 
+class BombShot(AllyShot):
+    def on_collision_enter(self, collision):
+        for r in range(1, 13):
+            rr = r*30
+            vec = pygame.Vector2(5, 0).rotate_rad(rr)
+            AllyShot(f'{rr}/[{self.name}]', self.position, vec)
+ 
 class EnemyShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)

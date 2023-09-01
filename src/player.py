@@ -6,7 +6,7 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from weapon import AllyShot, enemy_shot_group, EnemyShot
+from weapon import AllyShot, enemy_shot_group, BombShot
 from enemy import enemy_group
 from ui import HPbar
 
@@ -52,7 +52,7 @@ class Player(LivingObject):
                     self.last_update = pygame.time.get_ticks()
                     self.motion = 'jump'
                     sx, sy = self.position
-                    AllyShot("shot", (sx, sy-50), self.look_mouse() * 5)
+                    BombShot("shot", (sx, sy-50), self.look_mouse() * 5)
         elif mod == 'story':
             pass
 
