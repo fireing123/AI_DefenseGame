@@ -191,6 +191,8 @@ class LivingObject(MoveObject):
         super().__init__(name)
         self.__hp : int = 100
         self.max_hp : int = 100
+        self.invulnerable = 500
+        self.last_invulerable = self.invulnerable
         self.recognition_range = pygame.Rect((0, 0), (400, 400))
         
         idle_animation = SpriteSheet(xml_path)
@@ -244,7 +246,13 @@ class LivingObject(MoveObject):
     
     @hp.setter
     def hp(self, value):
-        self.__hp = value
+        if self.__hp > value:
+            # attacked if pygame.time.get_ticks() - self.last_update > self.tick:
+            if pygame.time.get_ticks() - self.last_invulerable > self.invulnerable:
+                self.last_invulerable = pygame.time.get_ticks()
+                self.__hp = value
+        else:
+            self.__hp = value
         if self.__hp < 0:
             self.destroy()
             self.remove()

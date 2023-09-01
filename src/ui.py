@@ -127,7 +127,6 @@ class ChatBox(UI):
         self.close_rect.bottomleft = self.box_rect.bottomright
         gx, gy = self.position
         self.arrow_rect.midtop = gx + 20, gy
-        self.text.update(mod)
     
     def render(self, surface : pygame.Surface, camera):
         if not self.visible: return
@@ -135,7 +134,6 @@ class ChatBox(UI):
         surface.blit(self.box_image, self.box_rect)
         surface.blit(self.close_image, self.close_rect)
         surface.blit(self.arrow_image, self.arrow_rect)
-        self.text.render(surface, camera)
     
     @staticmethod
     def instantiate(json: Dict):

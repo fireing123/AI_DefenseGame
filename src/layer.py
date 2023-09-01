@@ -50,7 +50,7 @@ class Layers:
             for x in y:
                 if x.name == name:
                     return x
-        return None
+        raise KeyError(f'not has layer in {name}')
     
     @staticmethod
     def load(path):

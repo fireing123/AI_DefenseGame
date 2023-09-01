@@ -12,7 +12,7 @@ from ui import HPbar
 
 class Player(LivingObject):
     
-    
+
     
     def __init__(self, name: str, position):
         super().__init__(name, position, 'src/image/ai/config.xml')
@@ -47,7 +47,7 @@ class Player(LivingObject):
             if self.keys.get(pygame.K_LEFT):
                 self.direction.x = -self.speed
                 self.motion = 'backward'
-            if self.keys.get(pygame.K_0): 
+            if self.keys.get(pygame.K_0):
                 if pygame.time.get_ticks() - self.last_update > self.tick:
                     self.last_update = pygame.time.get_ticks()
                     self.motion = 'jump'
@@ -96,4 +96,4 @@ class Player(LivingObject):
     
     @staticmethod
     def instantiate(json: Dict):
-        return Player("super", json['position'])
+        return Player(json['name'], json['position'])

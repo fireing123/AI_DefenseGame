@@ -5,7 +5,7 @@ import sys
 
 from gametime import GameTime
 from camera import camera
-
+from story import Story
 from scene import Scene
 
 class AiDefenseGame:
@@ -16,7 +16,7 @@ class AiDefenseGame:
         pygame.init()
         pygame.display.set_caption("AI Defense Game")
         manger.screen = pygame.display.set_mode(size)
-        manger.Layers.load('src\level\main.json')
+        manger.Layers.load('src/level/main.json')
         self.width,self.height  = size
         self.scene = Scene()
         self.is_running = True
@@ -40,20 +40,37 @@ class AiDefenseGame:
         self.scene.darkening_scene()
         manger.Layers.load('src/level/prologue.json')
         manger.layers.mod = 'story'
-        
+        stroy = Story('src/story/prologue.json', self)
+        player = manger.layers.get_game_object_by_name('player')
+        ani = manger.layers.get_game_object_by_name("playerChat")
+        ani.set_player(player)
         #end
         self.scene.brightening_scene()
+        stroy.update()
+        while self.is_running:
+            GameTime.tick(60)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.is_running = False
+            
+                    
 
+            manger.layers.update()
+            manger.layers.render()
+            pygame.display.update()
+        self.is_running = True
     def laboratory(self):
         
         self.scene.darkening_scene()
         manger.Layers.load('src/level/laboratory.json')
+        manger.layers.mod = 'play'
         # awake
         button = manger.layers.get_game_object_by_name("enter")
         player = manger.layers.get_game_object_by_name('super')
         ani = manger.layers.get_game_object_by_name("chatbox")
-        button.event.add_lisner(lambda : ani.say('src/chat/test.json', 5))
         ani.set_player(player)
+        button.event.add_lisner(lambda : ani.say('src/chat/test.json', 5))
         core = manger.layers.get_game_object_by_name("core")
         core.set_world(self)
         #end
@@ -125,8 +142,9 @@ class AiDefenseGame:
 if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
     game.start()
-    #game.prologue()
+    game.prologue()
     game.laboratory()
-    game.mountain()
-    game.last_laboratory()
+    #game.mountain()
+    #game.last_laboratory()
     pygame.quit() # 종료
+    sys.exit()
