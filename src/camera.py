@@ -1,7 +1,18 @@
+import threading
+
 class Camera: 
     def __init__(self):
         self.__x = 0
         self.__y = 0
+    
+    def shiver(self):
+        shiver = threading.Thread(target=real_shiver)
+        shiver.start()        
+        def real_shiver():
+            pass
+        
+    def move_camera(self, x, y):
+        self.vector = (x, y)
     
     @property
     def vector(self):

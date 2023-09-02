@@ -12,6 +12,7 @@ class Enemy(LivingObject):
     """
     def __init__(self, name, position, xml_path):
         super().__init__(name, position, xml_path)
+        self.exp_ponit = 50
         enemy_group.add(self)
     
     def update(self, mod):
@@ -22,8 +23,8 @@ class Enemy(LivingObject):
             collide.remove()
         
     def destroy(self):
-        super().destroy(mnhj )
-        enemy_death.invoke()
+        super().destroy()
+        enemy_death.invoke(self.exp_ponit)
         
     def attack(self, player):
         pass

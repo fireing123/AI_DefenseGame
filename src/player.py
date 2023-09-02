@@ -6,9 +6,9 @@ import manger
 from object import LivingObject
 from camera import camera
 #import module first
-from weapon import AllyShot, enemy_shot_group, BombShot
+from weapon import enemy_shot_group, BombShot
 from enemy import enemy_group
-from ui import HPbar
+from manger import enemy_death
 
 class Player(LivingObject):
     
@@ -27,7 +27,13 @@ class Player(LivingObject):
         self.on_ground = True
         self.tick = 1000
         self.last_update = 0
+        self.exp = 0
+        self.lv = 0
+        enemy_death.add_lisner(self.add_exp)
         
+    def add_exp(self, value):
+        self.exp += value
+        self.lv = self.exp ** 0.4 * 49/50+1
         
     def player_event(self, event : pygame.event.Event):
         

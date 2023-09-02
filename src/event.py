@@ -18,8 +18,8 @@ class Event:
     def add_lisner(self, function : Callable):
         self.lisners.append(function)
     
-    def invoke(self):
+    def invoke(self, *arg):
         for function in self.lisners:
-            function()
+            function(*arg)
             
 enemy_death = Event()
