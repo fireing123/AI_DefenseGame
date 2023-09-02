@@ -4,7 +4,7 @@ from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
 from weapon import shot_group, EnemyShot
-
+from event import enemy_death
 enemy_group = Group()
 
 class Enemy(LivingObject):
@@ -20,6 +20,10 @@ class Enemy(LivingObject):
         for collide in collision:
             self.hp -= collide.power
             collide.remove()
+        
+    def destroy(self):
+        super().destroy(mnhj )
+        enemy_death.invoke()
         
     def attack(self, player):
         pass

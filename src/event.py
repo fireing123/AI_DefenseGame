@@ -21,3 +21,5 @@ class Event:
     def invoke(self):
         for function in self.lisners:
             function()
+            
+enemy_death = Event()

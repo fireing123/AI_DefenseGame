@@ -35,7 +35,7 @@ class Shot(MoveObject):
         
     def render(self, surface: pygame.Surface, camera: tuple):
         rotated_image = pygame.transform.rotate(self.image, self.angle)
-        self.rect = rotated_image.get_rect(center=self.rect.center)
+        #self.rect = rotated_image.get_rect(center=self.rect.center)
         cx, cy = camera
         rx, ry = self.rect.topleft
         self.rect_position = rx - cx, ry - cy
@@ -51,6 +51,11 @@ class AllyShot(Shot):
         return super().remove()
  
 class BombShot(AllyShot):
+    def __init__(self, name, position, direction):
+        super().__init__(name, position, direction)
+        self.rect = pygame.Rect(0, 0, 10, 20)
+        self.position = position
+    
     def on_collision_enter(self, collision):
         for r in range(1, 13):
             rr = r*30
