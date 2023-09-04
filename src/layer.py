@@ -20,6 +20,11 @@ class Layers:
         except ValueError:
             print("not in list")
        
+    def clear(self):
+        for y in self.layers:
+            for x in y:
+                self.remove(x)
+       
     def add(self, game_object):
         layer_int = game_object.layer_int
         layer = self.layers[layer_int]
@@ -54,6 +59,10 @@ class Layers:
     
     @staticmethod
     def load(path):
+        try:
+            manger.layers.clear()
+        except:
+            print("new load!")
         manger.layers = Layers()
         file = open(path, 'r')
         json_file :dict = json.loads(file.read())

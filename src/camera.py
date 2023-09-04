@@ -1,4 +1,5 @@
 import threading
+from time import sleep
 
 class Camera: 
     def __init__(self):
@@ -6,11 +7,14 @@ class Camera:
         self.__y = 0
     
     def shiver(self):
+        def real_shiver():
+            self.vector = (self.x + 5, self.y + 5)
+            sleep(0.2)
+            self.vector = (self.x - 5, self.y - 5)
+            sleep(0.2)
         shiver = threading.Thread(target=real_shiver)
         shiver.start()        
-        def real_shiver():
-            pass
-        
+            
     def move_camera(self, x, y):
         self.vector = (x, y)
     

@@ -17,6 +17,11 @@ class Ground(GameObject):
     def render(self, surface, camera):
         super().render(surface, camera)
     
+    def remove(self):
+        print("hello")
+        ground_group.remove(self)        
+        super().remove()
+        
     @staticmethod
     def instantiate(json: Dict):
         return Ground(

@@ -5,6 +5,7 @@ from pygame import Surface
 from object import LivingObject
 from weapon import shot_group, EnemyShot
 from event import enemy_death
+
 enemy_group = Group()
 
 class Enemy(LivingObject):
@@ -22,15 +23,11 @@ class Enemy(LivingObject):
             self.hp -= collide.power
             collide.remove()
         
-    def destroy(self):
-        super().destroy()
-        enemy_death.invoke(self.exp_ponit)
-        
     def attack(self, player):
         pass
     
     def remove(self):
-        enemy_group.remove(self)
+        enemy_death.invoke(self.exp_ponit)
         super().remove()
 
 

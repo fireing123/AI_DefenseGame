@@ -20,7 +20,7 @@ class AiDefenseGame:
         self.width,self.height  = size
         self.scene = Scene()
         self.is_running = True
-
+        self.checkpoint = None
     def start(self):
         
         waiting = True
@@ -28,6 +28,21 @@ class AiDefenseGame:
             manger.layers.update()
             manger.layers.render()
             pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting = False
+                    self.is_running = False
+                    break
+                if event.type == pygame.KEYUP:
+                    waiting = False
+    
+    def over(self):
+        manger.screen.fill((0, 0, 0))
+        manger.layers.clear()
+        manger.Text("over", (500, 400), 50, "Game Over", (255, 255, 255))
+        manger.layers.render()
+        pygame.display.flip()
+        while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     waiting = False
@@ -60,8 +75,9 @@ class AiDefenseGame:
             manger.layers.render()
             pygame.display.update()
         self.is_running = True
+
     def laboratory(self):
-        
+        self.checkpoint = 'lab'
         self.scene.darkening_scene()
         manger.Layers.load('src/level/laboratory.json')
         manger.layers.mod = 'play'
@@ -89,9 +105,7 @@ class AiDefenseGame:
             pygame.display.update()
             
         if self.game_over:
-            print("game_over")
-            pygame.quit()
-            sys.exit()
+            raise Exception("GameOver")
             
     def mountain(self):
         self.scene.darkening_scene()
@@ -141,10 +155,16 @@ class AiDefenseGame:
                 
 if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
-    game.start()
-    game.prologue()
-    game.laboratory()
-    #game.mountain()
-    #game.last_laboratory()
+    while True:
+        try:
+            if game.checkpoint == None:
+                game.start()
+                game.prologue()
+            if game.checkpoint == 'lab':
+                game.laboratory()
+            #game.mountain()
+            #game.last_laboratory()
+        except Exception:
+            game.over()
     pygame.quit() # 종료
     sys.exit()

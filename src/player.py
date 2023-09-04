@@ -29,6 +29,8 @@ class Player(LivingObject):
         self.last_update = 0
         self.exp = 0
         self.lv = 0
+        self.is_on = False
+        self.is_pressing = False
         enemy_death.add_lisner(self.add_exp)
         
     def add_exp(self, value):
@@ -39,8 +41,6 @@ class Player(LivingObject):
         
         if event.type == pygame.KEYDOWN:
             self.keys[event.key] = True
-            if event.key == pygame.K_UP and self.on_ground:
-                self.jump()
         elif event.type == pygame.KEYUP:
             self.keys[event.key] = False
     
@@ -53,12 +53,30 @@ class Player(LivingObject):
             if self.keys.get(pygame.K_LEFT):
                 self.direction.x = -self.speed
                 self.motion = 'backward'
-            if self.keys.get(pygame.K_0):
+            if self.keys.get(pygame.K_UP) and self.on_ground:
+                self.jump()
+                self.motion = 'jump'
+            mouse_press = pygame.mouse.get_pressed()[0]
+
+            if mouse_press:
+                self.is_on = not self.is_pressing
+            self.is_pressing = mouse_press
+            
+            if self.is_on:
                 if pygame.time.get_ticks() - self.last_update > self.tick:
                     self.last_update = pygame.time.get_ticks()
-                    self.motion = 'jump'
                     sx, sy = self.position
-                    BombShot("shot", (sx, sy-50), self.look_mouse() * 5)
+                    BombShot("shot", (sx, sy-50), self.look_mouse()*10)
+            if self.rect_position[0] > self.width * 0.9:
+                camera.x += 1
+            if self.rect_position[0] < self.width * 0.25:
+                camera.x -= 1
+
+            if self.rect_position[1] > self.height * 0.9:
+                camera.y += 1
+
+            if self.rect_position[1] < self.height * 0.25:
+                camera.y -= 1
         elif mod == 'story':
             pass
 
@@ -77,13 +95,7 @@ class Player(LivingObject):
             collide.remove()
             
             
-        if self.rect_position[0] > self.width * 0.85:
-            camera.x += 1
-
-        if self.rect_position[0] < self.width * 0.25:
-            camera.x -= 1
-
-        #animation 
+        
 
     def look_mouse(self):
         cx, cy = manger.camera.vector
@@ -92,7 +104,6 @@ class Player(LivingObject):
         return mouse_look
 
     def destroy(self):
-        super().destroy()
         manger.game.game_over = True
         manger.game.is_running = False
         

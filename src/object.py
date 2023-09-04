@@ -90,6 +90,7 @@ class GameObject(Sprite, Component):
         manger.layers.add(self)
 
     def remove(self):
+        Sprite().remove(*self.groups())
         manger.layers.remove(self)
         self = None
 
@@ -227,10 +228,11 @@ class LivingObject(MoveObject):
 
         if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
-        
-    def destroy(self):
+     
+    def remove(self):
         self.hp_bar.remove()
         del self.hp_bar
+        super().remove()
      
     def look_angle(self, vector):
         a_vector = pygame.Vector2(*self.position)
