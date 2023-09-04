@@ -28,13 +28,12 @@ class AiDefenseGame:
         pygame.display.set_caption("AI Defense Game")
         manger.screen = pygame.display.set_mode(size)
         manger.scene = Scene()
-        manger.Layers.load('src/level/main.json')
         self.width,self.height  = size
-
         self.is_running = True
         self.checkpoint = None
+    
+    @world('story', None, 'src/level/main.json')
     def start(self):
-        
         waiting = True
         while waiting:
             manger.layers.update()
@@ -94,12 +93,6 @@ class AiDefenseGame:
 
     @world('play', 'lab', 'src/level/laboratory.json')
     def laboratory(self):
-<<<<<<< Updated upstream
-        self.scene.darkening_scene()
-        manger.Layers.load('src/level/laboratory.json')
-        manger.layers.mod = 'play'
-=======
->>>>>>> Stashed changes
         # awake
         button = manger.layers.get_game_object_by_name("enter")
         player = manger.layers.get_game_object_by_name('super')

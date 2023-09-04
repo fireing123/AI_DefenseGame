@@ -5,7 +5,7 @@ from scene import Scene
 
 screen : pygame.Surface
 scene : Scene
-layers : Layers
+layers = Layers()
 
 enemy_death = Event()
 
