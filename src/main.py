@@ -8,6 +8,17 @@ from camera import camera
 from story import Story
 from scene import Scene
 
+def world(type, checkpoint, world_path):
+    def real_world(func):
+        def wrapper(self, *args, **kwargs):
+            self.checkpoint = checkpoint
+            manger.scene.darkening_scene()
+            manger.layers.load(world_path)
+            manger.layers.mod = type
+            func(self, *args, **kwargs)
+        return wrapper
+    return real_world
+
 class AiDefenseGame:
     
     def __init__(self, size=(500, 500)):
@@ -16,9 +27,10 @@ class AiDefenseGame:
         pygame.init()
         pygame.display.set_caption("AI Defense Game")
         manger.screen = pygame.display.set_mode(size)
+        manger.scene = Scene()
         manger.Layers.load('src/level/main.json')
         self.width,self.height  = size
-        self.scene = Scene()
+
         self.is_running = True
         self.checkpoint = None
     def start(self):
@@ -51,10 +63,8 @@ class AiDefenseGame:
                     waiting = False
         self.is_running = True
 
+    @world('story', None, 'src/level/prologue.json')
     def prologue(self):
-        self.scene.darkening_scene()
-        manger.Layers.load('src/level/prologue.json')
-        manger.layers.mod = 'story'
         stroy = Story('src/story/prologue.json', self)
         player = manger.layers.get_game_object_by_name('player')
         ani = manger.layers.get_game_object_by_name("playerChat")
@@ -64,7 +74,7 @@ class AiDefenseGame:
             self.is_running = False
         skip.on_click.add_lisner(sk)
         #end
-        self.scene.brightening_scene()
+        manger.scene.brightening_scene()
         stroy.update()
         while self.is_running:
             GameTime.tick(60)
@@ -82,10 +92,14 @@ class AiDefenseGame:
         self.is_running = True
         self.checkpoint = 'lab'
 
+    @world('play', 'lab', 'src/level/laboratory.json')
     def laboratory(self):
+<<<<<<< Updated upstream
         self.scene.darkening_scene()
         manger.Layers.load('src/level/laboratory.json')
         manger.layers.mod = 'play'
+=======
+>>>>>>> Stashed changes
         # awake
         button = manger.layers.get_game_object_by_name("enter")
         player = manger.layers.get_game_object_by_name('super')
@@ -95,7 +109,7 @@ class AiDefenseGame:
         core = manger.layers.get_game_object_by_name("core")
         core.set_world(self)
         #end
-        self.scene.brightening_scene()
+        manger.scene.brightening_scene()
 
         while self.is_running:
             GameTime.tick(60)
