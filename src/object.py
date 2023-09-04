@@ -274,3 +274,10 @@ class LivingObject(MoveObject):
         self.__position = Position(*value)
         self.rect.center = self.position
         self.recognition_range.center = self.position
+
+class FlyObject(LivingObject):
+    
+    def __init__(self, name, position, xml_path):
+        super().__init__(name, position, xml_path)
+        self.gravity = 0
+        self.air_friction = 0.4

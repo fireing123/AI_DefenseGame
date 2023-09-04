@@ -30,11 +30,11 @@ class AiDefenseGame:
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    waiting = False
-                    self.is_running = False
-                    break
+                    quit()
                 if event.type == pygame.KEYUP:
                     waiting = False
+    
+
     
     def over(self):
         manger.screen.fill((0, 0, 0))
@@ -42,14 +42,14 @@ class AiDefenseGame:
         manger.Text("over", (500, 400), 50, "Game Over", (255, 255, 255))
         manger.layers.render()
         pygame.display.flip()
+        waiting = True
         while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    waiting = False
-                    self.is_running = False
-                    break
+                    quit()
                 if event.type == pygame.KEYUP:
                     waiting = False
+        self.is_running = True
 
     def prologue(self):
         self.scene.darkening_scene()
@@ -58,7 +58,11 @@ class AiDefenseGame:
         stroy = Story('src/story/prologue.json', self)
         player = manger.layers.get_game_object_by_name('player')
         ani = manger.layers.get_game_object_by_name("playerChat")
+        skip : manger.Button = manger.layers.get_game_object_by_name('skip')
         ani.set_player(player)
+        def sk():
+            self.is_running = False
+        skip.on_click.add_lisner(sk)
         #end
         self.scene.brightening_scene()
         stroy.update()
@@ -74,10 +78,11 @@ class AiDefenseGame:
             manger.layers.update()
             manger.layers.render()
             pygame.display.update()
+        stroy.quit()
         self.is_running = True
+        self.checkpoint = 'lab'
 
     def laboratory(self):
-        self.checkpoint = 'lab'
         self.scene.darkening_scene()
         manger.Layers.load('src/level/laboratory.json')
         manger.layers.mod = 'play'
@@ -86,7 +91,7 @@ class AiDefenseGame:
         player = manger.layers.get_game_object_by_name('super')
         ani = manger.layers.get_game_object_by_name("chatbox")
         ani.set_player(player)
-        button.event.add_lisner(lambda : ani.say('src/chat/test.json', 5))
+        button.on_click.add_lisner(lambda : ani.say('src/chat/test.json', 5))
         core = manger.layers.get_game_object_by_name("core")
         core.set_world(self)
         #end
@@ -98,7 +103,7 @@ class AiDefenseGame:
             for event in pygame.event.get():
                 player.player_event(event)
                 if event.type == pygame.QUIT:
-                    self.is_running = False
+                    quit()
 
             manger.layers.update()
             manger.layers.render()
@@ -106,6 +111,8 @@ class AiDefenseGame:
             
         if self.game_over:
             raise Exception("GameOver")
+        
+        self.checkpoint = 'mountain'
             
     def mountain(self):
         self.scene.darkening_scene()
@@ -154,17 +161,22 @@ class AiDefenseGame:
             sys.exit()
                 
 if __name__ == "__main__" :
+    end = False
     game = AiDefenseGame(size=(1000, 800))
-    while True:
+    while not end:
         try:
             if game.checkpoint == None:
                 game.start()
                 game.prologue()
-            if game.checkpoint == 'lab':
+            elif game.checkpoint == 'lab':
                 game.laboratory()
             #game.mountain()
             #game.last_laboratory()
+            else:
+                end = True
+                print("hel32le")
         except Exception:
             game.over()
+    print("helle")
     pygame.quit() # 종료
     sys.exit()

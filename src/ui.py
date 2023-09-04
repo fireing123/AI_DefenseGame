@@ -34,7 +34,7 @@ class Button(UI):
         self.text = Text.instantiate(text)
         self.rect = self.image.get_rect()
         self.position = Position(*position)
-        self.event = Event()
+        self.on_click = Event()
         self.is_pressing = False
         self.is_on = False
 
@@ -70,7 +70,7 @@ class Button(UI):
             
     def update(self, mod):
         if self.is_click():
-            self.event.invoke()
+            self.on_click.invoke()
             self.is_on = False
     
 
