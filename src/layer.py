@@ -9,8 +9,9 @@ class Layers:
     전체 오브젝트를 포함하고
     오브젝트의 공통 함수를 실행합니다.
     """
-    def __init__(self):
+    def __init__(self, mod='play'):
         self.layers = [[],[],[],[],[]]
+        self.mod = mod
        
     def remove(self, obj):
         layer = self.layers[obj.layer_int]
@@ -18,6 +19,11 @@ class Layers:
             layer.remove(obj)
         except ValueError:
             print("not in list")
+       
+    def clear(self):
+        for y in self.layers:
+            for x in y:
+                self.remove(x)
        
     def add(self, game_object):
         layer_int = game_object.layer_int
@@ -38,7 +44,7 @@ class Layers:
                 #    print(f"Function '{method}' not found in class '{game_object}'.")
 
     def update(self):
-        self.in_layer_turning('update')
+        self.in_layer_turning('update', self.mod)
         
     def render(self):
         self.in_layer_turning('render', manger.screen, camera.vector)
@@ -49,10 +55,14 @@ class Layers:
             for x in y:
                 if x.name == name:
                     return x
-        return None
+        raise KeyError(f'not has layer in {name}')
     
     @staticmethod
     def load(path):
+        try:
+            manger.layers.clear()
+        except:
+            print("new load!")
         manger.layers = Layers()
         file = open(path, 'r')
         json_file :dict = json.loads(file.read())

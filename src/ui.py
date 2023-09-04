@@ -68,14 +68,14 @@ class Button(UI):
     def render(self, surface, camera):
         surface.blit(self.image, self.rect)
             
-    def update(self):
+    def update(self, mod):
         if self.is_click():
             self.event.invoke()
             self.is_on = False
     
 
 class ChatBox(UI):
-    def __init__(self, name, position, text):
+    def __init__(self, name, text):
         super().__init__(name)
         chat_box = SpriteSheet('src/image/chatBox/config.xml')
         self.visible = False
@@ -84,7 +84,6 @@ class ChatBox(UI):
         self.arrow_image = chat_box['arrow']
         self.close_image = chat_box['close']
         self.text = AnimaText.instantiate(text)
-        self.position = position
         self.open_rect = self.open_image.get_rect()
         self.arrow_rect = self.arrow_image.get_rect()
         self.close_rect = self.close_image.get_rect()
@@ -115,7 +114,7 @@ class ChatBox(UI):
     def set_player(self, game_object):
         self.game_object : GameObject = game_object
     
-    def update(self):
+    def update(self, mod):
 
         gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
@@ -128,7 +127,6 @@ class ChatBox(UI):
         self.close_rect.bottomleft = self.box_rect.bottomright
         gx, gy = self.position
         self.arrow_rect.midtop = gx + 20, gy
-        self.text.update()
     
     def render(self, surface : pygame.Surface, camera):
         if not self.visible: return
@@ -136,13 +134,11 @@ class ChatBox(UI):
         surface.blit(self.box_image, self.box_rect)
         surface.blit(self.close_image, self.close_rect)
         surface.blit(self.arrow_image, self.arrow_rect)
-        self.text.render(surface, camera)
     
     @staticmethod
     def instantiate(json: Dict):
         return ChatBox(
             json['name'],
-            json['position'],
             json['AnimaText']
         )
  
@@ -185,7 +181,7 @@ class AnimaText(UI):
         self.len = len(self.animation)
         return self.local_position
 
-    def update(self):
+    def update(self, mod):
         if time.get_ticks() - self.last_update > self.tick:
             
             self.last_update = time.get_ticks()
@@ -196,10 +192,7 @@ class AnimaText(UI):
     
     def render(self, surface, camera):
         for image, rect in self.images:
-            cx, cy = camera
-            rx, ry = rect.topleft
-            rect_position = rx - cx, ry - cy
-            surface.blit(image, rect_position)
+            surface.blit(image, rect)
 
     @property
     def position(self):
@@ -277,8 +270,8 @@ class Text(UI):
             text['color']
         )
         
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
 
     def set_text(self, string, color):
         self.image = self.font.render(string, True, color)

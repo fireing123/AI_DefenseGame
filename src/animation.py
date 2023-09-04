@@ -64,6 +64,8 @@ class AnimationController:
         self.animation : Dict[Surface] = {}
         self.animation[self.motion] = idle_animation
     
+
+    
     def add(self, str, value) -> None:
         self.animation[str] = value
     

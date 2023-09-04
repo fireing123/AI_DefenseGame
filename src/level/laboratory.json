@@ -56,13 +56,12 @@
     "ChatBox" : [
         {
             "name": "chatbox",
-            "position" : [700, 100],
             "AnimaText": {
-                    "name" : "ani",
-                    "position" : [700, 100],
-                    "scale" : 50,
-                    "color" : [0,0,0]
-                }
+                "name" : "ani",
+                "position" : [700, 100],
+                "scale" : 50,
+                "color" : [0,0,0]
+            }
         }
     ]
 }

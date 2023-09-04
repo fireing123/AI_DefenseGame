@@ -1,8 +1,11 @@
 import pygame
 from layer import Layers
+from event import Event
 
 screen : pygame.Surface
 layers : Layers
+
+enemy_death = Event()
 
 from background import * #object
 from ground import * # object

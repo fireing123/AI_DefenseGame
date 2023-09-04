@@ -19,7 +19,7 @@ class Component:
     def on_mouse_pressed(self):
         pass
     
-    def update(self):
+    def update(self, mod):
         pass
     
     def render(self, surface : Surface, camera : tuple):
@@ -90,6 +90,7 @@ class GameObject(Sprite, Component):
         manger.layers.add(self)
 
     def remove(self):
+        Sprite().remove(*self.groups())
         manger.layers.remove(self)
         self = None
 
@@ -131,8 +132,9 @@ class MoveObject(GameObject):
         self.air_friction = 0.9
         self.mass = True
         self.rect : pygame.Rect
+        self.move = ""
         
-    def update(self):
+    def update(self, mod):
         
         self.direction.y += self.gravity
         
@@ -157,12 +159,12 @@ class MoveObject(GameObject):
                         self.direction.y = self.cut_plus(self.direction.y)
                     elif self.rect.left > collide.rect.right - 5:
                         #right
-                        self.rect.left = collide.rect.right
-                        self.direction.x = 0
+                        self.rect.left = collide.rect.right - 1
+                        self.direction.x = self.cut_plus(self.direction.x)
                     elif self.rect.right < collide.rect.left + 5:
                         #left
-                        self.rect.right = collide.rect.left
-                        self.direction.x = 0
+                        self.rect.right = collide.rect.left + 1
+                        self.direction.x = self.cut_minus(self.direction.x)
                 self.on_collision_enter(collide)
         else:
             self.friction = self.air_friction
@@ -190,6 +192,8 @@ class LivingObject(MoveObject):
         super().__init__(name)
         self.__hp : int = 100
         self.max_hp : int = 100
+        self.invulnerable = 500
+        self.last_invulerable = self.invulnerable
         self.recognition_range = pygame.Rect((0, 0), (400, 400))
         
         idle_animation = SpriteSheet(xml_path)
@@ -199,23 +203,36 @@ class LivingObject(MoveObject):
         )
         self.image : pygame.Surface = idle_animation['default']
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.motion = 'idle'
+        self.status = 'idle'
         self.position = position
-        
+
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
-    def update(self):
-        super().update()
-        if self.motion == 'forward':
-            pass
-        if self.motion == 'backward':
-            self.image = pygame.transform.flip(self.image, True, False)
-        if self.motion == 'backpedal':
-            pass 
+    def update(self, mod):
         
-    def destroy(self):
+        super().update(mod)
+        
+        if self.direction.y < 0:
+            self.status = 'jump'
+        elif self.direction.y > 1:
+            self.status = 'fall'
+        else:
+            if self.direction.x != 0:
+                self.status = 'run'
+                if self.direction.x > 0:
+                    self.move = 'forward'
+                elif self.direction.x < 0 :
+                    self.move = 'backward'
+            else:
+                self.status = 'idle'
+
+        if self.move == 'backward':
+            self.image = pygame.transform.flip(self.image, True, False)
+     
+    def remove(self):
         self.hp_bar.remove()
         del self.hp_bar
+        super().remove()
      
     def look_angle(self, vector):
         a_vector = pygame.Vector2(*self.position)
@@ -224,14 +241,20 @@ class LivingObject(MoveObject):
         vec = b_vector - a_vector
         vec /= distance
         return vec
-     
+
     @property
     def hp(self):
         return self.__hp
     
     @hp.setter
     def hp(self, value):
-        self.__hp = value
+        if self.__hp > value:
+            # attacked if pygame.time.get_ticks() - self.last_update > self.tick:
+            if pygame.time.get_ticks() - self.last_invulerable > self.invulnerable:
+                self.last_invulerable = pygame.time.get_ticks()
+                self.__hp = value
+        else:
+            self.__hp = value
         if self.__hp < 0:
             self.destroy()
             self.remove()

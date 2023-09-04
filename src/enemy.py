@@ -4,6 +4,7 @@ from pygame.sprite import Group
 from pygame import Surface
 from object import LivingObject
 from weapon import shot_group, EnemyShot
+from event import enemy_death
 
 enemy_group = Group()
 
@@ -12,10 +13,11 @@ class Enemy(LivingObject):
     """
     def __init__(self, name, position, xml_path):
         super().__init__(name, position, xml_path)
+        self.exp_ponit = 50
         enemy_group.add(self)
     
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         collision = pygame.sprite.spritecollide(self, shot_group, True)
         for collide in collision:
             self.hp -= collide.power
@@ -25,7 +27,7 @@ class Enemy(LivingObject):
         pass
     
     def remove(self):
-        enemy_group.remove(self)
+        enemy_death.invoke(self.exp_ponit)
         super().remove()
 
 
@@ -42,8 +44,8 @@ class Soldier(Enemy):
         self.tick = 200
         self.last_update = 0
         
-    def update(self):
-        super().update()
+    def update(self, mod):
+        super().update(mod)
         
         collision = pygame.sprite.spritecollide(self, shot_group, False)
         
