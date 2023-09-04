@@ -14,7 +14,36 @@ class Camera:
             sleep(0.2)
         shiver = threading.Thread(target=real_shiver)
         shiver.start()        
-            
+
+    def earthquake(self):
+        def real_earthquake():
+            self.vector = (self.x, self.y + 5)
+            sleep(0.2)
+            self.vector = (self.x - 5, self.y)
+            sleep(0.2)
+            self.vector = (self.x + 5, self.y)
+            sleep(0.2)
+            self.vector = (self.x, self.y - 5)
+            sleep(0.2)
+        earthquake = threading.Thread(target=real_earthquake)
+        earthquake.start()
+        
+    def launch(self, direction):
+        def real_launch(dir):
+            self.vector = self.x - dir[0] / 10, self.y - dir[1] / 10
+            sleep(0.2)
+            self.vector = self.x + dir[0] / 50, self.y + dir[1] / 50
+            sleep(0.2)
+            self.vector = self.x + dir[0] / 50, self.y + dir[1] / 50
+            sleep(0.2)
+            self.vector = self.x + dir[0] / 50, self.y + dir[1] / 50
+            sleep(0.2)
+            self.vector = self.x + dir[0] / 50, self.y + dir[1] / 50
+            sleep(0.2)
+            self.vector = self.x + dir[0] / 50, self.y + dir[1] / 50
+        launch = threading.Thread(target=real_launch, args=(direction))
+        launch.start()
+    
     def move_camera(self, x, y):
         self.vector = (x, y)
     

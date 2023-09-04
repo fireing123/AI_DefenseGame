@@ -10,8 +10,10 @@ class Story:
             self.json = json_file
             self.index = 0
             self.game = game
+            self.running = True
 
     def update(self):
+        if not self.running: return
         if self.index + 1 > len(self.json['story']):
             self.game.is_running = False
             return
@@ -24,3 +26,6 @@ class Story:
         elif motion[0] == 's':
             obj.say(motion[2:], int(motion[1]))
         threading.Timer(updated['wait'], self.update).start()
+        
+    def quit(self):
+        self.running = False

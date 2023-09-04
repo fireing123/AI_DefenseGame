@@ -23,6 +23,22 @@
             "position" : [800, 200]
         }
     ],
+    "Button": [
+        {
+            "name" : "skip",
+            "position": [100, 50],
+            "scale" : [100, 50],
+            "defaultImage" : "src/image/default.jpg",
+            "clickImage" : "src/image/click.jpg",
+            "text" : {
+                "name" : "skip text",
+                "position" : [100, 50],
+                "scale" : 25,
+                "string" : "SKIP",
+                "color" : [255, 255, 255]
+            }
+        }
+    ],
     "ChatBox" : [
         {
             "name" : "playerChat",
