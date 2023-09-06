@@ -1,14 +1,11 @@
 import pygame
 import math
-from object import MoveObject, GameObject
+from object import MoveObject
 from camera import camera
 
 shot_group = pygame.sprite.Group()
     
 enemy_shot_group = pygame.sprite.Group()
-    
-class Gun(GameObject): pass
-
     
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
@@ -54,12 +51,17 @@ class AllyShot(Shot):
         
     def remove(self):
         shot_group.remove(self)
-        return super().remove()
+        super().remove()
+
  
 class SubShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
         shot_group.add(self)
+ 
+    def remove(self):
+        shot_group.remove(self)
+        super().remove()
  
 class BombShot(AllyShot):
     def __init__(self, name, position, direction):
@@ -79,4 +81,5 @@ class EnemyShot(Shot):
         enemy_shot_group.add(self)
 
     def remove(self):
-        return super().remove()
+        enemy_shot_group.remove(self)
+        super().remove()

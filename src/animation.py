@@ -13,15 +13,12 @@ class Animation:
         self.last_update : int = 0
         self.is_loop = loop
     
-    def update(self) -> Surface:
+    def update(self):
         if time.get_ticks() - self.last_update > self.tick:
-            if self.len <= self.index:
-                if self.is_loop:
-                    self.index = 1
-                else:
-                    return self.image_list[self.index-1], True
-                self.last_update = time.get_ticks()
-                return self.image_list[self.index-1], False
+            if self.is_loop and self.index >= self.len:
+                self.index = 0
+            elif self.index >= self.len:
+                return self.image_list[-1], True
             self.last_update = time.get_ticks()
             self.index += 1
         return self.image_list[self.index-1], False

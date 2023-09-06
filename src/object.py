@@ -256,7 +256,6 @@ class LivingObject(MoveObject):
         else:
             self.__hp = value
         if self.__hp < 0:
-            self.destroy()
             self.remove()
         elif self.max_hp < self.hp:
             self.__hp = self.max_hp

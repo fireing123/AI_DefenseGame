@@ -9,7 +9,7 @@ from object import GameObject, Position
 #import module first
 from sheet import SpriteSheet # color import
 from animation import AnimationText # object
-
+import manger
 
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(path), scale)
@@ -91,6 +91,7 @@ class ChatBox(UI):
     
         
     def say(self, chat, time):
+        manger.thread_connect.plz_wait = True
         self.time = time
         self.visible = True
         gox, goy = self.game_object.position
@@ -106,6 +107,9 @@ class ChatBox(UI):
         self.box_image = pygame.transform.scale(self.box_image, (lox - x, boxy))
         thread = threading.Thread(target=self.sleep)
         thread.start()
+        with manger.thread_connect.condition:
+            manger.thread_connect.plz_wait = False
+            manger.thread_connect.condition.notify()
         
     def sleep(self):
         sleep(self.time)
@@ -186,7 +190,7 @@ class AnimaText(UI):
             
             self.last_update = time.get_ticks()
             self.images, self.tick = self.animation[self.index]
-            if self.len != self.index + 1:
+            if self.len > self.index + 1:
                 self.index += 1
 
     

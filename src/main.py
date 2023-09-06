@@ -8,16 +8,28 @@ from camera import camera
 from story import Story
 from scene import Scene
 
-def world(type, checkpoint, world_path):
+def story(story_path):
+    def real_story(func):
+        def wrapper(self):
+            manger.layers.mod = 'story'
+            story = Story(story_path, self)
+            story.update()
+            func(self)
+            story.quit()
+        return wrapper
+    return real_story
+
+def world(world_path, checkpoint=None):
     def real_world(func):
-        def wrapper(self, *args, **kwargs):
+        def wrapper(self):
+            self.is_running = True
             self.checkpoint = checkpoint
             manger.scene.darkening_scene()
             manger.layers.load(world_path)
-            manger.layers.mod = type
-            func(self, *args, **kwargs)
+            func(self)
         return wrapper
     return real_world
+
 
 class AiDefenseGame:
     
@@ -32,20 +44,32 @@ class AiDefenseGame:
         self.is_running = True
         self.checkpoint = None
     
-    @world('story', None, 'src/level/main.json')
-    def start(self):
-        waiting = True
-        while waiting:
-            manger.layers.update()
-            manger.layers.render()
-            pygame.display.flip()
+    def game_loop(self, *event_func):
+        while self.is_running:
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-                if event.type == pygame.KEYUP:
-                    waiting = False
-    
+                for func in event_func:
+                    func(event)
+            if manger.thread_connect.plz_wait:
+                with manger.thread_connect.condition:
+                    manger.thread_connect.condition.wait(3)
+            manger.layers.update()
+            manger.layers.render()
+            pygame.display.flip()
 
+
+    def start(self):
+        
+        manger.layers.load('src/level/main.json')
+        
+        def wait(event): 
+            if event.type == pygame.KEYDOWN:
+                self.is_running = False
+        self.game_loop(
+            wait
+        )
     
     def over(self):
         manger.screen.fill((0, 0, 0))
@@ -62,9 +86,9 @@ class AiDefenseGame:
                     waiting = False
         self.is_running = True
 
-    @world('story', None, 'src/level/prologue.json')
+    @world('src/level/prologue.json')
+    @story('src/story/prologue.json')
     def prologue(self):
-        stroy = Story('src/story/prologue.json', self)
         player = manger.layers.get_game_object_by_name('player')
         ani = manger.layers.get_game_object_by_name("playerChat")
         skip : manger.Button = manger.layers.get_game_object_by_name('skip')
@@ -74,24 +98,13 @@ class AiDefenseGame:
         skip.on_click.add_lisner(sk)
         #end
         manger.scene.brightening_scene()
-        stroy.update()
-        while self.is_running:
-            GameTime.tick(60)
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-            
-                    
 
-            manger.layers.update()
-            manger.layers.render()
-            pygame.display.update()
-        stroy.quit()
+        self.game_loop()
+
         self.is_running = True
         self.checkpoint = 'lab'
 
-    @world('play', 'lab', 'src/level/laboratory.json')
+    @world('src/level/laboratory.json', 'lab')
     def laboratory(self):
         # awake
         button = manger.layers.get_game_object_by_name("enter")
@@ -104,18 +117,10 @@ class AiDefenseGame:
         #end
         manger.scene.brightening_scene()
 
-        while self.is_running:
-            GameTime.tick(60)
-            
-            for event in pygame.event.get():
-                player.player_event(event)
-                if event.type == pygame.QUIT:
-                    quit()
-
-            manger.layers.update()
-            manger.layers.render()
-            pygame.display.update()
-            
+        self.game_loop(
+            player.player_event
+        )
+        
         if self.game_over:
             raise Exception("GameOver")
         
@@ -172,18 +177,19 @@ if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
     while not end:
         try:
-            if game.checkpoint == None:
-                game.start()
-                game.prologue()
-            elif game.checkpoint == 'lab':
-                game.laboratory()
-            #game.mountain()
-            #game.last_laboratory()
-            else:
-                end = True
-                print("hel32le")
+            pass
         except Exception:
             game.over()
+        if game.checkpoint == None:
+            game.start()
+            game.prologue()
+        elif game.checkpoint == 'lab':
+            game.laboratory()
+        #game.mountain()
+        #game.last_laboratory()
+        else:
+            end = True
+            print("hel32le")
     print("helle")
     pygame.quit() # 종료
     sys.exit()

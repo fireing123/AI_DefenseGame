@@ -1,5 +1,5 @@
 from typing import List, Callable
-
+import threading
 # 최적화 요구..
 
 class Event:
@@ -23,3 +23,9 @@ class Event:
             function(*arg)
             
 enemy_death = Event()
+
+class SharedThread:
+    def __init__(self):
+        self.condition = threading.Condition()
+        self.is_ready = False
+        self.plz_wait = False

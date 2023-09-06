@@ -12,18 +12,17 @@ class Layers:
     def __init__(self, mod='play'):
         self.layers = [[],[],[],[],[]]
         self.mod = mod
-       
+
     def remove(self, obj):
-        layer = self.layers[obj.layer_int]
         try:
-            layer.remove(obj)
+            self.layers.remove(obj)
         except ValueError:
-            print("not in list")
+            pass
        
     def clear(self):
         for y in self.layers:
             for x in y:
-                self.remove(x)
+                x.remove()
        
     def add(self, game_object):
         layer_int = game_object.layer_int
