@@ -21,7 +21,7 @@ class BackGround(GameObject):
     background object
     """
     def __init__(self, center, path):
-        super().__init__(0)
+        super().__init__("background", 0)
         self.image = pygame.image.load(path)
         self.rect = self.image.get_rect()
         self.position = center

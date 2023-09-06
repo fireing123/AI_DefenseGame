@@ -1,5 +1,7 @@
 import pygame
 import math
+
+from pygame import Surface
 from object import MoveObject
 from camera import camera
 
@@ -18,51 +20,31 @@ class Shot(MoveObject):
         self.gravity = 0
         self.air_friction = 1
         self.angle = 0
-
  
     def update(self, mod):
         if 0 > self.rect_position[0] or self.rect_position[0] > 1000:
-            self.remove()
+            self.delete()
         if 0 > self.rect_position[1] or self.rect_position[1] > 800:
-            self.remove()
+            self.delete()
         super().update(mod)
         
         angle_rad = math.atan2(*self.direction)
         self.angle = math.degrees(angle_rad)
         if self.collision:
-            self.remove()
-            
-        
-        
-    def render(self, surface: pygame.Surface, camera: tuple):
-        rotated_image = pygame.transform.rotate(self.image, self.angle)
-        #self.rect = rotated_image.get_rect(center=self.rect.center)
-        cx, cy = camera
-        rx, ry = self.rect.topleft
-        self.rect_position = rx - cx, ry - cy
-        surface.blit(rotated_image, self.rect_position)
+            self.delete()
         
 class AllyShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
         camera.shiver()
         shot_group.add(self)
-        
-        
-    def remove(self):
-        shot_group.remove(self)
-        super().remove()
 
  
 class SubShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
         shot_group.add(self)
- 
-    def remove(self):
-        shot_group.remove(self)
-        super().remove()
- 
+
 class BombShot(AllyShot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
@@ -79,7 +61,3 @@ class EnemyShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
         enemy_shot_group.add(self)
-
-    def remove(self):
-        enemy_shot_group.remove(self)
-        super().remove()

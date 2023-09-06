@@ -81,7 +81,6 @@ class Player(LivingObject):
             pass
 
         self.image = self.animation_controller.update()
-        
         super().update(mod)
         
         for enemy in enemy_group.sprites():

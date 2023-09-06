@@ -27,6 +27,7 @@ def world(world_path, checkpoint=None):
             manger.scene.darkening_scene()
             manger.layers.load(world_path)
             func(self)
+            manger.layers.clear()
         return wrapper
     return real_world
 
@@ -34,7 +35,6 @@ def world(world_path, checkpoint=None):
 class AiDefenseGame:
     
     def __init__(self, size=(500, 500)):
-        manger.game = self
         self.game_over = False
         pygame.init()
         pygame.display.set_caption("AI Defense Game")

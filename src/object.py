@@ -89,8 +89,9 @@ class GameObject(Sprite, Component):
         self.visible = True
         manger.layers.add(self)
 
-    def remove(self):
-        Sprite().remove(*self.groups())
+    def delete(self):
+        for group in self.groups():
+            group.remove(self)
         manger.layers.remove(self)
         self = None
 
@@ -231,7 +232,6 @@ class LivingObject(MoveObject):
      
     def remove(self):
         self.hp_bar.remove()
-        del self.hp_bar
         super().remove()
      
     def look_angle(self, vector):

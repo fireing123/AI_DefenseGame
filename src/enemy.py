@@ -21,14 +21,14 @@ class Enemy(LivingObject):
         collision = pygame.sprite.spritecollide(self, shot_group, True)
         for collide in collision:
             self.hp -= collide.power
-            collide.remove()
+            collide.delete()
         
     def attack(self, player):
         pass
     
-    def remove(self):
+    def delete(self):
         enemy_death.invoke(self.exp_ponit)
-        super().remove()
+        super().delete()
 
 
 class Soldier(Enemy):
@@ -47,6 +47,8 @@ class Soldier(Enemy):
     def update(self, mod):
         super().update(mod)
         
+        
+        
         collision = pygame.sprite.spritecollide(self, shot_group, False)
         
         for collide in collision:
@@ -57,8 +59,8 @@ class Soldier(Enemy):
         if pygame.time.get_ticks() - self.last_update > self.tick:
             self.last_update = pygame.time.get_ticks()
             angle = self.look_angle(player.position)
-            EnemyShot("ew", self.rect_position, angle * 5)
-    
+            EnemyShot("ew", self.position, angle * 5)
+
     def render(self, surface: Surface, camera: tuple):
         cx, cy = camera
         rx, ry = self.rect.topleft
