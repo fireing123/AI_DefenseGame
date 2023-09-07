@@ -120,6 +120,7 @@ class ChatBox(UI):
     
     def update(self, mod):
 
+        self.text.visible = self.visible
         gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
         self.position = (gox + gsx/3, goy - gsy/3)
@@ -138,6 +139,7 @@ class ChatBox(UI):
         surface.blit(self.box_image, self.box_rect)
         surface.blit(self.close_image, self.close_rect)
         surface.blit(self.arrow_image, self.arrow_rect)
+    
     
     @staticmethod
     def instantiate(json: Dict):
@@ -195,6 +197,7 @@ class AnimaText(UI):
 
     
     def render(self, surface, camera):
+        if not self.visible: return
         for image, rect in self.images:
             surface.blit(image, rect)
 
@@ -284,12 +287,12 @@ class Text(UI):
 class HPbar(UI):
     def __init__(self, name, game_object):
         super().__init__(name)
-        self.game_object = game_object
+        self.game_object : GameObject = game_object
         self.rect = pygame.Rect(0, 0, 100, 20)
-        self.position = game_object.position
 
     def render(self,screen, camera):
-        x , y = self.game_object.rect.center # x,y좌표 설정
+        x = self.game_object.rect.centerx # x,y좌표 설정
+        y = self.game_object.rect.top
         cx, cy = camera
         px, py = x- cx, y - cy - 5
         pygame.draw.rect(screen,(30,30,30),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])

@@ -28,13 +28,13 @@
             "name" : "skip",
             "position": [100, 50],
             "scale" : [100, 50],
-            "defaultImage" : "src/image/default.jpg",
-            "clickImage" : "src/image/click.jpg",
+            "defaultImage" : "src/image/skip/skip_default.png",
+            "clickImage" : "src/image/skip/skip_pressed.png",
             "text" : {
                 "name" : "skip text",
                 "position" : [100, 50],
                 "scale" : 25,
-                "string" : "SKIP",
+                "string" : "",
                 "color" : [255, 255, 255]
             }
         }

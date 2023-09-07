@@ -79,8 +79,7 @@ class Player(LivingObject):
                 camera.y -= 1
         elif mod == 'story':
             pass
-
-        self.image = self.animation_controller.update()
+        
         super().update(mod)
         
         for enemy in enemy_group.sprites():
@@ -91,15 +90,12 @@ class Player(LivingObject):
         
         for collide in collision:
             self.hp -= collide.power
-            collide.remove()
-            
-            
-        
+            collide.delete()
 
     def look_mouse(self):
         cx, cy = manger.camera.vector
         mx, my = pygame.mouse.get_pos()
-        mouse_look = self.look_angle((mx + cx, my + cy))
+        mouse_look, _ = self.look_angle((mx + cx, my + cy))
         return mouse_look
 
     def destroy(self):

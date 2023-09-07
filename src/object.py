@@ -25,6 +25,9 @@ class Component:
     def render(self, surface : Surface, camera : tuple):
         pass
     
+    def destroy(self):
+        pass
+    
 class Position:
     def __init__(self, x, y):
         self.x = x
@@ -210,37 +213,34 @@ class LivingObject(MoveObject):
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
     def update(self, mod):
-        
-        super().update(mod)
-        
+    
+        self.image = self.animation_controller.update()
+    
         if self.direction.y < 0:
             self.status = 'jump'
         elif self.direction.y > 1:
             self.status = 'fall'
-        else:
-            if self.direction.x != 0:
-                self.status = 'run'
-                if self.direction.x > 0:
-                    self.move = 'forward'
-                elif self.direction.x < 0 :
-                    self.move = 'backward'
-            else:
-                self.status = 'idle'
 
         if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
+        
+        super().update(mod)
      
-    def remove(self):
-        self.hp_bar.remove()
-        super().remove()
+    def delete(self):
+        self.hp_bar.delete()
+        super().delete()
      
     def look_angle(self, vector):
-        a_vector = pygame.Vector2(*self.position)
-        b_vector = pygame.Vector2(*vector)
-        distance = a_vector.distance_to(b_vector)
-        vec = b_vector - a_vector
-        vec /= distance
-        return vec
+        ox, oy = self.position
+        vx, vy = vector
+
+        direction = pygame.Vector2(vx - ox, vy - oy)
+        angle = math.atan2(*direction)
+        distance = math.sqrt((vx - ox)**2+(vy - oy)**2)
+
+        direction /= distance
+
+        return direction, angle
 
     @property
     def hp(self):
@@ -256,7 +256,8 @@ class LivingObject(MoveObject):
         else:
             self.__hp = value
         if self.__hp < 0:
-            self.remove()
+            self.destroy()
+            self.delete()
         elif self.max_hp < self.hp:
             self.__hp = self.max_hp
             

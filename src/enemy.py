@@ -22,6 +22,8 @@ class Enemy(LivingObject):
         for collide in collision:
             self.hp -= collide.power
             collide.delete()
+
+        
         
     def attack(self, player):
         pass
@@ -47,8 +49,6 @@ class Soldier(Enemy):
     def update(self, mod):
         super().update(mod)
         
-        
-        
         collision = pygame.sprite.spritecollide(self, shot_group, False)
         
         for collide in collision:
@@ -56,10 +56,14 @@ class Soldier(Enemy):
             collide.remove()
     
     def attack(self, player):
+        vec, angle = self.look_angle(player.position)
+        if angle > 0:
+            self.move = 'backward'
+        else:
+            self.move = 'forward'
         if pygame.time.get_ticks() - self.last_update > self.tick:
             self.last_update = pygame.time.get_ticks()
-            angle = self.look_angle(player.position)
-            EnemyShot("ew", self.position, angle * 5)
+            EnemyShot("ew", self.position, vec * 5)
 
     def render(self, surface: Surface, camera: tuple):
         cx, cy = camera

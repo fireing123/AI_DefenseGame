@@ -2,22 +2,22 @@
     "story" : [
         {
             "object" : "player",
-            "motion" : "m3",
+            "motion" : "v,3",
             "wait" : 2
         },
         {
             "object" : "player",
-            "motion" : "m4",
+            "motion" : "v,4",
             "wait" : 1
         },
         {
             "object" : "playerChat",
-            "motion" : "s5src/chat/test.json",
+            "motion" : "s,5,src/chat/test.json",
             "wait" : 1
         },
         {
             "object" : "player",
-            "motion" : "m3",
+            "motion" : "v,3",
             "wait" : 2
         }
     ]
