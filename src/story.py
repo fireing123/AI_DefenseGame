@@ -20,7 +20,12 @@ class Story:
             return
         updated = self.json['story'][self.index]
         self.index += 1
-        obj = manger.layers.get_game_object_by_name(updated['object'])
+        try:
+            obj = manger.layers.get_game_object_by_name(updated['object'])
+        except KeyError:
+            print("story except")
+        else:
+            return
         motion : str = updated['motion']
         args = motion.split(',')
         if args[0] == 'v':

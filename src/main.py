@@ -1,5 +1,4 @@
 import pygame
-# not import my module
 import manger
 import sys
 
@@ -64,7 +63,7 @@ class AiDefenseGame:
 
     def start(self):
         
-        manger.layers.load('src/level/main.json')
+        manger.layers.load('D:/AI_DefenseGame/src/level/main.json')
         
         def wait(event): 
             if event.type == pygame.KEYDOWN:
@@ -102,8 +101,8 @@ class AiDefenseGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
 
-    @world('src/level/prologue.json')
-    @story('src/story/prologue.json')
+    @world('D:/AI_DefenseGame/src/level/prologue.json')
+    @story('D:/AI_DefenseGame/src/story/prologue.json')
     def prologue(self):
         player = manger.layers.get_game_object_by_name('player')
         ani = manger.layers.get_game_object_by_name("playerChat")
@@ -120,14 +119,14 @@ class AiDefenseGame:
         self.is_running = True
         self.checkpoint = 'lab'
 
-    @world('src/level/laboratory.json', 'lab')
+    @world('D:/AI_DefenseGame/src/level/laboratory.json', 'lab')
     def laboratory(self):
         # awake
         button = manger.layers.get_game_object_by_name("enter")
         player = manger.layers.get_game_object_by_name('super')
         ani = manger.layers.get_game_object_by_name("chatbox")
         ani.set_player(player)
-        button.on_click.add_lisner(lambda : ani.say('src/chat/test.json', 5))
+        button.on_click.add_lisner(lambda : ani.say('D:/AI_DefenseGame/src/chat/test.json', 5))
         core = manger.layers.get_game_object_by_name("core")
         core.set_world(self)
         #end
@@ -142,7 +141,7 @@ class AiDefenseGame:
         
         self.checkpoint = 'mountain'
             
-    @world('src/level/mountain.json')
+    @world('D:/AI_DefenseGame/src/level/mountain.json')
     def mountain(self):
         # awake
         
@@ -154,7 +153,7 @@ class AiDefenseGame:
         if self.game_over:
             raise Exception("GameOver")
         
-    @world('src/level/last_laboratory.json')
+    @world('D:/AI_DefenseGame/src/level/last_laboratory.json')
     def last_laboratory(self):
         # awake
         

@@ -12,7 +12,7 @@ enemy_shot_group = pygame.sprite.Group()
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
         super().__init__(name)
-        self.image = pygame.image.load('src/image/shot.png')
+        self.image = pygame.image.load('D:/AI_DefenseGame/src/image/shot.png')
         self.power = 10
         self.rect = self.image.get_rect()
         self.position = position

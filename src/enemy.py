@@ -39,7 +39,7 @@ class Soldier(Enemy):
     """
     
     def __init__(self, name, position):
-        super().__init__(name, position, 'src/image/soldier/config.xml')
+        super().__init__(name, position, 'D:/AI_DefenseGame/src/image/soldier/config.xml')
         self.hp = 100
         self.max_hp = 100
         self.speed = 2

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Animation imagePath="src\image\chatBox\chatbox_v2.png">
+<Animation imagePath="D:/AI_DefenseGame/src\image\chatBox\chatbox_v2.png">
     <Rect name="open" x="0" y="0" width="4" height="45"/>
     <Rect name="box" x="4" y="0" width="12" height="45"/>
     <Rect name="arrow" x="17" y="41" width="7" height="13" />

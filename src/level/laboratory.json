@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "src/image/sky.png",
+            "image" : "D:/AI_DefenseGame/src/image/sky.png",
             "position" : [500, 400]
         }
     ],
@@ -38,8 +38,8 @@
             "name" : "enter",
             "position": [100, 50],
             "scale" : [100, 50],
-            "defaultImage" : "src/image/default.jpg",
-            "clickImage" : "src/image/click.jpg",
+            "defaultImage" : "D:/AI_DefenseGame/src/image/default.jpg",
+            "clickImage" : "D:/AI_DefenseGame/src/image/click.jpg",
             "text" : {
                 "name" : "butext",
                 "position" : [100, 50],

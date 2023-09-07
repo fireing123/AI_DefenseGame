@@ -3,7 +3,7 @@ import xml.etree.ElementTree as xml
 
 class SoundManger:
     def __init__(self):
-        self.path = "src/sound/sound.xml"
+        self.path = "D:/AI_DefenseGame/src/sound/sound.xml"
         docs = xml.parse(self.path)
         root = docs.getroot()
         self.music_dir = {}

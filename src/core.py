@@ -9,7 +9,7 @@ class Core(GameObject):
         super().__init__(name)
         self.hp = hp
         self.max_hp = hp
-        self.image = pygame.image.load('src/image/core.png')
+        self.image = pygame.image.load('D:\AI_DefenseGame\src/image\core.png')
         self.rect = self.image.get_rect()
         self.position = position
         

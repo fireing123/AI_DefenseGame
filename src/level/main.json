@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "src/image/graycity.png",
+            "image" : "D:/AI_DefenseGame/src/image/graycity.png",
             "position" : [500, 400]
         }
     ],

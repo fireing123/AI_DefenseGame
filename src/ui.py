@@ -77,7 +77,7 @@ class Button(UI):
 class ChatBox(UI):
     def __init__(self, name, text):
         super().__init__(name)
-        chat_box = SpriteSheet('src/image/chatBox/config.xml')
+        chat_box = SpriteSheet('D:/AI_DefenseGame/src/image/chatBox/config.xml')
         self.visible = False
         self.open_image = chat_box['open']
         self.box_image  = chat_box['box']
@@ -170,7 +170,7 @@ class AnimaText(UI):
         self.animation.clear()
         self.local_position = self.position
         for char, scale, tick in ani_text:
-            font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
+            font = pygame.font.Font('D:/AI_DefenseGame/src/font/Galmuri11.ttf', scale)
             text = font.render(char, True, self.color)
             rect = text.get_rect()
             
@@ -228,7 +228,7 @@ class AnimaText(UI):
 class Text(UI):
     def __init__(self, name, position, scale, string, color):
         super().__init__(name)
-        self.font = pygame.font.Font('src/font/Galmuri11.ttf', scale)
+        self.font = pygame.font.Font('D:/AI_DefenseGame/src/font/Galmuri11.ttf', scale)
         self.set_text(string, color)
         self.rect = self.image.get_rect()
         self.__text = string
