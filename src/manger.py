@@ -3,10 +3,12 @@ from layer import Layers
 from event import Event
 from event import SharedThread
 from scene import Scene
+from sound import SoundManger
 
 screen : pygame.Surface
 scene : Scene
 layers = Layers()
+sound_manger = SoundManger()
 
 enemy_death = Event()
 thread_connect = SharedThread()
