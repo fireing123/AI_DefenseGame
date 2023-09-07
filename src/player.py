@@ -11,11 +11,10 @@ from enemy import enemy_group
 from manger import enemy_death
 
 class Player(LivingObject):
-    
 
-    
     def __init__(self, name: str, position):
         super().__init__(name, position, 'D:/AI_DefenseGame/src/image/ai/config.xml')
+        self.exp_bar = manger.ExpBar(name+"expBar", self)
         self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
@@ -25,17 +24,28 @@ class Player(LivingObject):
         self.jump_speed = -6
         self.mass = True
         self.on_ground = True
-        self.tick = 1000
+        self.tick = 200
         self.last_update = 0
-        self.exp = 0
+        self.__exp = 0
+        self.max_exp = 1000
         self.lv = 0
         self.is_on = False
         self.is_pressing = False
         enemy_death.add_lisner(self.add_exp)
-        
-    def add_exp(self, value):
-        self.exp += value
-        self.lv = self.exp ** 0.4 * 49/50+1
+
+    def add_exp(self, exp):
+        self.exp += exp
+
+    @property
+    def exp(self):
+        return self.__exp
+    
+    @exp.setter
+    def exp(self, value):
+        self.__exp = value
+        if self.__exp > self.max_exp:
+            self.exp -= self.max_exp
+            self.lv += 1
         
     def player_event(self, event : pygame.event.Event):
         

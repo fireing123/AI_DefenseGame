@@ -57,25 +57,26 @@ class AnimationController:
     
     def __init__(self, idle_animation, game_object):
         self.game_object = game_object
-        self.motion : str = 'default'
+        self.str : str = 'idle'
         self.animation : Dict[Surface] = {}
-        self.animation[self.motion] = idle_animation
+        self.animation[self.str] = idle_animation
     
 
     
-    def add(self, str, value) -> None:
+    def add(self, str, value):
         self.animation[str] = value
     
     def update(self):
-        animation = self.animation[self.motion]
-        image, is_end = animation.update()
-        if is_end:
-            self.motion = 'idle'
-            self.game_object.motion = 'idle'
+        animation = self.animation.get(self.str)
+        if not animation:
+            #print(f'None Animation {self.str}')
+            animation = self.animation.get('idle')
+        image, _ = animation.update()
         return image
     
     def animation_translate(self, next_animation : str) -> None:
-        self.str = next_animation
-        for _, value in self.animation.items():
-            value.index = 0
+        if self.str != next_animation:
+            self.str = next_animation
+            for _, value in self.animation.items():
+                value.index = 0
     

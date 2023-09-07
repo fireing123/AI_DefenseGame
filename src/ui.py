@@ -284,16 +284,37 @@ class Text(UI):
         self.image = self.font.render(string, True, color)
         self.rect = self.image.get_rect(center=self.position)
         
-class HPbar(UI):
-    def __init__(self, name, game_object):
+class Bar(UI):
+    def __init__(self, name, game_object, color, back_color = (30,30,30), height = 0):
         super().__init__(name)
         self.game_object : GameObject = game_object
         self.rect = pygame.Rect(0, 0, 100, 20)
+        self.color = color
+        self.back_color = back_color
+        self.height = height
+        self.max = 100
+        self.now = 100
 
     def render(self,screen, camera):
         x = self.game_object.rect.centerx # x,y좌표 설정
-        y = self.game_object.rect.top
+        y = self.game_object.rect.top - self.height
         cx, cy = camera
         px, py = x- cx, y - cy - 5
-        pygame.draw.rect(screen,(30,30,30),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])
-        pygame.draw.rect(screen,(255,0,0),[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,((self.rect[2]*0.9)/self.game_object.max_hp)*self.game_object.hp,10])
+        pygame.draw.rect(screen,self.back_color,[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,self.rect[2]*0.9,10])
+        pygame.draw.rect(screen,self.color,[px-(self.rect[2]*0.9)/2,py-self.rect[3]/2-20,((self.rect[2]*0.9)/self.max)*self.now,10])
+        
+class HPbar(Bar):
+    def __init__(self, name, game_object, color = (255, 0, 0), back_color=(30, 30, 30)):
+        super().__init__(name, game_object, color, back_color)
+        
+    def update(self, mod):
+        self.max = self.game_object.max_hp
+        self.now = self.game_object.hp
+        
+class ExpBar(Bar):
+    def __init__(self, name, game_object, color = (30, 100, 60), back_color=(30, 30, 30)):
+        super().__init__(name, game_object, color, back_color, -25)
+        
+    def update(self, mod):
+        self.max = self.game_object.max_exp
+        self.now = self.game_object.exp

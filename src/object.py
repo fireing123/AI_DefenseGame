@@ -197,7 +197,6 @@ class LivingObject(MoveObject):
         self.__hp : int = 100
         self.max_hp : int = 100
         self.invulnerable = 500
-        self.last_invulerable = self.invulnerable
         self.recognition_range = pygame.Rect((0, 0), (400, 400))
         
         idle_animation = SpriteSheet(xml_path)
@@ -220,11 +219,17 @@ class LivingObject(MoveObject):
             self.status = 'jump'
         elif self.direction.y > 1:
             self.status = 'fall'
+        elif self.direction.x != 0:
+            self.status = 'moving'
+        else:
+            self.status = 'idle'
 
         if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
         
         super().update(mod)
+        
+        self.animation_controller.animation_translate(self.status)
      
     def delete(self):
         self.hp_bar.delete()
@@ -248,13 +253,7 @@ class LivingObject(MoveObject):
     
     @hp.setter
     def hp(self, value):
-        if self.__hp > value:
-            # attacked if pygame.time.get_ticks() - self.last_update > self.tick:
-            if pygame.time.get_ticks() - self.last_invulerable > self.invulnerable:
-                self.last_invulerable = pygame.time.get_ticks()
-                self.__hp = value
-        else:
-            self.__hp = value
+        self.__hp = value
         if self.__hp < 0:
             self.destroy()
             self.delete()

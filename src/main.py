@@ -22,7 +22,6 @@ def story(story_path):
 def world(world_path, checkpoint=None):
     def real_world(func):
         def wrapper(self):
-            self.is_running = True
             self.checkpoint = checkpoint
             manger.scene.darkening_scene()
             manger.layers.load(world_path)
@@ -101,7 +100,7 @@ class AiDefenseGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
 
-    @world('D:/AI_DefenseGame/src/level/prologue.json')
+    @world('D:/AI_DefenseGame/src/level/prologue.json', 'lab')
     @story('D:/AI_DefenseGame/src/story/prologue.json')
     def prologue(self):
         player = manger.layers.get_game_object_by_name('player')
@@ -116,10 +115,8 @@ class AiDefenseGame:
 
         self.game_loop()
 
-        self.is_running = True
-        self.checkpoint = 'lab'
 
-    @world('D:/AI_DefenseGame/src/level/laboratory.json', 'lab')
+    @world('D:/AI_DefenseGame/src/level/laboratory.json', 'mountain')
     def laboratory(self):
         # awake
         button = manger.layers.get_game_object_by_name("enter")
@@ -127,8 +124,7 @@ class AiDefenseGame:
         ani = manger.layers.get_game_object_by_name("chatbox")
         ani.set_player(player)
         button.on_click.add_lisner(lambda : ani.say('D:/AI_DefenseGame/src/chat/test.json', 5))
-        core = manger.layers.get_game_object_by_name("core")
-        core.set_world(self)
+
         #end
         manger.scene.brightening_scene()
 
@@ -139,9 +135,7 @@ class AiDefenseGame:
         if self.game_over:
             raise Exception("GameOver")
         
-        self.checkpoint = 'mountain'
-            
-    @world('D:/AI_DefenseGame/src/level/mountain.json')
+    @world('D:/AI_DefenseGame/src/level/mountain.json', 'last_laboratory')
     def mountain(self):
         # awake
         
@@ -153,7 +147,7 @@ class AiDefenseGame:
         if self.game_over:
             raise Exception("GameOver")
         
-    @world('D:/AI_DefenseGame/src/level/last_laboratory.json')
+    @world('D:/AI_DefenseGame/src/level/last_laboratory.json', 'last_laboratory')
     def last_laboratory(self):
         # awake
         

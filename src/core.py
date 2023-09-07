@@ -25,11 +25,7 @@ class Core(GameObject):
             collide.remove()
         
         if self.hp < 0:
-            self.world.is_running = False
-            
-            
-    def set_world(self, world):
-        self.world = world
+            manger.game.is_running = False
         
     @staticmethod
     def instantiate(json: Dict):

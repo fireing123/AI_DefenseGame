@@ -21,10 +21,10 @@ class Story:
         updated = self.json['story'][self.index]
         self.index += 1
         try:
+            global obj
             obj = manger.layers.get_game_object_by_name(updated['object'])
         except KeyError:
             print("story except")
-        else:
             return
         motion : str = updated['motion']
         args = motion.split(',')
@@ -45,7 +45,6 @@ class Story:
             obj.direction.y = int(args[1])
         elif args[0] == 'd': # damge func
             obj.hp -= int(args[1])
-
         threading.Timer(updated['wait'], self.update).start()
         
     def quit(self):
