@@ -8,7 +8,6 @@ from animation import AnimationController, Animation
 from sheet import SpriteSheet # color
 
 class Component:
-    
 
     def start(self):
         pass
@@ -38,7 +37,6 @@ class Position:
     
     def __len__(self):
         return 2
-    
     
     def __add__(self, other):
         return self.__class__(
@@ -80,7 +78,6 @@ class GameObject(Sprite, Component):
     """
     기본 오브젝트
     """
-          
     def __init__(self, name : str, layer = 3):
         Sprite.__init__(self)
         self.rect_position = (0, 0)
@@ -97,7 +94,6 @@ class GameObject(Sprite, Component):
             group.remove(self)
         manger.layers.remove(self)
         self = None
-
 
     @property
     def position(self):
@@ -122,10 +118,8 @@ class GameObject(Sprite, Component):
     @staticmethod
     def instantiate(json : Dict):
         pass
-        
 
 class MoveObject(GameObject):
-    
     
     def __init__(self, name):
         super().__init__(name)
@@ -139,9 +133,7 @@ class MoveObject(GameObject):
         self.move = ""
         
     def update(self, mod):
-        
         self.direction.y += self.gravity
-        
         self.collision = pygame.sprite.spritecollide(self, manger.ground_group, False)
         if self.mass:
             self.direction.x *= self.friction
@@ -158,15 +150,12 @@ class MoveObject(GameObject):
                 else:
                     self.direction.y += self.gravity
                     if self.rect.top > collide.rect.bottom - coy:
-                        #bottom
                         self.rect.top = collide.rect.bottom
                         self.direction.y = self.cut_plus(self.direction.y)
                     elif self.rect.left > collide.rect.right - 5:
-                        #right
                         self.rect.left = collide.rect.right - 1
                         self.direction.x = self.cut_plus(self.direction.x)
                     elif self.rect.right < collide.rect.left + 5:
-                        #left
                         self.rect.right = collide.rect.left + 1
                         self.direction.x = self.cut_minus(self.direction.x)
                 self.on_collision_enter(collide)
@@ -198,7 +187,6 @@ class LivingObject(MoveObject):
         self.max_hp : int = 100
         self.invulnerable = 500
         self.recognition_range = pygame.Rect((0, 0), (400, 400))
-        
         idle_animation = SpriteSheet(xml_path)
         self.animation_controller = AnimationController(
             Animation(idle_animation.items()),
@@ -208,13 +196,10 @@ class LivingObject(MoveObject):
         self.rect = self.image.get_rect(center=self.rect.center)
         self.status = 'idle'
         self.position = position
-
         self.hp_bar = manger.HPbar(name+"hpBar", self)
         
     def update(self, mod):
-    
         self.image = self.animation_controller.update()
-    
         if self.direction.y < 0:
             self.status = 'jump'
         elif self.direction.y > 1:
@@ -226,9 +211,7 @@ class LivingObject(MoveObject):
 
         if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
-        
         super().update(mod)
-        
         self.animation_controller.animation_translate(self.status)
      
     def delete(self):
@@ -238,13 +221,10 @@ class LivingObject(MoveObject):
     def look_angle(self, vector):
         ox, oy = self.position
         vx, vy = vector
-
         direction = pygame.Vector2(vx - ox, vy - oy)
         angle = math.atan2(*direction)
         distance = math.sqrt((vx - ox)**2+(vy - oy)**2)
-
         direction /= distance
-
         return direction, angle
 
     @property

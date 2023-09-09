@@ -1,12 +1,11 @@
 import os
+import sys
 import pygame
 
 pygame.init()
 pygame.display.set_caption("AI Defense Game")
 
 import manger
-import sys
-
 from gametime import GameTime
 from enemy import living_enemy
 from story import Story
@@ -53,10 +52,8 @@ class AiDefenseGame:
     def game_loop(self, event_func, game_loop=empty_func):
         self.is_running = True
         while self.is_running:
-            GameTime.tick(60)
-            
+            GameTime.tick(60)   
             game_loop()
-            
             for event in pygame.event.get(): 
                 if event.type == pygame.QUIT:
                     quit()
@@ -71,9 +68,7 @@ class AiDefenseGame:
 
 
     def start(self):
-        
         manger.layers.load(os.getcwd()+'/src/level/main.json')
-        
         def wait(event): 
             if event.type == pygame.KEYDOWN:
                 self.is_running = False
@@ -120,11 +115,8 @@ class AiDefenseGame:
         def sk():
             self.is_running = False
         skip.on_click.add_lisner(sk)
-        #end
         manger.scene.brightening_scene()
-
         self.game_loop([])
-
 
     @world(os.getcwd()+'/src/level/laboratory.json', 'mountain')
     def laboratory(self):
@@ -134,15 +126,13 @@ class AiDefenseGame:
         ani = manger.layers.get_game_object_by_name("chatbox")
         ani.set_player(player)
         button.on_click.add_lisner(lambda : ani.say(os.getcwd()+'/src/chat/test.json', 5))
-
-        #end
         manger.scene.brightening_scene()
-
-        manger.sound_manger.bgm['army_step'].play(-1)
+        #manger.sound_manger.bgm['army_step'].play(-1)
 
         def check_enemy():
             if living_enemy.is_emty():
                 self.is_running = False
+                
         self.game_loop(
             [player.player_event],
             check_enemy
@@ -187,21 +177,19 @@ if __name__ == "__main__" :
     game = AiDefenseGame(size=(1000, 800))
     while not end:
         try:
-            pass
+            if game.checkpoint == None:
+                game.start()
+                game.prologue()   
+            elif game.checkpoint == 'lab':
+                game.laboratory()
+            elif game.checkpoint == 'mountain':
+                game.mountain()
+            elif game.checkpoint == 'last_laboratory':
+                game.last_laboratory()
+            else:
+                end = True
         except Exception:
-            pass
-        if game.checkpoint == None:
-            game.start()
-            game.prologue()   
-        elif game.checkpoint == 'lab':
-            game.laboratory()
-        #elif game.checkpoint == 'mountain':
-        #    game.mountain()
-        #elif game.checkpoint == 'last_laboratory':
-        #    game.last_laboratory()
-        else:
-            end = True
-            #game.over()
+            game.over()
     game.end()
     pygame.quit() # 종료
     sys.exit()

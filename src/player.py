@@ -3,14 +3,11 @@ import pygame
 import threading
 import time
 from typing import Dict
-#not import my module
 import manger
 from object import LivingObject
 from camera import camera
-#import module first
 from weapon import enemy_shot_group, BombShot, AllyShot
 from enemy import enemy_group
-from manger import enemy_death
 
 class Player(LivingObject):
 
@@ -29,52 +26,17 @@ class Player(LivingObject):
         self.on_ground = True
         self.tick = 200
         self.last_update = 0
-        self.__exp = 0
-        self.max_exp = 1000
-        self.__lv = 0
         self.is_on = False
         self.is_pressing = False
         self.skill_q = 200
         self.skill_q_ev = True
-        self.skill_w = 200
+        self.skill_w = 600
         self.skill_w_ev = False
-        self.skill_e = 200
+        self.skill_e = 600
         self.skill_e_ev = False
         self.last_skill_q = 0
         self.last_skill_w = 0
         self.last_skill_e = 0
-
-        enemy_death.add_lisner(self.add_exp)
-
-    def add_exp(self, exp):
-        self.exp += exp
-
-    @property
-    def exp(self):
-        return self.__exp
-    
-    @exp.setter
-    def exp(self, value):
-        self.__exp = value
-        if self.__exp > self.max_exp:
-            self.exp -= self.max_exp
-            self.lv += 1
-    
-    @property
-    def lv(self):
-        return self.lv
-    
-    @lv.setter
-    def lv(self, value):
-        lv_up = False
-        if self.__lv < value:
-            lv_up = True
-        self.__lv = value
-        if lv_up:
-            self.level_up(value)
-        
-    def level_up(self, lv):
-        pass
        
     def player_event(self, event : pygame.event.Event):
         
@@ -149,8 +111,6 @@ class Player(LivingObject):
                 self.step = False
         elif mod == 'story':
             pass
-        
-        
         
         super().update(mod)
         

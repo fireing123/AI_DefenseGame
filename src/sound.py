@@ -1,10 +1,7 @@
 import os
-import threading
 import pygame
-from typing import Dict
 import xml.etree.ElementTree as xml
-
-from pygame.mixer import Channel
+from typing import Dict
 
 class SoundManger:
     def __init__(self):

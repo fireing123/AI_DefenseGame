@@ -25,6 +25,18 @@
         {
             "name" : "enemy",
             "position" : [800, 200]
+        },
+        {
+            "name" : "enemy",
+            "position" : [800, 200]
+        },
+        {
+            "name" : "enemy",
+            "position" : [800, 200]
+        },
+        {
+            "name" : "enemy",
+            "position" : [800, 200]
         }
     ],
     "SuperSoldier" : [

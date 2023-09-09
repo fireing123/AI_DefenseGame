@@ -4,23 +4,19 @@ import pygame
 from pygame import time
 from time import sleep
 from typing import Dict, List, Tuple
-#not import my module
+import manger
 from event import Event
 from object import GameObject, Position
-#import module first
 from sheet import SpriteSheet # color import
 from animation import AnimationText # object
-import manger
 
 def image_load_to_scale(path, scale):
     return pygame.transform.scale(pygame.image.load(os.getcwd()+'/'+path), scale)
-
 
 class UI(GameObject):
     
     def __init__(self, name):
         super().__init__(name, 4)
-
 
 class Button(UI):
     """
@@ -173,7 +169,6 @@ class ChatBox(UI):
         self.game_object : GameObject = game_object
     
     def update(self, mod):
-
         self.text.visible = self.visible
         gox, goy = self.game_object.rect_position
         gsx, gsy = self.game_object.image.get_size()
@@ -217,7 +212,6 @@ class AnimaText(UI):
         self.local_position = position
         
     def start_animation(self, ani_text : AnimationText):
-        
         result : List[Tuple] = []
         animat : List[Tuple] = []
         self.index = 0
@@ -248,7 +242,6 @@ class AnimaText(UI):
             self.images, self.tick = self.animation[self.index]
             if self.len > self.index + 1:
                 self.index += 1
-
     
     def render(self, surface, camera):
         if not self.visible: return

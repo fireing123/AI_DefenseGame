@@ -1,16 +1,12 @@
 import pygame
-from pygame.sprite import Group
-from typing import List
 from time import sleep
+from typing import List
+from pygame.sprite import Group
 import manger
-#import module first
 from background import BlcakRectangle
-#import module third
 
 class Scene:
-    """
-    개임의 맵을 담당함
-    """
+    
     def __init__(self):
         width, self.rect_height = manger.screen.get_size()
         self.rect_width = width // 8

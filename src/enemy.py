@@ -4,7 +4,6 @@ from typing import Dict
 from pygame.sprite import Group
 from object import LivingObject
 from weapon import shot_group, EnemyShot
-from event import enemy_death
 
 enemy_group = Group()
 
@@ -35,7 +34,6 @@ class Enemy(LivingObject):
     """
     def __init__(self, name, position, xml_path):
         super().__init__(name, position, xml_path)
-        self.exp_ponit = 50
         self.index = 1
         self.moving = 500
         self.last_moving = 0
@@ -62,9 +60,6 @@ class Enemy(LivingObject):
     def attack(self, player):
         pass
     
-    def destroy(self):
-        enemy_death.invoke(self.exp_ponit)
-        
     def delete(self):
         global living_enemy
         living_enemy.sub(1)

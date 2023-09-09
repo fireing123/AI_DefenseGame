@@ -1,13 +1,10 @@
 import os
 import pygame
 import math
-
-from pygame import Surface
 from object import MoveObject
 from camera import camera
 
 shot_group = pygame.sprite.Group()
-    
 enemy_shot_group = pygame.sprite.Group()
     
 class Shot(MoveObject):
@@ -48,12 +45,11 @@ class AllyShot(Shot):
         camera.shiver()
         shot_group.add(self)
 
- 
 class SubShot(Shot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
         shot_group.add(self)
-
+        
 class BombShot(AllyShot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
