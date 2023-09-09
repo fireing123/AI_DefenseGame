@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Animation imagePath="src/image/BigGuy/BigGuy.png">
+    <Rect name="default" x="0" y="0" width="50" height="56"/>
+    <Rect name="walk_1" x="50" y="0" width="36" height="56"/>
+    <Rect name="walk_2" x="86" y="0" width="29" height="56"/>
+    <Rect name="walk_3" x="0" y="56" width="30" height="54"/>
+    <Rect name="walk_3" x="30" y="57" width="44" height="52"/>
+    <Rect name="walk_3" x="74" y="56" width="30" height="54"/>
+    <Rect name="walk_3" x="0" y="110" width="28" height="55"/>
+    <Rect name="walk_3" x="28" y="109" width="36" height="56"/>
+</Animation>

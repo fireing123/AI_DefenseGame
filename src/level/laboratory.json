@@ -39,6 +39,12 @@
             "position" : [800, 200]
         }
     ],
+    "BigGuy" : [
+        {
+            "name" : "bigg",
+            "position" : [1500, 100]
+        }
+    ],
     "SuperSoldier" : [
         {
             "name" : "spsd",

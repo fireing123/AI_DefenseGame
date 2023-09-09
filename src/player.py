@@ -14,7 +14,6 @@ class Player(LivingObject):
     def __init__(self, name: str, position):
         super().__init__(name, position, os.getcwd()+'/src/image/ai/config.xml')
         manger.player = self
-        self.exp_bar = manger.ExpBar(name+"expBar", self)
         self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2

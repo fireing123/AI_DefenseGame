@@ -26,10 +26,10 @@ def story(story_path):
 def world(world_path, checkpoint=None):
     def real_world(func):
         def wrapper(self):
-            self.checkpoint = checkpoint
             manger.scene.darkening_scene()
             manger.layers.load(world_path)
             func(self)
+            self.checkpoint = checkpoint
             manger.sound_manger.all_stop()
             manger.layers.clear()
         return wrapper

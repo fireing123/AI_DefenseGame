@@ -357,11 +357,3 @@ class HPbar(Bar):
     def update(self, mod):
         self.max = self.game_object.max_hp
         self.now = self.game_object.hp
-        
-class ExpBar(Bar):
-    def __init__(self, name, game_object, color = (30, 100, 60), back_color=(30, 30, 30)):
-        super().__init__(name, game_object, color, back_color, -15)
-        
-    def update(self, mod):
-        self.max = self.game_object.max_exp
-        self.now = self.game_object.exp
