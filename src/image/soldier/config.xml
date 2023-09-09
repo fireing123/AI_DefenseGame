@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Animation imagePath="D:/AI_DefenseGame/src\image\soldier\soldier.png">
+<Animation imagePath="src\image\soldier\soldier.png">
     <Rect name="default" x="0" y="0" width="150" height="210"/>
 </Animation>

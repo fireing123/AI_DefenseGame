@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "D:/AI_DefenseGame/src/image/sky.png",
+            "image" : "src/image/sky.png",
             "position" : [500, 400]
         }
     ],
@@ -27,6 +27,30 @@
             "position" : [800, 200]
         }
     ],
+    "SuperSoldier" : [
+        {
+            "name" : "spsd",
+            "position" : [1200, 100]
+        }
+    ],
+    "Q" : [
+        {
+            "name" : "q",
+            "position" : [100, 700]
+        }
+    ],
+    "W" : [
+        {
+            "name" : "w",
+            "position" : [150, 700]
+        }
+    ],
+    "E" : [
+        {
+            "name" : "e",
+            "position" : [200, 700]
+        }
+    ],
     "Core" : [
         {
             "name" : "core",
@@ -38,8 +62,8 @@
             "name" : "enter",
             "position": [100, 50],
             "scale" : [100, 50],
-            "defaultImage" : "D:/AI_DefenseGame/src/image/default.jpg",
-            "clickImage" : "D:/AI_DefenseGame/src/image/click.jpg",
+            "defaultImage" : "src/image/default.jpg",
+            "clickImage" : "src/image/click.jpg",
             "text" : {
                 "name" : "butext",
                 "position" : [100, 50],

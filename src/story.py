@@ -45,6 +45,8 @@ class Story:
             obj.direction.y = int(args[1])
         elif args[0] == 'd': # damge func
             obj.hp -= int(args[1])
+        elif args[0] == 'p': #play sound
+            manger.sound_manger.music_dir[args[1]].play(args[2], args[3])
         threading.Timer(updated['wait'], self.update).start()
         
     def quit(self):

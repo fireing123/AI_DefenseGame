@@ -1,15 +1,17 @@
-from typing import Dict
+import os
+from typing import Any, Dict
 import pygame
 import manger
 from object import GameObject
 from weapon import shot_group
+
 class Core(GameObject):
     
     def __init__(self, name: str, hp, position):
         super().__init__(name)
         self.hp = hp
         self.max_hp = hp
-        self.image = pygame.image.load('D:\AI_DefenseGame\src/image\core.png')
+        self.image = pygame.image.load(os.getcwd()+'/src/image/core.png')
         self.rect = self.image.get_rect()
         self.position = position
         
@@ -34,3 +36,16 @@ class Core(GameObject):
             100,
             json['position']
         )
+        
+class InstallCore(GameObject):
+    
+    def __init__(self, name: str, postition):
+        super().__init__(name)
+        self.image = pygame.image.load()
+        self.rect = self.image.get_rect()
+        self.interaction = pygame.Rect(0, 0, 500, 200)
+        self.interaction.center = postition
+        self.position = postition
+        
+    def update(self):
+        pass

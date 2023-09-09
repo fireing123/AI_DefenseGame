@@ -1,3 +1,4 @@
+import os
 import threading
 import pygame
 from pygame import time
@@ -12,7 +13,7 @@ from animation import AnimationText # object
 import manger
 
 def image_load_to_scale(path, scale):
-    return pygame.transform.scale(pygame.image.load(path), scale)
+    return pygame.transform.scale(pygame.image.load(os.getcwd()+'/'+path), scale)
 
 
 class UI(GameObject):
@@ -66,18 +67,71 @@ class Button(UI):
         return self.is_on
 
     def render(self, surface, camera):
-        surface.blit(self.image, self.rect)
+        if self.visible:
+            surface.blit(self.image, self.rect)
             
     def update(self, mod):
         if self.is_click():
             self.on_click.invoke()
             self.is_on = False
     
+class SkillBox(UI):
+    def __init__(self, name, position, skill_path):
+        super().__init__(name)
+        self.image = image_load_to_scale(skill_path, (32, 32))
+        self.rect = self.image.get_rect()
+        self.position = position
+        
+    def render(self, surface, camera):
+        if self.visible:
+            surface.blit(self.image, self.rect)
+            
+class Q(SkillBox):
+    def __init__(self, name, position):
+        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+
+    def update(self, mod):
+        self.visible = manger.player.skill_q_ev 
+    
+    @staticmethod
+    def instantiate(json: Dict):
+        return Q(
+            json['name'],
+            json['position']
+        )
+    
+class W(SkillBox):
+    def __init__(self, name, position):
+        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+
+    def update(self, mod):
+        self.visible = manger.player.skill_w_ev
+        
+    @staticmethod
+    def instantiate(json: Dict):
+        return W(
+            json['name'],
+            json['position']
+        )
+        
+class E(SkillBox):
+    def __init__(self, name, position):
+        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+
+    def update(self, mod):
+        self.visible = manger.player.skill_e_ev    
+
+    @staticmethod
+    def instantiate(json: Dict):
+        return W(
+            json['name'],
+            json['position']
+        )
 
 class ChatBox(UI):
     def __init__(self, name, text):
         super().__init__(name)
-        chat_box = SpriteSheet('D:/AI_DefenseGame/src/image/chatBox/config.xml')
+        chat_box = SpriteSheet(os.getcwd()+'/src/image/chatBox/config.xml')
         self.visible = False
         self.open_image = chat_box['open']
         self.box_image  = chat_box['box']
@@ -170,7 +224,7 @@ class AnimaText(UI):
         self.animation.clear()
         self.local_position = self.position
         for char, scale, tick in ani_text:
-            font = pygame.font.Font('D:/AI_DefenseGame/src/font/Galmuri11.ttf', scale)
+            font = pygame.font.Font(os.getcwd()+'/src/font/Galmuri11.ttf', scale)
             text = font.render(char, True, self.color)
             rect = text.get_rect()
             
@@ -228,7 +282,7 @@ class AnimaText(UI):
 class Text(UI):
     def __init__(self, name, position, scale, string, color):
         super().__init__(name)
-        self.font = pygame.font.Font('D:/AI_DefenseGame/src/font/Galmuri11.ttf', scale)
+        self.font = pygame.font.Font(os.getcwd()+'/src/font/Galmuri11.ttf', scale)
         self.set_text(string, color)
         self.rect = self.image.get_rect()
         self.__text = string
@@ -313,7 +367,7 @@ class HPbar(Bar):
         
 class ExpBar(Bar):
     def __init__(self, name, game_object, color = (30, 100, 60), back_color=(30, 30, 30)):
-        super().__init__(name, game_object, color, back_color, -25)
+        super().__init__(name, game_object, color, back_color, -15)
         
     def update(self, mod):
         self.max = self.game_object.max_exp

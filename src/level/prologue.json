@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "D:/AI_DefenseGame/src/image/sky.png",
+            "image" : "src/image/sky.png",
             "position" : [500, 400]
         }
     ],
@@ -28,8 +28,8 @@
             "name" : "skip",
             "position": [100, 50],
             "scale" : [100, 50],
-            "defaultImage" : "D:/AI_DefenseGame/src/image/skip/skip_default.png",
-            "clickImage" : "D:/AI_DefenseGame/src/image/skip/skip_pressed.png",
+            "defaultImage" : "src/image/skip/skip_default.png",
+            "clickImage" : "src/image/skip/skip_pressed.png",
             "text" : {
                 "name" : "skip text",
                 "position" : [100, 50],

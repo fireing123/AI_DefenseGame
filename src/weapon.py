@@ -1,3 +1,4 @@
+import os
 import pygame
 import math
 
@@ -12,7 +13,7 @@ enemy_shot_group = pygame.sprite.Group()
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
         super().__init__(name)
-        self.image = pygame.image.load('D:/AI_DefenseGame/src/image/shot.png')
+        self.image = pygame.image.load(os.getcwd()+'/src/image/shot.png')
         self.power = 10
         self.rect = self.image.get_rect()
         self.position = position
@@ -32,6 +33,14 @@ class Shot(MoveObject):
         self.angle = math.degrees(angle_rad)
         if self.collision:
             self.delete()
+        
+    def render(self, surface: pygame.Surface, camera: tuple):
+        rotated_image = pygame.transform.rotate(self.image, self.angle)
+        if not self.visible: return
+        cx, cy = camera
+        rx, ry = rotated_image.get_rect(center=self.rect.center).topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(rotated_image, self.rect_position)
         
 class AllyShot(Shot):
     def __init__(self, name, position, direction):

@@ -8,7 +8,7 @@ from sound import SoundManger
 screen : pygame.Surface
 scene : Scene
 layers = Layers()
-#sound_manger = SoundManger()
+sound_manger = SoundManger()
 
 enemy_death = Event()
 thread_connect = SharedThread()

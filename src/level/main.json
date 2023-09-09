@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "D:/AI_DefenseGame/src/image/graycity.png",
+            "image" : "src/image/graycity.png",
             "position" : [500, 400]
         }
     ],
@@ -10,7 +10,7 @@
             "name" : "a",
             "position" : [500, 350],
             "scale" : 50,
-            "string" : "Ai Defense Game",
+            "string" : "Game",
             "color" : [255, 255, 255]
         },
         {
