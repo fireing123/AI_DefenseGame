@@ -212,7 +212,6 @@ class LivingObject(MoveObject):
         if self.move == 'backward':
             self.image = pygame.transform.flip(self.image, True, False)
         super().update(mod)
-        self.animation_controller.animation_translate(self.status)
      
     def delete(self):
         self.hp_bar.delete()

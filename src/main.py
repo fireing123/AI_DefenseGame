@@ -121,11 +121,7 @@ class AiDefenseGame:
     @world(os.getcwd()+'/src/level/laboratory.json', 'mountain')
     def laboratory(self):
         # awake
-        button = manger.layers.get_game_object_by_name("enter")
-        player = manger.layers.get_game_object_by_name('super')
-        ani = manger.layers.get_game_object_by_name("chatbox")
-        ani.set_player(player)
-        button.on_click.add_lisner(lambda : ani.say(os.getcwd()+'/src/chat/test.json', 5))
+
         manger.scene.brightening_scene()
         #manger.sound_manger.bgm['army_step'].play(-1)
 
@@ -134,7 +130,7 @@ class AiDefenseGame:
                 self.is_running = False
                 
         self.game_loop(
-            [player.player_event],
+            [manger.player.player_event],
             check_enemy
         )
         
@@ -145,6 +141,7 @@ class AiDefenseGame:
     def mountain(self):
         # awake
         manger.player.skill_w_ev = True
+        manger.player.skill_e_ev = False
         #end
         manger.scene.brightening_scene()
         
@@ -153,21 +150,26 @@ class AiDefenseGame:
                 self.is_running = False
         
         self.game_loop(
-            [],
+            [manger.player.player_event],
             check_enemy
         )
          
         if self.game_over:
             raise Exception("GameOver")
         
-    @world(os.getcwd()+'/src/level/last_laboratory.json', 'last_laboratory')
+    @world(os.getcwd()+'/src/level/last_laboratory.json', 'end')
     def last_laboratory(self):
         # awake
+        core = manger.layers.get_game_object_by_name("core")
         manger.player.skill_e_ev = True 
+        manger.player.skill_w_ev = True 
         #end
         manger.scene.brightening_scene()
         
-        self.game_loop([])
+        self.game_loop(
+            [manger.player.player_event,
+            core.core_event]
+        )
         
         if self.game_over:
             raise Exception("GameOver")

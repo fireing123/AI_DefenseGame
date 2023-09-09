@@ -116,9 +116,6 @@ class SuperSoldier(Enemy):
         )
 
 class Soldier(Enemy):
-    """
-    적군인 오브젝트 전진, 발사기능이 있음
-    """
     
     def __init__(self, name, position):
         super().__init__(name, position, os.getcwd()+'/src/image/soldier/config.xml')

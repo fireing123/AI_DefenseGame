@@ -1,54 +1,27 @@
 {
-    "BackGround" : [
+    "FollowGround" : [
         {
-            "image" : "src/image/sky.png",
+            "image" : "src/image/break.png",
             "position" : [500, 400]
         }
     ],
-    "Ground": [
+    "Ground" : [
         {
-            "position" : [500, 600],
-            "scale" : [10000, 100]
-        },
-        {
-            "position" : [800, 400],
-            "scale" : [500, 100]
+            "position" : [500, 800],
+            "scale" : [10000, 50],
+            "path" : "src/image/ground/break_ground.png"
         }
     ],
     "Player" : [
         {
-            "name" : "super",
+            "name" : "player",
             "position" : [400, 200]
         }
     ],
     "Soldier" : [
         {
-            "name" : "enemy",
+            "name" : "last",
             "position" : [800, 200]
-        },
-        {
-            "name" : "enemy",
-            "position" : [800, 200]
-        },
-        {
-            "name" : "enemy",
-            "position" : [800, 200]
-        },
-        {
-            "name" : "enemy",
-            "position" : [800, 200]
-        }
-    ],
-    "BigGuy" : [
-        {
-            "name" : "bigg",
-            "position" : [1500, 100]
-        }
-    ],
-    "SuperSoldier" : [
-        {
-            "name" : "spsd",
-            "position" : [1200, 100]
         }
     ],
     "Q" : [
@@ -67,39 +40,6 @@
         {
             "name" : "e",
             "position" : [200, 700]
-        }
-    ],
-    "Core" : [
-        {
-            "name" : "core",
-            "position" : [1200, 400]
-        }
-    ],
-    "Button": [
-        {
-            "name" : "enter",
-            "position": [100, 50],
-            "scale" : [100, 50],
-            "defaultImage" : "src/image/default.jpg",
-            "clickImage" : "src/image/click.jpg",
-            "text" : {
-                "name" : "butext",
-                "position" : [100, 50],
-                "scale" : 25,
-                "string" : "hello",
-                "color" : [255, 255, 255]
-            }
-        }
-    ],
-    "ChatBox" : [
-        {
-            "name": "chatbox",
-            "AnimaText": {
-                "name" : "ani",
-                "position" : [700, 100],
-                "scale" : 50,
-                "color" : [0,0,0]
-            }
         }
     ]
 }

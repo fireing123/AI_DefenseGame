@@ -6,6 +6,8 @@ from typing import Dict
 import manger
 from object import LivingObject
 from camera import camera
+from animation import Animation
+from sheet import SpriteSheet
 from weapon import enemy_shot_group, BombShot, AllyShot
 from enemy import enemy_group
 
@@ -14,6 +16,11 @@ class Player(LivingObject):
     def __init__(self, name: str, position):
         super().__init__(name, position, os.getcwd()+'/src/image/ai/config.xml')
         manger.player = self
+        red_ani = SpriteSheet(os.getcwd()+'/src/image/PowerfullAi/config.xml')
+        self.animation_controller.add(
+            "red",
+            Animation(red_ani.items())
+        )
         self.keys = {}
         get_width, get_height = manger.screen.get_size()
         self.width, self.height = get_width/2, get_height/2
@@ -75,8 +82,10 @@ class Player(LivingObject):
                     if pygame.time.get_ticks() - self.last_skill_e > self.skill_e:
                         self.last_skill_e = pygame.time.get_ticks()
                         self.tick = 100
+                        self.animation_controller.animation_translate('red')
                         def ticd():
                             time.sleep(3)
+                            self.animation_controller.animation_translate('idle')
                             self.tick = 200
                         threading.Thread(target=ticd).start()
             mouse_press = pygame.mouse.get_pressed()[0]
@@ -91,15 +100,15 @@ class Player(LivingObject):
                     manger.sound_manger['shot'].play()
                     AllyShot("shot", self.position, self.look_mouse()*10)
             if self.rect_position[0] > self.width * 0.9:
-                camera.x += 1
+                camera.x += 5
             if self.rect_position[0] < self.width * 0.25:
-                camera.x -= 1
+                camera.x -= 5
 
             if self.rect_position[1] > self.height * 0.9:
-                camera.y += 1
+                camera.y += 5
 
             if self.rect_position[1] < self.height * 0.25:
-                camera.y -= 1
+                camera.y -= 5
                 
             if self.status == 'moving':
                 if not self.step:

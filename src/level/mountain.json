@@ -1,0 +1,45 @@
+{
+    "FollowGround" : [
+        {
+            "image" : "src/image/forest.png",
+            "position" : [500, 400]
+        }
+    ],
+    "Ground" : [
+        {
+            "position" : [500, 800],
+            "scale" : [10000, 50],
+            "path" : "src/image/ground/break_ground.png"
+        }
+    ],
+    "Player" : [
+        {
+            "name" : "player",
+            "position" : [400, 200]
+        }
+    ],
+    "Soldier" : [
+        {
+            "name" : "last",
+            "position" : [800, 200]
+        }
+    ],
+    "Q" : [
+        {
+            "name" : "q",
+            "position" : [100, 700]
+        }
+    ],
+    "W" : [
+        {
+            "name" : "w",
+            "position" : [150, 700]
+        }
+    ],
+    "E" : [
+        {
+            "name" : "e",
+            "position" : [200, 700]
+        }
+    ]
+}

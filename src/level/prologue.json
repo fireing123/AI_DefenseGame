@@ -1,14 +1,15 @@
 {
-    "BackGround" : [
+    "FollowGround" : [
         {
-            "image" : "src/image/sky.png",
+            "image" : "src/image/graycity.png",
             "position" : [500, 400]
         }
     ],
     "Ground" : [
         {
             "position" : [600, 400],
-            "scale" : [1000, 100]
+            "scale" : [1000, 100],
+            "path" : "src/image/ground/break_ground.png"
         }
     ],
     "Player" : [

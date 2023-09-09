@@ -119,7 +119,7 @@ class E(SkillBox):
 
     @staticmethod
     def instantiate(json: Dict):
-        return W(
+        return E(
             json['name'],
             json['position']
         )

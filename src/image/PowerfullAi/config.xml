@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Animation imagePath="src/image/PowerfullAi/powerfull_ai.png">
+    <Rect name="default" x="0" y="0" width="100" height="155"/>
+    <Rect name="ai_2" x="0" y="155" width="100" height="150" />
+</Animation>

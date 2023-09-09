@@ -36,3 +36,15 @@ class BackGround(GameObject):
     @staticmethod 
     def instantiate(json):
         return BackGround(json['position'], json['image'])
+    
+class FollowGround(BackGround):
+    
+    def render(self, surface, camera):
+        surface.blit(self.image, self.rect)
+        
+    @staticmethod
+    def instantiate(json):
+        return FollowGround(
+            json['position'],
+            json['image']
+        )

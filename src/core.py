@@ -1,51 +1,42 @@
 import os
-from typing import Any, Dict
+from typing import Dict
 import pygame
+import time
+from pygame import Surface
 import manger
 from object import GameObject
-from weapon import shot_group
 
-class Core(GameObject):
-    
-    def __init__(self, name: str, hp, position):
-        super().__init__(name)
-        self.hp = hp
-        self.max_hp = hp
-        self.image = pygame.image.load(os.getcwd()+'/src/image/core.png')
-        self.rect = self.image.get_rect()
-        self.position = position
-        
-        self.hp_bar = manger.HPbar(name+"hpBar", self)
-        
-    def update(self, mod):
-        super().update(mod)
-        
-        collision = pygame.sprite.spritecollide(self, shot_group, True)
-        
-        for collide in collision:
-            self.hp -= collide.power
-            collide.remove()
-        
-        if self.hp < 0:
-            manger.game.is_running = False
-        
-    @staticmethod
-    def instantiate(json: Dict):
-        return Core(
-            json['name'],
-            100,
-            json['position']
-        )
-        
 class InstallCore(GameObject):
     
     def __init__(self, name: str, postition):
         super().__init__(name)
-        self.image = pygame.image.load()
-        self.rect = self.image.get_rect()
-        self.interaction = pygame.Rect(0, 0, 500, 200)
-        self.interaction.center = postition
+        self.image = pygame.image.load(os.getcwd() + "/src/image/install_core.png")
+        self.fack_rect = self.image.get_rect(center=postition)
+        self.rect = pygame.Rect(0, 0, 500, 200)
         self.position = postition
         
-    def update(self):
-        pass
+    def core_event(self, event : pygame.event.Event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                if pygame.sprite.collide_rect(manger.player, self):
+
+                    self.image = pygame.image.load(os.getcwd() + "/src/image/core.png")
+                    def end():
+                        time.sleep(10)
+                        manger.game.is_running = False
+                    import threading
+                    threading.Thread(target=end).start()
+    
+    def render(self, surface: Surface, camera: tuple):
+        if not self.visible: return
+        cx, cy = camera
+        rx, ry = self.fack_rect.topleft
+        self.rect_position = rx - cx, ry - cy
+        surface.blit(self.image, self.rect_position)
+       
+    @staticmethod 
+    def instantiate(json: Dict):
+        return InstallCore(
+            json['name'],
+            json['position']
+        )
