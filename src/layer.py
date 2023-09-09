@@ -1,7 +1,5 @@
-import os
 import json
 from typing import List
-#import module first
 import manger
 from camera import camera
 
@@ -38,18 +36,14 @@ class Layers:
     def in_layer_turning(self, method, *args):
         for layer in self.layers:
             for game_object in layer:
-                #try:
                 func = getattr(game_object, method)
                 func(*args)
-                #except AttributeError:
-                #    print(f"Function '{method}' not found in class '{game_object}'.")
 
     def update(self):
         self.in_layer_turning('update', self.mod)
         
     def render(self):
         self.in_layer_turning('render', manger.screen, camera.vector)
-    
 
     def get_game_object_by_name(self, name):
         for y in self.layers:

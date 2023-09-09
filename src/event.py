@@ -1,6 +1,5 @@
 from typing import List, Callable
 import threading
-# 최적화 요구..
 
 class Event:
     """

@@ -144,7 +144,7 @@ class AiDefenseGame:
     @world(os.getcwd()+'/src/level/mountain.json', 'last_laboratory')
     def mountain(self):
         # awake
-        
+        manger.player.skill_w_ev = True
         #end
         manger.scene.brightening_scene()
         
@@ -163,7 +163,7 @@ class AiDefenseGame:
     @world(os.getcwd()+'/src/level/last_laboratory.json', 'last_laboratory')
     def last_laboratory(self):
         # awake
-        
+        manger.player.skill_e_ev = True 
         #end
         manger.scene.brightening_scene()
         
