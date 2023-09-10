@@ -12,7 +12,7 @@
         },
         {
             "object" : "playerChat",
-            "motion" : "s,5,src/chat/test.json",
+            "motion" : "s,5,./chat/test.json",
             "wait" : 1
         },
         {

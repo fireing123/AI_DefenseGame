@@ -1,7 +1,7 @@
 {
     "FollowGround" : [
         {
-            "image" : "src/image/forest.png",
+            "image" : "./image/forest.png",
             "position" : [500, 400]
         }
     ],
@@ -9,7 +9,7 @@
         {
             "position" : [500, 800],
             "scale" : [10000, 50],
-            "path" : "src/image/ground/break_ground.png"
+            "path" : "./image/ground/break_ground.png"
         }
     ],
     "Player" : [
@@ -18,10 +18,10 @@
             "position" : [400, 200]
         }
     ],
-    "Soldier" : [
+    "BigGuy" : [
         {
             "name" : "last",
-            "position" : [800, 200]
+            "position" : [1200, 200]
         }
     ],
     "Q" : [

@@ -1,7 +1,7 @@
 {
     "BackGround" : [
         {
-            "image" : "src/image/graycity.png",
+            "image" : "./image/graycity.png",
             "position" : [500, 400]
         }
     ],

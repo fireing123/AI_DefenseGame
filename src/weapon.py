@@ -1,5 +1,6 @@
 import os
 import pygame
+import manger
 import math
 from object import MoveObject
 from camera import camera
@@ -10,7 +11,7 @@ enemy_shot_group = pygame.sprite.Group()
 class Shot(MoveObject):
     def __init__(self, name, position, direction):
         super().__init__(name)
-        self.image = pygame.image.load(os.getcwd()+'/src/image/shot.png')
+        self.image = pygame.image.load('./image/shot.png')
         self.power = 10
         self.rect = self.image.get_rect()
         self.position = position
@@ -53,10 +54,12 @@ class SubShot(Shot):
 class BombShot(AllyShot):
     def __init__(self, name, position, direction):
         super().__init__(name, position, direction)
+        self.image = pygame.image.load('./image/bomb.png')
         self.rect = pygame.Rect(0, 0, 10, 20)
         self.position = position
     
     def on_collision_enter(self, collision):
+        manger.sound_manger['boom'].play()
         for r in range(1, 13):
             rr = r*30
             vec = pygame.Vector2(5, 0).rotate_rad(rr)

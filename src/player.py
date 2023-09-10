@@ -14,9 +14,9 @@ from enemy import enemy_group
 class Player(LivingObject):
 
     def __init__(self, name: str, position):
-        super().__init__(name, position, os.getcwd()+'/src/image/ai/config.xml')
+        super().__init__(name, position, './image/ai/config.xml')
         manger.player = self
-        red_ani = SpriteSheet(os.getcwd()+'/src/image/PowerfullAi/config.xml')
+        red_ani = SpriteSheet('./image/PowerfullAi/config.xml')
         self.animation_controller.add(
             "red",
             Animation(red_ani.items())
@@ -34,11 +34,11 @@ class Player(LivingObject):
         self.last_update = 0
         self.is_on = False
         self.is_pressing = False
-        self.skill_q = 200
+        self.skill_q = 2000
         self.skill_q_ev = True
-        self.skill_w = 600
+        self.skill_w = 6000
         self.skill_w_ev = False
-        self.skill_e = 600
+        self.skill_e = 6000
         self.skill_e_ev = False
         self.last_skill_q = 0
         self.last_skill_w = 0
@@ -54,13 +54,13 @@ class Player(LivingObject):
     def update(self, mod):  
         
         if mod == 'play':
-            if self.keys.get(pygame.K_RIGHT):
+            if self.keys.get(pygame.K_d):
                 self.direction.x = self.speed
                 self.motion = 'forward'
-            if self.keys.get(pygame.K_LEFT):
+            if self.keys.get(pygame.K_a):
                 self.direction.x = -self.speed
                 self.motion = 'backward'
-            if self.keys.get(pygame.K_UP) and self.on_ground:
+            if self.keys.get(pygame.K_w) and self.on_ground:
                 self.jump()
                 self.motion = 'jump'
             if self.keys.get(pygame.K_q):
@@ -68,25 +68,36 @@ class Player(LivingObject):
                     if pygame.time.get_ticks() - self.last_skill_q > self.skill_q:
                         self.last_skill_q = pygame.time.get_ticks()
                         BombShot("shot", self.position, self.look_mouse()*10)
-            if self.keys.get(pygame.K_w):
+                        def sped():
+                            self.skill_q_ev = False
+                            time.sleep(2)
+                            self.skill_q_ev = True
+                        threading.Thread(target=sped).start()
+            if self.keys.get(pygame.K_e):
                 if self.skill_w_ev:
                     if pygame.time.get_ticks() - self.last_skill_w > self.skill_w:
                         self.last_skill_w = pygame.time.get_ticks()
                         self.speed = 5
                         def sped():
-                            time.sleep(5)
+                            self.skill_w_ev = False
+                            time.sleep(3)
                             self.speed = 2.6
+                            time.sleep(3)
+                            self.skill_w_ev = True
                         threading.Thread(target=sped).start()
-            if self.keys.get(pygame.K_e):
+            if self.keys.get(pygame.K_r):
                 if self.skill_e_ev:
                     if pygame.time.get_ticks() - self.last_skill_e > self.skill_e:
                         self.last_skill_e = pygame.time.get_ticks()
                         self.tick = 100
                         self.animation_controller.animation_translate('red')
                         def ticd():
+                            self.skill_e_ev = False
                             time.sleep(3)
                             self.animation_controller.animation_translate('idle')
                             self.tick = 200
+                            time.sleep(3)
+                            self.skill_e_ev = True
                         threading.Thread(target=ticd).start()
             mouse_press = pygame.mouse.get_pressed()[0]
 
@@ -100,15 +111,15 @@ class Player(LivingObject):
                     manger.sound_manger['shot'].play()
                     AllyShot("shot", self.position, self.look_mouse()*10)
             if self.rect_position[0] > self.width * 0.9:
-                camera.x += 5
+                camera.x += 3
             if self.rect_position[0] < self.width * 0.25:
-                camera.x -= 5
+                camera.x -= 3
 
             if self.rect_position[1] > self.height * 0.9:
-                camera.y += 5
+                camera.y += 3
 
             if self.rect_position[1] < self.height * 0.25:
-                camera.y -= 5
+                camera.y -= 3
                 
             if self.status == 'moving':
                 if not self.step:

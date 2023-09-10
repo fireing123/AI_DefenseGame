@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Animation imagePath="src/image/BigGuy/BigGuy.png">
+<Animation imagePath="./image/BigGuy/BigGuy.png">
     <Rect name="default" x="0" y="0" width="50" height="56"/>
     <Rect name="walk_1" x="50" y="0" width="36" height="56"/>
     <Rect name="walk_2" x="86" y="0" width="29" height="56"/>

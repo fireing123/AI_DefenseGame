@@ -24,7 +24,6 @@ class Story:
             global obj
             obj = manger.layers.get_game_object_by_name(updated['object'])
         except KeyError:
-            print("story except")
             return
         motion : str = updated['motion']
         args = motion.split(',')

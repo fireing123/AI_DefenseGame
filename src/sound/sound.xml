@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <SoundFolder>
-    <Sound name="shot" path="src/sound/shot.wav" />
-    <Sound name="game_over" path="src/sound/game-over.wav" />
-    <Sound name="step_forest" path="src/sound/step-forest.wav" />
-    <Sound name="helicopter" path="src/sound/helicopter.wav" />
-    <Sound name="boss_impact" path="src/sound/boss-impact.wav" />
-    <Sound name="boom" path="src/sound/boom.wav" />
-    <Sound type="bgm" name="army_step" path="src/sound/big-army-step.wav" />
+    <Sound name="shot" path="./sound/shot.wav" />
+    <Sound name="game_over" path="./sound/game-over.wav" />
+    <Sound name="step_forest" path="./sound/step-forest.wav" />
+    <Sound name="boom" path="./sound/boom.wav" />
 </SoundFolder>

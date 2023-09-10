@@ -1,11 +1,10 @@
-import os
 import pygame
 import xml.etree.ElementTree as xml
 from typing import Dict
 
 class SoundManger:
     def __init__(self):
-        self.path = os.getcwd()+"/src/sound/sound.xml"
+        self.path = "./sound/sound.xml"
         docs = xml.parse(self.path)
         root = docs.getroot()
         self.music_dir : Dict[str, pygame.mixer.Sound] = {}
@@ -13,9 +12,9 @@ class SoundManger:
         for child in root:
             att = child.attrib
             if att.get('type') == 'bgm':
-                self.bgm[att['name']] = pygame.mixer.Sound(os.getcwd()+'/'+att['path'])
+                self.bgm[att['name']] = pygame.mixer.Sound(att['path'])
             else:
-                self.music_dir[att['name']] = pygame.mixer.Sound(os.getcwd()+'/'+att['path'])
+                self.music_dir[att['name']] = pygame.mixer.Sound(att['path'])
 
     def all_stop(self):
         for _, sound in self.music_dir.items():

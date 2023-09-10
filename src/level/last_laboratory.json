@@ -1,7 +1,7 @@
 {
     "FollowGround" : [
         {
-            "image" : "src/image/car.png",
+            "image" : "./image/car.png",
             "position" : [500, 400]
         }
     ],
@@ -9,19 +9,29 @@
         {
             "position" : [500, 800],
             "scale" : [10000, 50],
-            "path" : "src/image/ground/break_ground.png"
+            "path" : "./image/ground/break_ground.png"
         }
     ],
     "Player" : [
         {
             "name" : "player",
-            "position" : [400, 200]
+            "position" : [0, 200]
         }
     ],
     "Soldier" : [
         {
             "name" : "last",
+            "position" : [400, 200]
+        }
+    ],
+    "SuperSoldier" : [
+        {
+            "name" : "last",
             "position" : [800, 200]
+        },
+        {
+            "name" : "last",
+            "position" : [1200, 200]
         }
     ],
     "Q" : [

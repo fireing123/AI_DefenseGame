@@ -1,7 +1,7 @@
 {
     "FollowGround" : [
         {
-            "image" : "src/image/break.png",
+            "image" : "./image/break.png",
             "position" : [500, 400]
         }
     ],
@@ -9,7 +9,7 @@
         {
             "position" : [500, 800],
             "scale" : [10000, 50],
-            "path" : "src/image/ground/break_ground.png"
+            "path" : "./image/ground/break_ground.png"
         }
     ],
     "Player" : [

@@ -11,7 +11,7 @@ class Ground(GameObject):
     def __init__(self, position, scale, image):
         super().__init__("ground", 2)
         ground_group.add(self)
-        self.ground_image = pygame.image.load(os.getcwd()+"/"+image)
+        self.ground_image = pygame.image.load(image)
         self.image = pygame.Surface(scale)
         self.rect = self.image.get_rect()
         self.position = position

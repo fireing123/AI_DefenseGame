@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Animation imagePath="src/image/superSoldier/superSoldier.png">
+<Animation imagePath="./image/superSoldier/superSoldier.png">
     <Rect name="default" x="0" y="0" width="92" height="124"/>
     <Rect name="walk_1" x="92" y="2" width="84" height="122"/>
     <Rect name="walk_2" x="0" y="124" width="84" height="122"/>

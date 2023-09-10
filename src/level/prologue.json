@@ -1,7 +1,7 @@
 {
     "FollowGround" : [
         {
-            "image" : "src/image/graycity.png",
+            "image" : "./image/break.png",
             "position" : [500, 400]
         }
     ],
@@ -9,7 +9,7 @@
         {
             "position" : [600, 400],
             "scale" : [1000, 100],
-            "path" : "src/image/ground/break_ground.png"
+            "path" : "./image/ground/break_ground.png"
         }
     ],
     "Player" : [
@@ -29,8 +29,8 @@
             "name" : "skip",
             "position": [100, 50],
             "scale" : [100, 50],
-            "defaultImage" : "src/image/skip/skip_default.png",
-            "clickImage" : "src/image/skip/skip_pressed.png",
+            "defaultImage" : "./image/skip/skip_default.png",
+            "clickImage" : "./image/skip/skip_pressed.png",
             "text" : {
                 "name" : "skip text",
                 "position" : [100, 50],

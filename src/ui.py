@@ -84,7 +84,7 @@ class SkillBox(UI):
             
 class Q(SkillBox):
     def __init__(self, name, position):
-        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+        super().__init__(name, position, './image/skill/bomb-skill.png')
 
     def update(self, mod):
         self.visible = manger.player.skill_q_ev 
@@ -98,7 +98,7 @@ class Q(SkillBox):
     
 class W(SkillBox):
     def __init__(self, name, position):
-        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+        super().__init__(name, position, './image/skill/bomb-skill.png')
 
     def update(self, mod):
         self.visible = manger.player.skill_w_ev
@@ -112,7 +112,7 @@ class W(SkillBox):
         
 class E(SkillBox):
     def __init__(self, name, position):
-        super().__init__(name, position, 'src/image/skill/bomb-skill.png')
+        super().__init__(name, position, './image/skill/bomb-skill.png')
 
     def update(self, mod):
         self.visible = manger.player.skill_e_ev    
@@ -127,7 +127,7 @@ class E(SkillBox):
 class ChatBox(UI):
     def __init__(self, name, text):
         super().__init__(name)
-        chat_box = SpriteSheet(os.getcwd()+'/src/image/chatBox/config.xml')
+        chat_box = SpriteSheet('./image/chatBox/config.xml')
         self.visible = False
         self.open_image = chat_box['open']
         self.box_image  = chat_box['box']
@@ -218,7 +218,7 @@ class AnimaText(UI):
         self.animation.clear()
         self.local_position = self.position
         for char, scale, tick in ani_text:
-            font = pygame.font.Font(os.getcwd()+'/src/font/Galmuri11.ttf', scale)
+            font = pygame.font.Font('./font/Galmuri11.ttf', scale)
             text = font.render(char, True, self.color)
             rect = text.get_rect()
             
@@ -275,7 +275,7 @@ class AnimaText(UI):
 class Text(UI):
     def __init__(self, name, position, scale, string, color):
         super().__init__(name)
-        self.font = pygame.font.Font(os.getcwd()+'/src/font/Galmuri11.ttf', scale)
+        self.font = pygame.font.Font('./font/Galmuri11.ttf', scale)
         self.set_text(string, color)
         self.rect = self.image.get_rect()
         self.__text = string

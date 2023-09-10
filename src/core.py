@@ -1,4 +1,3 @@
-import os
 from typing import Dict
 import pygame
 import time
@@ -10,7 +9,7 @@ class InstallCore(GameObject):
     
     def __init__(self, name: str, postition):
         super().__init__(name)
-        self.image = pygame.image.load(os.getcwd() + "/src/image/install_core.png")
+        self.image = pygame.image.load("./image/install_core.png")
         self.fack_rect = self.image.get_rect(center=postition)
         self.rect = pygame.Rect(0, 0, 500, 200)
         self.position = postition
@@ -20,7 +19,7 @@ class InstallCore(GameObject):
             if event.key == pygame.K_s:
                 if pygame.sprite.collide_rect(manger.player, self):
 
-                    self.image = pygame.image.load(os.getcwd() + "/src/image/core.png")
+                    self.image = pygame.image.load("./image/core.png")
                     def end():
                         time.sleep(10)
                         manger.game.is_running = False

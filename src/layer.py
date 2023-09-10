@@ -16,7 +16,7 @@ class Layers:
         try:
             self.layers[obj.layer_int].remove(obj)
         except ValueError:
-            print("value Error")
+            pass
         
        
     def clear(self):

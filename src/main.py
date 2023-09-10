@@ -1,4 +1,4 @@
-import os
+
 import sys
 import pygame
 
@@ -38,6 +38,9 @@ def world(world_path, checkpoint=None):
 def empty_func():
     pass
 
+class GameOver(Exception):
+    pass
+
 class AiDefenseGame:
     
     def __init__(self, size=(500, 500)):
@@ -51,6 +54,7 @@ class AiDefenseGame:
     
     def game_loop(self, event_func, game_loop=empty_func):
         self.is_running = True
+        self.game_over = False
         while self.is_running:
             GameTime.tick(60)   
             game_loop()
@@ -68,7 +72,7 @@ class AiDefenseGame:
 
 
     def start(self):
-        manger.layers.load(os.getcwd()+'/src/level/main.json')
+        manger.layers.load('./level/main.json')
         def wait(event): 
             if event.type == pygame.KEYDOWN:
                 self.is_running = False
@@ -83,6 +87,7 @@ class AiDefenseGame:
         manger.layers.render()
         pygame.display.flip()
         waiting = True
+        manger.sound_manger['game_over'].play()
         while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -105,8 +110,8 @@ class AiDefenseGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
 
-    @world(os.getcwd()+'/src/level/prologue.json', 'lab')
-    @story(os.getcwd()+'/src/story/prologue.json')
+    @world('./level/prologue.json', 'lab')
+    @story('./story/prologue.json')
     def prologue(self):
         player = manger.layers.get_game_object_by_name('player')
         ani = manger.layers.get_game_object_by_name("playerChat")
@@ -118,12 +123,11 @@ class AiDefenseGame:
         manger.scene.brightening_scene()
         self.game_loop([])
 
-    @world(os.getcwd()+'/src/level/laboratory.json', 'mountain')
+    @world('./level/laboratory.json', 'mountain')
     def laboratory(self):
         # awake
 
         manger.scene.brightening_scene()
-        #manger.sound_manger.bgm['army_step'].play(-1)
 
         def check_enemy():
             if living_enemy.is_emty():
@@ -135,9 +139,9 @@ class AiDefenseGame:
         )
         
         if self.game_over:
-            raise Exception("GameOver")
+            raise GameOver("GameOver")
         
-    @world(os.getcwd()+'/src/level/mountain.json', 'last_laboratory')
+    @world('./level/mountain.json', 'last_laboratory')
     def mountain(self):
         # awake
         manger.player.skill_w_ev = True
@@ -155,9 +159,9 @@ class AiDefenseGame:
         )
          
         if self.game_over:
-            raise Exception("GameOver")
+            raise GameOver("GameOver")
         
-    @world(os.getcwd()+'/src/level/last_laboratory.json', 'end')
+    @world('./level/last_laboratory.json', 'end')
     def last_laboratory(self):
         # awake
         core = manger.layers.get_game_object_by_name("core")
@@ -172,7 +176,7 @@ class AiDefenseGame:
         )
         
         if self.game_over:
-            raise Exception("GameOver")
+            raise GameOver("GameOver")
                 
 if __name__ == "__main__" :
     end = False

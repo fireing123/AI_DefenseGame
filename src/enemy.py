@@ -1,4 +1,3 @@
-import os
 import pygame
 from typing import Dict
 from pygame.sprite import Group
@@ -67,7 +66,7 @@ class Enemy(LivingObject):
 
 class BigGuy(Enemy):
     def __init__(self, name, position):
-        super().__init__(name, position, os.getcwd()+'/src/image/BigGuy/config.xml')
+        super().__init__(name, position, './image/BigGuy/config.xml')
         self.hp = 500
         self.max_hp = 500
         self.tick = 800
@@ -92,7 +91,7 @@ class BigGuy(Enemy):
 
 class SuperSoldier(Enemy):
     def __init__(self, name, position):
-        super().__init__(name, position, os.getcwd()+'/src/image/superSoldier/config.xml')
+        super().__init__(name, position, './image/superSoldier/config.xml')
         self.hp = 200
         self.max_hp = 200
         self.tick = 400
@@ -118,7 +117,7 @@ class SuperSoldier(Enemy):
 class Soldier(Enemy):
     
     def __init__(self, name, position):
-        super().__init__(name, position, os.getcwd()+'/src/image/soldier/config.xml')
+        super().__init__(name, position, './image/soldier/config.xml')
         self.hp = 100
         self.max_hp = 100
         self.tick = 200
