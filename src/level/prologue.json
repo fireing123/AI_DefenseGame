@@ -42,7 +42,7 @@
     ],
     "ChatBox" : [
         {
-            "name" : "playerChat",
+            "name" : "enemyChat",
             "AnimaText" : {
                 "name" : "plc",
                 "position" : [700, 100],

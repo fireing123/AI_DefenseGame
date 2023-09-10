@@ -114,9 +114,10 @@ class AiDefenseGame:
     @story('./story/prologue.json')
     def prologue(self):
         player = manger.layers.get_game_object_by_name('player')
-        ani = manger.layers.get_game_object_by_name("playerChat")
+        ani = manger.layers.get_game_object_by_name("enemyChat")
+        enemy = manger.layers.get_game_object_by_name("enemy")
         skip : manger.Button = manger.layers.get_game_object_by_name('skip')
-        ani.set_player(player)
+        ani.set_player(enemy)
         def sk():
             self.is_running = False
         skip.on_click.add_lisner(sk)
