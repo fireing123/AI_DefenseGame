@@ -1,4 +1,5 @@
 # AI_DefenseGame
+main 시작
 
 조작키
 
