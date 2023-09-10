@@ -1,7 +1,5 @@
-import os
-from typing import Any, Dict
 import pygame
-#not import my module
+from typing import Any, Dict
 from object import GameObject
 
 ground_group = pygame.sprite.Group()

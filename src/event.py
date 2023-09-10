@@ -20,8 +20,6 @@ class Event:
     def invoke(self, *arg):
         for function in self.lisners:
             function(*arg)
-            
-enemy_death = Event()
 
 class SharedThread:
     def __init__(self):
